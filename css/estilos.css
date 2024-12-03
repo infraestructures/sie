@@ -1,0 +1,510 @@
+/* general */
+body.principal {
+margin:0px 10px 0px 10px;
+background:#FFF7EE url(../imagenes/fondo_principal.gif) repeat-x top;
+font-family:arial;
+}
+
+body.contenido {
+margin:0px;
+font-family:arial;
+background-color:transparent;
+}
+
+.cabeceraGeneral {
+	width:100%;
+	height:60px;
+	background:#FF8400 url(../imagenes/logoGovern.gif) no-repeat left;
+	text-align:left;
+}
+
+a {text-decoration:none;}
+
+.boton {
+font-size:8pt;
+margin:1px 0px 0px 0px;
+}
+
+.botonEstado {
+font-size:8pt;
+margin:1px 0px 0px 0px;
+color:red;
+font-weight:bold;
+}
+
+.botonFicha {
+font-size:8pt;
+margin:1px 0px 5px 0px;
+}
+.fila {
+margin:5px 0px 5px 0px;
+}
+.espacioAzul {
+height:10px;
+background-color:#E3E9F9;
+width:100%;
+clear:both;
+}
+.espacioMarron {
+height:10px;
+background-color:#D9CBBC;
+width:100%;
+clear:both;
+}
+
+.espacioMarronAlerta {
+background-color:#D9CBBC;
+width:100%;
+clear:both;
+}
+
+.espacioMarronClaro {
+background-color:#ece0d3;
+height:10px;
+width:100%;
+clear:both;
+}
+
+.espacioGris {
+height:5px;
+background-color:#C2C2C3;
+width:100%;
+clear:both;
+}
+
+.barraMarron {
+height:5px;
+background-color:#8a4700;
+margin:0px;
+padding:0px;
+}
+
+#contenidoPrincipal {
+	width:100%;
+	height:100%;
+	border:0px;
+	margin:0px;
+	padding:0px;
+	overflow:auto;
+	background:url(../imagenes/transparencias/fondoIframe.png) repeat;
+}
+
+#imagenPorDefecto {
+	position:absolute;
+}
+
+/* Menu superior */
+
+.menuSuperior {
+background:#223669 url(../imagenes/fondoBotoneraMenuSuperior.gif) repeat-x top;
+list-style:none;
+margin:0px;
+padding:0px;
+width:100%;
+height:19px;
+cursor:pointer;
+}
+.opcionMenuSuperior {
+background:transparent url(../imagenes/separacionMenuSuperior.gif) no-repeat right;
+float:left;
+padding:0px 20px 0px 20px;
+color: white;
+}
+.opcionMenuSuperior_on {
+background-color:#fff7ee;
+float:left;
+padding:0px 20px 0px 20px;
+}
+/* Menu superior */
+
+ul.menuLateral {
+	list-style:none;
+	margin:0px;
+	padding:0px;
+	border:1px solid #fff7ee;
+	position:absolute;
+	background-color: transparent;
+	background-image: url(../imagenes/transparencias/fondoMenuLateral.png);
+	background-repeat: repeat;
+	font-size:9pt;
+}
+
+ul.menuLateral li {
+padding:5px 10px 5px 10px;
+}
+
+li.tituloSubmenuLateral {
+background-color:#C9B5A0;
+color:#ffffff;
+font-weight:bold;
+padding:2px 4px 2px 4px;
+}
+
+ul.menuLateral li.elemento:hover {
+background-color:#ece0d3;
+cursor:pointer;
+}
+
+/* estructura filtro/listado */
+.contenedorFiltro {
+background-color:#fff7ee;
+padding:10px;
+margin:0px;
+clear:both;
+}
+.pestanyaFiltro {
+list-style:none;
+margin:0px;
+padding:0px;
+}
+.pestanyaFiltroActiva {
+	background-color:#ffffff;
+	float:left;
+	font-size:8pt;
+	color:#8a4700;
+	margin:0px;
+	padding:2px 10px 2px 10px;
+	background: #ffffff url(../imagenes/fondoPestanyaActivaFiltro.gif) repeat-x bottom;
+	;
+	border-top: 1px solid #F4DE9F;
+	;
+	cursor: pointer;
+	border-left: 1px solid #F4DE9F;
+	border-right: 1px solid #F4DE9F;
+}
+.pestanyaFiltroInactiva {
+	background-color:#FFF7EE;
+	float:left;
+	font-size:8pt;
+	color:#BF6F19;
+	margin:0px;
+	padding:2px 10px 2px 10px;
+	cursor: pointer;
+	;
+	border-bottom: 1px solid #F4DE9F;
+}
+/*.pestanyaFiltroInactiva:hover {
+background:#FBF6E6 url(../imagenes/puntoTransparente.gif) no-repeat;
+color:#AF9952;
+cursor:pointer;
+}*/
+.filtro {
+	background:#FFF7EE url(../imagenes/fondoFiltro.gif) repeat-x bottom;
+	border:1px solid #F4DE9F;
+	border-top:0px;
+	border-left:0px;
+	padding:10px;
+	border-bottom: 0px;
+	margin: 0px;
+}
+
+.cajaFiltro {
+clear:both;
+}
+.cajaBuscar {
+background:#ffbd77 url(../imagenes/buscar.gif) no-repeat bottom;
+width:20px;
+cursor:pointer;
+border:0px;
+}
+
+.contenedorCamposFiltro {
+background-color:#fff7ee;
+}
+
+.botonBuscarFiltro {
+	background:transparent url(../imagenes/fondoBuscarFiltro_2.gif) no-repeat top;
+	width:72px;
+	height:25px;
+	margin:0px;
+	padding:0px;
+}
+
+
+
+.botoneraListado {
+list-style:none;
+margin:0px;
+padding:0px;
+width:100%;
+height:22px;
+background-color:#ece0d3;
+}
+.tituloListado {
+font-size:8pt;
+font-weight:bold;
+white-space:nowrap;
+color:#8a4700;
+padding:0px 15px 0px 10px;
+background:#FFF7EE url(../imagenes/remateRightTituloListado.gif) no-repeat right;
+float:left;
+height:22px;
+}
+.fondoBotoneraListado {
+background-color:#ece0d3;
+float:left;
+height:22px;
+margin:0px auto;
+}
+.buscarFiltro {
+background:#9CAFDA url(../imagenes/remateLeftBuscar.gif) no-repeat left;
+float:right;
+height:22px;
+padding:0px 10px 0px 10px;
+}
+
+.scrollListadoMesas_firefox {
+overflow-x:hidden;overflow-y:auto;height:230px;
+}
+
+.scrollListadoMesas_ie {
+overflow-x:hidden;overflow-y:auto;height:240px;
+}
+
+
+.listado {
+clear:both;
+background-color:#ffffff;
+margin:0px;
+padding:0px;
+}
+.fondoCabeceraListado {
+background:transparent url(../imagenes/fondoCabeceraListado2.gif) repeat-x;
+width:100%;
+height:23px;
+}
+
+
+.campoCabeceraListadoInicial {
+font-size:8pt;
+color:#726557;
+border-right:1px solid #A59585;
+padding:0px 0px 0px 10px;
+text-align:left;
+}
+.campoCabeceraListado {
+font-size:8pt;
+color:#726557;
+border-right:1px solid #A59585;
+border-left:1px solid #ffffff;
+padding:0px 0px 0px 10px;
+text-align:left;
+}
+.campoCabeceraListadoFinal {
+font-size:8pt;
+color:#726557;
+border-left:1px solid #ffffff;
+padding:0px 0px 0px 10px;
+text-align:left;
+}
+
+.campoListadoInicial {
+font-size:8pt;
+color:#494949;
+border-right:1px solid #a9a9a9;
+border-bottom:1px solid #f2f2f2;
+padding:0px 0px 0px 10px;
+cursor:pointer;
+}
+.campoListado {
+font-size:8pt;
+color:#494949;
+border-right:1px solid #a9a9a9;
+border-left:1px solid #ffffff;
+border-bottom:1px solid #f2f2f2;
+padding:0px 0px 0px 10px;
+cursor:pointer;
+}
+.campoListadoFinal {
+font-size:8pt;
+color:#494949;
+border-left:1px solid #ffffff;
+border-bottom:1px solid #f2f2f2;
+padding:0px 0px 0px 10px;
+cursor:pointer;
+}
+
+.fondoBlancoListado {
+background-color:#ffffff;
+color:#494949;
+height:23px;
+}
+
+.fondoListadoCalle {
+background-color:#ffffff;
+color:#494949;
+height:23px;
+}
+
+.fondoListadoCalleAlterno {
+	color:#494949;
+	height:23px;
+	background-color:#F8F5F3;
+}
+
+.fondoBlancoListado:hover {
+background:#FBF5E3 url(../imagenes/fondoOverListadoBlanco.gif) repeat-x bottom;
+color:#ab7818;
+cursor:pointer;
+height:23px;
+}
+
+.formularioFiltro {
+font-size:8pt;
+color:#000000;
+border:1px solid #F4DE9F;
+margin-right:10px;
+}
+
+.contenedorPest{
+background-color:#ece0d3;
+width:100%;
+clear:both;
+height:23px;
+border-bottom:0px solid #C9B5A0;
+}
+
+
+
+
+/* Pie de pagina */
+.piePagina {
+width:100%;
+height:6px;
+clear:both;
+margin:0px;
+padding:0px;
+border-top:6px solid #8a4700;
+border-bottom:0px solid #f2f2f2;
+background-color:#ff8400;
+}
+.piePaginaFicha {
+width:100%;
+height:4px;
+clear:both;
+margin:0px;
+padding:0px;
+background-color:#E3E9F9;
+}
+.finalListado {
+width:100%;
+background-color:#D9CBBC;
+height:15px;
+}
+.logoAD {
+width:100%;
+height:50px;
+background:transparent url(../imagenes/logoAd.gif) no-repeat left;
+}
+
+/* textos */
+
+.nombreAplicacion {
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:14pt;
+	color:#ffffff;
+	font-weight:bold;
+	letter-spacing:1px;
+	margin:0px 0px 0px 42%;
+	background:#FF8400 url(../imagenes/logoAplicacion.gif) no-repeat left top;
+	height:60px;
+	width:450px;
+	text-align:right;
+	padding:20px 0px 0px 0px;
+}
+
+a.opcionMenu {
+font-size:8pt;
+color:#fff7ee;
+}
+a.opcionMenu_on {
+font-size:8pt;
+color:#8a4700;
+font-weight:bold;
+}
+a.opcionMenu:hover {
+color:#ff8400;
+}
+.campoFiltro {
+font-size:8pt;
+color:#8a4700;
+}
+.campoFicha {
+	font-size:8pt;
+	color:#887423;
+}
+
+.campoFicha_Blanca {
+font-size:8pt;
+color:#969696;
+}
+
+.textoPestFicha {
+margin-top:4px;
+}
+.textoTituloSeccion {
+font-size:9pt;
+font-weight:bold;
+margin:2px 0px 2px 15px;
+padding-top:2px;
+}
+.negrita {
+font-weight:bold;
+}
+
+.lectura {
+font-size:8pt;
+border-bottom:0px dotted #494949;
+margin-right:10px;
+}
+
+
+.lectura_bold {
+font-size:8pt;
+border-bottom:0px dotted #494949;
+margin-right:10px;
+font-weight:bold;
+}
+
+
+.estadoRespuesta {
+font-size:8pt;
+color:green;
+text-decoration:underline;
+cursor:pointer;
+}
+.estadoLeida {
+font-size:8pt;
+color:orange;
+}
+
+.estadoLeida_seguridad {
+font-size:8pt;
+color:green;
+}
+
+.estadoPendiente {
+font-size:8pt;
+color:red;
+}
+
+.otroTexto {
+color:blue;
+}
+
+.contenidoGenerales {
+	padding:5px 10px 5px 10px;
+	margin:10px;
+	/*background:#f2f2f2 url(../imagenes/fondoGenerales.gif) repeat-x bottom;*/
+border:1px dotted #c8c8c8;
+	background-color:#FDF8E8;
+}
+
+/*Utilidades*/
+
+.scroll_ventana {
+width:100%;overflow-x:hidden;overflow-y:scroll;height:120px;
+}
+.scroll_total {
+width:100%;
+}
