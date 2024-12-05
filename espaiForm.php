@@ -1,19 +1,6 @@
 <!DOCTYPE html>
 <?php
-	// Connexió a la base de dades
-	$host = "localhost";
-	$user = "root";
-	$password = "";
-	$dbname = "sie";
-
-	$connexio = new mysqli($host, $user, $password, $dbname);
-
-	// Comprovar la connexió
-	if ($connexio->connect_error) {
-		die("Error de connexió " . $connexio->connect_error);
-	}
-
-	$connexio->set_charset("utf8mb4");
+	include 'connectarBD.php';
 	
 	// Inicializa variables para los campos del formulario
 	$codi = $nom = $tipus = $ubicacio = $ocupacio = $metres = "";
@@ -44,7 +31,7 @@
 <html>
 	<head>
 
-		<title>Fitxa de centre educatiu</title>
+		<title>Fitxa d'espai de centre educatiu</title>
 
 		<link rel="stylesheet" href="css/estilos.css" type="text/css" />
 		<link rel="stylesheet" href="css/estilos_ficha_2.css" type="text/css" />
@@ -61,7 +48,7 @@
 		<!-- Formulario para insertar o actualizar -->		
 		<div class="contenedorFiltro"></div>
 		<ul class="botoneraFicha">
-			<li class="tituloFicha"><p class="posicionTituloFicha">FITXA DE CENTRE EDUCATIU</p></li>
+			<li class="tituloFicha"><p class="posicionTituloFicha">FITXA D'ESPAI DE CENTRE EDUCATIU</p></li>
 		</ul>
 		<div class="espacioMarron">&nbsp;</div>
 		<div id="fichaEditable" style="background-color:#ffffff;">

@@ -1,19 +1,6 @@
 <!DOCTYPE html>
 <?php
-	// Connexió a la base de dades
-	$host = "localhost";
-	$user = "root";
-	$password = "";
-	$dbname = "sie";
-
-	$conn = new mysqli($host, $user, $password, $dbname);
-
-	// Comprovar la connexió
-	if ($conn->connect_error) {
-		die("Error de connexió " . $conn->connect_error);
-	}
-
-	$conn->set_charset("utf8mb4");
+	include 'connectarBD.php';
 	
 	// Recupera el id de la solicitud GET
 	$id = isset($_GET['id']) ? $_GET['id'] : null;
@@ -34,7 +21,7 @@
 	// Si s'ha proporcionat un id, recupera les dades del centre
 	if ($id) {
 		$sql = "SELECT * FROM centres WHERE id = $id";
-		$result = $conn->query($sql);
+		$result = $connexio->query($sql);
 
 		if ($result->num_rows > 0) {
 			$row = $result->fetch_assoc();
@@ -55,17 +42,17 @@
 
 	// Consulta per obtenir la llista d'illes, municipis i localitats
 	$sql_illes = "SELECT id, nom FROM Illa";
-	$result_illes = $conn->query($sql_illes);
+	$result_illes = $connexio->query($sql_illes);
 
 	$sql_municipis = "SELECT id, nom FROM Municipi";
-	$result_municipis = $conn->query($sql_municipis);
+	$result_municipis = $connexio->query($sql_municipis);
 
 	$sql_localitats = "SELECT id, nom FROM Localitat";
-	$result_localitats = $conn->query($sql_localitats);
+	$result_localitats = $connexio->query($sql_localitats);
 
     // Consulta para obtener las siglas y nombres de la tabla "tipus_centre_educatiu "
     $sql_siglas = "SELECT Sigla, nom FROM tipus_centre_educatiu ";
-    $result_siglas = $conn->query($sql_siglas);
+    $result_siglas = $connexio->query($sql_siglas);
 
     $siglas_lista = [];
     if ($result_siglas->num_rows > 0) {

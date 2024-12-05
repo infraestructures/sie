@@ -1,24 +1,15 @@
 <?php
-$host = "localhost";
-$user = "root";
-$password = "";
-$dbname = "sie";
+	include 'connectarBD.php';
 
-$conn = new mysqli($host, $user, $password, $dbname);
+	$id = $_POST['id'];
 
-if ($conn->connect_error) {
-	die("Error de conexión: " . $conn->connect_error);
-}
+	$sql = "DELETE FROM CENTRES WHERE id = ?";
+	$stmt = $conn->prepare($sql);
+	$stmt->bind_param('i', $id);
 
-$id = $_POST['id'];
-
-$sql = "DELETE FROM CENTRES WHERE id = ?";
-$stmt = $conn->prepare($sql);
-$stmt->bind_param('i', $id);
-
-if ($stmt->execute()) {
-	header("Location: centreListFiltro.php");
-} else {
-	echo "Error: " . $conn->error;
-}
+	if ($stmt->execute()) {
+		header("Location: centreListFiltro.php");
+	} else {
+		echo "Error: " . $conn->error;
+	}
 ?>

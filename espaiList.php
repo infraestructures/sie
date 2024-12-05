@@ -1,23 +1,10 @@
 <!DOCTYPE html>
 <?php
-// Connexió a la base de dades
-$host = "localhost";
-$user = "root";
-$password = "";
-$dbname = "sie";
+	include 'connectarBD.php';
 
-$connexio = new mysqli($host, $user, $password, $dbname);
-
-// Comprovar la connexió
-if ($connexio->connect_error) {
-    die("Error de connexió: " . $connexio->connect_error);
-}
-
-$connexio->set_charset("utf8mb4");
-
-// Consulta para obtener los registros de la tabla espai
-$sql = "SELECT codi, nom, metres_per_unitat FROM espai";
-$resultat = $connexio->query($sql);
+	// Consulta para obtener los registros de la tabla espai
+	$sql = "SELECT codi, nom, metres_per_unitat FROM espai";
+	$resultat = $connexio->query($sql);
 
 ?>
 
