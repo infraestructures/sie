@@ -4,7 +4,7 @@
 	$codi = $_POST['codi'];
 
 	$sql = "DELETE FROM ESPAI WHERE codi = ?";
-	$stmt = $conn->prepare($sql);
+	$stmt = $connexio->prepare($sql);
 	$stmt->bind_param('i', $codi);
 
 	if ($stmt->execute()) {

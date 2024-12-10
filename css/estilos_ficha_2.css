@@ -1,142 +1,138 @@
 /* ficha */
 .botoneraFicha {
-list-style:none;
-margin:0px;
-padding:0px;
-width:100%;
-height:25px;
-background-color:#D9CBBC;
+	list-style:none;
+	margin:0px;
+	padding:0px;
+	width:100%;
+	height:25px;
+	background-color:#D9CBBC;
 }
 .fondoBotoneraFicha {
-background-color:#D9CBBC;
-float:left;
-height:22px;
-margin:2px 0px 0px 2px;
+	background-color:#D9CBBC;
+	float:left;
+	height:22px;
+	margin:2px 0px 0px 2px;
 }
 .botonesFicha {
-background:#9CAFDA url(../imagenes/remateBotoneraFicha.gif) no-repeat left;
-float:right;
-height:25px;
-padding:0px 10px 0px 10px;
+	background:#9CAFDA url(../imagenes/remateBotoneraFicha.gif) no-repeat left;
+	float:right;
+	height:25px;
+	padding:0px 10px 0px 10px;
 }
 .fondoFicha {
-background:#FBF5E1 url(../imagenes/fondoFiltro.gif) repeat-x bottom;
-border:1px solid #c8c8c8;
-border-top:0px;
-clear:both;
-padding:10px;
+	background:#FBF5E1 url(../imagenes/fondoFiltro.gif) repeat-x bottom;
+	border:1px solid #c8c8c8;
+	border-top:0px;
+	clear:both;
+	padding:10px;
 }
 .tituloFicha {
-font-size:8pt;
-font-weight:bold;
-white-space:nowrap;
-color:#8a4700;
-padding:0px 15px 0px 10px;
-background:#FFF7EE url(../imagenes/remateLeftBotoneraFicha.gif) no-repeat right;
-float:left;
-height:25px;
+	font-size:8pt;
+	font-weight:bold;
+	white-space:nowrap;
+	color:#8a4700;
+	padding:0px 15px 0px 10px;
+	background:#FFF7EE url(../imagenes/remateLeftBotoneraFicha.gif) no-repeat right;
+	float:left;
+	height:25px;
 }
 .posicionTituloFicha {
-margin:0px;
-padding:5px 0px 0px 0px;
+	margin:0px;
+	padding:5px 0px 0px 0px;
 }
 .volverFicha {
-background:#FFF7EE url(../imagenes/remateBotoneraFicha.gif) no-repeat left;
-float:right;
-height:25px;
-padding:0px 10px 0px 10px;
+	background:#FFF7EE url(../imagenes/remateBotoneraFicha.gif) no-repeat left;
+	float:right;
+	height:25px;
+	padding:0px 10px 0px 10px;
 }
 .fondoPestFicha {
-background-color:#E3E9F9;
-width:100%;
-margin:0px;
-padding:0px;
-height:24px;
-clear:both;
+	background-color:#E3E9F9;
+	width:100%;
+	margin:0px;
+	padding:0px;
+	height:24px;
+	clear:both;
 }
 .listaPestFicha {
-margin:0px;
-padding:0px;
-list-style:none;
+	margin:0px;
+	padding:0px;
+	list-style:none;
 }
 .pestFichaInactiva {
-float:left;
-height:23px;
-background:transparent url(../imagenes/fondoPestFichaActiva.gif) repeat-x bottom;
-font-size:8pt;
-color:#657BB6;
-border-right:1px solid #A5B7E6;
-border-left:1px solid #ffffff;
-border-top:1px solid #ffffff;
-padding:0px 10px 0px 10px;
+	float:left;
+	height:23px;
+	background:transparent url(../imagenes/fondoPestFichaActiva.gif) repeat-x bottom;
+	font-size:8pt;
+	color:#657BB6;
+	border-right:1px solid #A5B7E6;
+	border-left:1px solid #ffffff;
+	border-top:1px solid #ffffff;
+	padding:0px 10px 0px 10px;
 }
 .pestFichaActiva {
-float:left;
-height:23px;
-background:transparent url(../imagenes/fondoPestFicha.gif) repeat-x bottom;
-font-size:8pt;
-color:#7c7c7c;
-border-right:1px solid #c8c8c8;
-border-left:1px solid #ffffff;
-border-top:1px solid #ffffff;
-padding:0px 10px 0px 10px;
+	float:left;
+	height:23px;
+	background:transparent url(../imagenes/fondoPestFicha.gif) repeat-x bottom;
+	font-size:8pt;
+	color:#7c7c7c;
+	border-right:1px solid #c8c8c8;
+	border-left:1px solid #ffffff;
+	border-top:1px solid #ffffff;
+	padding:0px 10px 0px 10px;
 }
 
 .contenedorFicha {
-background-color:#ffffff;
-margin:0px;
-padding:0px;
-clear:both;
-vertical-align:top;
+	background-color:#ffffff;
+	margin:0px;
+	padding:0px;
+	clear:both;
+	vertical-align:top;
 }
 
 ul.grupoReceptoresLis {
-list-style:none;
-margin:0px;
-padding:0px;
+	list-style:none;
+	margin:0px;
+	padding:0px;
 }
 
 ul.grupoReceptoresLis li {
-color:#5C5C5C;
-font-weight:bold;
+	color:#5C5C5C;
+	font-weight:bold;
 }
 
 ul.grupoReceptoresLis li ul.receptorLis {
-list-style:none;
-margin-left:20px;
-padding:0px;
+	list-style:none;
+	margin-left:20px;
+	padding:0px;
 }
 
 ul.grupoReceptoresLis li ul.receptorLis li {
-color:#000000;
-font-weight:normal;
+	color:#000000;
+	font-weight:normal;
 }
 
 .respuestaLis {
-margin:10px;
-margin-left:20px;
-font-size:8pt;
-width:400px;
+	margin:10px;
+	margin-left:20px;
+	font-size:8pt;
+	width:400px;
 }
 
 .respuestaLis_oculto {
-display:none;
+	display:none;
 }
 
 
 .respuestaLis thead td {
-color:#5C5C5C;
-font-weight:bold;
-border-bottom:1px dotted #5c5c5c;
+	color:#5C5C5C;
+	font-weight:bold;
+	border-bottom:1px dotted #5c5c5c;
 }
 
 .respuestaLis td {
-white-space:nowrap;
+	white-space:nowrap;
 }
-
-
-
-
 
 /* ficha fondo amarillo */
 
@@ -148,16 +144,16 @@ white-space:nowrap;
 	vertical-align:top;
 }
 .contenedorFicha_Amarilla div.contenidoSeccion {
-background-color:#F8F4BE;
+	background-color:#F8F4BE;
 }
 
 .contenedorFicha_Amarilla input.formularioFicha {
-background-color:#F8F4BE;
-border-bottom-color:#494949;
+	background-color:#F8F4BE;
+	border-bottom-color:#494949;
 }
 .contenedorFicha_Amarilla input.formularioTabla {
-background-color:#F8F4BE;
-border-bottom-color:#494949;
+	background-color:#F8F4BE;
+	border-bottom-color:#494949;
 }
 
 .contenedorFicha_Amarilla div.tituloSeccion {
@@ -168,13 +164,13 @@ border-bottom-color:#494949;
 	background-color:#F8F4BE;
 }
 .cabecera_Amarilla {
-background-color:#F8F4BE;
+	background-color:#F8F4BE;
 }
 .cuerpo_Amarilla {
-background-color:#F8F4BE;
+	background-color:#F8F4BE;
 }
 .cuerpo_Amarilla input {
-background-color:#F8F4BE;
+	background-color:#F8F4BE;
 }
 .cuerpo_Amarilla td {
 white-space:nowrap;}
@@ -193,8 +189,8 @@ white-space:nowrap;}
 }
 
 .contenedorFicha_Verde input {
-background-color:#E4F3E2;
-border-bottom-color:#494949;
+	background-color:#E4F3E2;
+	border-bottom-color:#494949;
 }
 
 .contenedorFicha_Verde div.tituloSeccion {
@@ -205,14 +201,14 @@ border-bottom-color:#494949;
 	background-color:#E4F3E2;
 }
 .cabecera_Verde {
-background-color:#E4F3E2;
+	background-color:#E4F3E2;
 }
 .cuerpo_Verde {
-background-color:#E4F3E2;
+	background-color:#E4F3E2;
 }
 
 .cuerpo_Verde input {
-background-color:#E4F3E2;
+	background-color:#E4F3E2;
 }
 
 /* ficha fondo blanca */
@@ -225,7 +221,7 @@ background-color:#E4F3E2;
 	vertical-align:top;
 }
 .contenedorFicha_Blanca div.contenidoSeccion {
-background-color:#ffffff;
+	background-color:#ffffff;
 }
 
 .contenedorFicha_Blanca div.tituloSeccion {
@@ -236,12 +232,12 @@ background-color:#ffffff;
 	background-color:#ffffff;
 }
 .cabecera_Blanca {
-background-color:#ffffff;
-font-weight:bold;
-color:#5C5C5C;
+	background-color:#ffffff;
+	font-weight:bold;
+	color:#5C5C5C;
 }
 .cuerpo_Blanca {
-background-color:#ffffff;
+	background-color:#ffffff;
 }
 
 
@@ -254,88 +250,102 @@ background-color:#ffffff;
 }
 
 .tablaMedicamento_Blanca thead td {
-border-bottom:1px solid #c8c8c8;
+	border-bottom:1px solid #c8c8c8;
 }
 
 .tablaMedicamento_Blanca td {
-white-space:nowrap;
+	white-space:nowrap;
 }
 
 .tablaMedicamento_Blanca tbody td {
-padding-top:5px;
+	padding-top:5px;
 }
 
 
 .tablaMedicamento {
-font-family:Arial, Helvetica, sans-serif;
-font-size:8pt;
-background-color:#887423;
-width:99%;
-color:#887423;
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:8pt;
+	background-color:#887423;
+	width:99%;
+	color:#887423;
 }
 
 .tablaMedicamento thead td {
-text-align:center;
-padding:2px;
-font-weight:bold;
+	text-align:center;
+	padding:2px;
+	font-weight:bold;
 }
 .tablaMedicamento tbody td {
 padding:4px;}
 
 .tablaSubvencion {
-font-family:Arial, Helvetica, sans-serif;
-font-size:8pt;
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:8pt;
 }
 .tablaSubvencion thead td {
-padding:2px;
-font-weight:bold;
-color:#333333;
-text-align:center;
+	padding:2px;
+	font-weight:bold;
+	color:#333333;
+	text-align:center;
 }
 .tablaSubvencion tbody td {
 padding:4px;}
 
 
 .formularioFicha {
-font-size:8pt;
-color:#000000;
-border:0px;
-border-bottom:1px dotted #c8c8c8;
-margin-right:10px;
+	font-size:8pt;
+	color:#000000;
+	border:0px;
+	border-bottom:1px dotted #c8c8c8;
+	margin-right:10px;
+}
+
+select.formularioFicha:disabled {
+	background-color: #f0f0f0; /* Gris claro */
+	color: #a0a0a0; /* Texto gris tenue */
+	border: 1px solid #d0d0d0; /* Borde gris claro */
+	cursor: not-allowed; /* Cursor de "no permitido" */
+}
+
+input.formularioFicha:read-only {
+	background-color: #f0f0f0; /* Gris claro */
+	color: #a0a0a0; /* Texto gris tenue */
+	border: 1px solid #d0d0d0; /* Borde gris claro */
+	cursor: not-allowed; /* Cursor de "no permitido" */
 }
 
 .formulario {
-font-size:8pt;
-color:#000000;
-border:1px dotted #a9a9a9;
+	font-size:8pt;
+	color:#000000;
+	border:1px dotted #a9a9a9;
 }
 
 .formularioTabla {
-font-size:8pt;
-color:#000000;
-border:0px;
-border-bottom:1px dotted #c8c8c8;
-width:99%;
+	font-size:8pt;
+	color:#000000;
+	border:0px;
+	border-bottom:1px dotted #c8c8c8;
+	width:99%;
 }
 .formularioTablaSubvencion {
-font-size:8pt;
-color:#000000;
-border:0px;
-border:1px solid #c8c8c8;
-width:98%;
+	font-size:8pt;
+	color:#000000;
+	border:0px;
+	border:1px solid #c8c8c8;
+	width:98%;
 }
 
 
 select.formularioFicha {
-border:0px;
+	border:0px;
 }
 
 textarea.formularioFicha {
-border:0px;
-width:99%;
-height:50px;
-font-family:Arial, Helvetica, sans-serif;
-overflow:hidden;
+	border:0px;
+	width:99%;
+	height:50px;
+	font-family:Arial, Helvetica, sans-serif;
+	overflow:hidden;
 }
 
 .contenidoSeccion {
@@ -344,14 +354,14 @@ overflow:hidden;
 	margin:0px;
 }
 .tituloSeccion {
-color:#000000;
-margin:0px;
-padding:0px;
-width:100%;
-text-align:left;
-background-color:#f2f2f2;
-border-bottom:1px solid #D5D2D2;
-clear:both;
+	color:#000000;
+	margin:0px;
+	padding:0px;
+	width:100%;
+	text-align:left;
+	background-color:#f2f2f2;
+	border-bottom:1px solid #D5D2D2;
+	clear:both;
 }
 
 .subtituloSeccion {
@@ -381,47 +391,70 @@ clear:both;
 }
 
 .rayaSeccion {
-margin:0px;
-padding:0px;
-height:1px;
-border-top:1px solid #f2f2f2;
-width:100%;
+	margin:0px;
+	padding:0px;
+	height:1px;
+	border-top:1px solid #f2f2f2;
+	width:100%;
 }
 .oculto {
-display:none;
+	display:none;
 }
 .visible {
-display:;
+	display:;
 }
 
 .nueva_Incidencia {
-margin:5px 5px 10px 5px;
-background-color:#FAEADC;
+	margin:5px 5px 10px 5px;
+	background-color:#FAEADC;
 }
 
 .cabeceraFicha {
-background:#ffffff url(../imagenes/fondoCabeceraFicha.gif) repeat-x top;
-height:20px;
-clear:both;
+	background:#ffffff url(../imagenes/fondoCabeceraFicha.gif) repeat-x top;
+	height:20px;
+	clear:both;
 }
 
 .listadoDoc {
-list-style:none;
-margin:10px 0px 10px 20px;
-padding:0px;
-font-size:8pt;
+	list-style:none;
+	margin:10px 0px 10px 20px;
+	padding:0px;
+	font-size:8pt;
 }
 .listadoDoc li {
-padding:0px 0px 10px 0px;
+	padding:0px 0px 10px 0px;
 }
 .listadoDoc li a:hover {
-text-decoration:underline;
-color:blue;
+	text-decoration:underline;
+	color:blue;
 }
 
 .marcoBoton {
-padding:2px;
-border:1px solid #c8c8c8;
-background-color:#f2f2f2;
+	padding:2px;
+	border:1px solid #c8c8c8;
+	background-color:#f2f2f2;
 }
 
+li {
+	list-style-type: none; 
+}
+
+.formulario-container {
+	max-width: 600px;
+	margin: 0 auto; /* Centra el formulario horizontalmente */
+	padding: 20px;
+	border: 1px solid #ccc;
+	border-radius: 8px;
+	background-color: #f9f9f9;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.formularioFicha_readonlyselect {
+	font-size:8pt;
+	margin-right:10px;
+	pointer-events: none; /* Desactiva la interacción del usuario */
+	background-color: #f0f0f0; /* Cambia el color de fondo */
+	color: #a0a0a0; /* Cambia el color del texto */
+	border: 1px solid #d0d0d0; /* Cambia el color del borde */
+	cursor: not-allowed; /* Muestra un cursor de no permitido */
+}

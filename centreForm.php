@@ -164,15 +164,23 @@
 		</div>
 		<li class="fondoBotoneraFicha">
 			<input type="submit" class="boton" value="Desar canvis">
-		</li>
-		<li class="volverFicha">
-			<input type="button" class="boton" value="Tornar al llistat" onclick="window.history.back();">
 		</li>		
 		</form>
 		<!-- Formulario para eliminar -->
 		<form method="post" action="centreDelete.php">
-			<input type="hidden" name="id" value="<?php echo $id ?>">
-			<button type="submit" class="boton" onclick="return confirm('¿Estás seguro de eliminar este centro?');">Eliminar</button>
-		</form>		
+			<li class="fondoBotoneraFicha">
+				<input type="hidden" name="id" value="<?php echo $id ?>">
+				<button type="submit" class="boton" onclick="return confirm('Estàs segur de borrar aquest centre?');">Eliminar</button>
+			</li>
+		</form>	
+		<!-- Botó Assignar -->
+		<li class="fondoBotoneraFicha">
+			<button type="button" class="boton" onclick="location.href='espaiCentreList.php?id_centre=<?= htmlspecialchars($id) ?>&nom_centre=<?= htmlspecialchars($centre) ?>'">
+				Assignar Espais
+			</button>	
+		</li>
+		<li class="volverFicha">
+			<input type="button" class="boton" value="Tornar al llistat" onclick="window.history.back();">
+		</li>			
 	</body>
 </html>

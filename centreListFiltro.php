@@ -68,12 +68,12 @@
 					<div class="filtro">
 						<!-- Filtres -->
 						<form method="GET">
-							<label for="nombre">Nom del Centre:</label>
+							<label for="nombre" class="formularioFiltro">Nom del Centre:</label>
 							<input type="text" id="nombre" name="nombre" value="<?= htmlspecialchars($nombreFiltro) ?>">
 
-							<label for="illa">Illa:</label>
+							<label for="illa" class="formularioFiltro">Illa:</label>
 							<select id="illa" name="illa" onchange="this.form.submit()">
-								<option value="">Seleccione una illa</option>
+								<option value="">Seleccioni una illa</option>
 								<?php while ($row = $illasResult->fetch_assoc()): ?>
 									<option value="<?= $row['id'] ?>" <?= $row['id'] == $illaFiltro ? 'selected' : '' ?>>
 										<?= htmlspecialchars($row['nom']) ?>
@@ -81,9 +81,9 @@
 								<?php endwhile; ?>
 							</select>
 
-							<label for="municipi">Municipi:</label>
+							<label for="municipi" class="formularioFiltro">Municipi:</label>
 							<select id="municipi" name="municipi" onchange="this.form.submit()">
-								<option value="">Seleccione un municipi</option>
+								<option value="">Seleccioni un municipi</option>
 								<?php while ($row = $municipisResult->fetch_assoc()): ?>
 									<option value="<?= $row['id'] ?>" <?= $row['id'] == $municipiFiltro ? 'selected' : '' ?>>
 										<?= htmlspecialchars($row['nom']) ?>

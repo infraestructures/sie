@@ -13,7 +13,7 @@
 		$sql = "UPDATE ESPAI SET 
 			nom = ?, tipus = ?, ubicacio=?, ocupacio_per_persona = ?, metres_per_unitat = ?
 			WHERE codi = ?";
-		$stmt = $conn->prepare($sql);
+		$stmt = $connexio->prepare($sql);
 		$stmt->bind_param(
 			'sssddi',
 			$nom, $tipus, $ubicacio, $ocupacio, $metres, $codi
@@ -23,7 +23,7 @@
 		$sql = "INSERT INTO ESPAI 
 			(nom, tipus, ubicacio, ocupacio_per_persona, metres_per_unitat) 
 			VALUES (?, ?, ?, ?, ?)";
-		$stmt = $conn->prepare($sql);
+		$stmt = $connexio->prepare($sql);
 		$stmt->bind_param(
 			'sssdd',
 			$nom, $tipus, $ubicacio, $ocupacio, $metres
