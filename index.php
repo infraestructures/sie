@@ -11,7 +11,7 @@
 
 <body class="principal" onload="inicio();" id="ventanaPrincipal">
 	<div class="cabeceraGeneral">
-		<p class="nombreAplicacion">Servei d'infraestructures educatives</p>
+		<p class="nombreAplicacion">Servei d'Infraestructures Educatives</p>
 	</div>
 	<div class="barraMarron"></div>
 	<ul class="menuSuperior">

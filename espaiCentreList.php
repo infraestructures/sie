@@ -49,8 +49,11 @@
 <ul class="botoneraListado" style="margin-top: 20px">
 	<li class="tituloListado">Llistat de espais assignats al <b><?php echo $nomCentre?></b></li>
 	<li class="fondoBotoneraListado">
-		<input type="button" class="boton" value="Assignar nou espai" onclick="location.href='espaiCentreForm.php?id_centre=<?php echo $idCentre ?>&nom_centre=<?php echo $nomCentre ?>';">
+		<input type="button" class="boton" value="Assignar nou espai" onclick="location.href='espaiCentreForm.php?id_centre=<?php echo $idCentre ?>'">
     </li> 
+	<li class="volverFicha">
+		<button type="button" class="boton"onclick="location.href='centreForm.php?id=<?php echo $idCentre ?>'">Tornar al centre</button>
+	</li>			
 </ul>
 
 <div class="espacioMarronClaro"></div>
@@ -89,6 +92,12 @@
 </table>
 </div>
 </form>
+<!-- Botó Càlcul d'espais -->
+<li class="fondoBotoneraFicha">
+	<button type="button" class="boton" onclick="location.href='calculEspais.php?id_centre=<?= htmlspecialchars($idCentre) ?>&nom_centre=<?= htmlspecialchars($nomCentre) ?>'">
+		Calcular Espais
+	</button>	
+</li>
 </body>
 </html>
 <?php
