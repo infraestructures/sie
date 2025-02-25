@@ -14,7 +14,7 @@
     $prioritatFiltro = isset($_POST['prioritat_filtro'])? $_POST['prioritat_filtro']: '';
     $estatFiltro = isset($_POST['estat_filtro'])? $_POST['estat_filtro']: '';
     $tecnicFiltro = isset($_POST['tecnic_filtro'])? $_POST['tecnic_filtro']: '';
-echo $dataIniciFiltro;
+
     // Consultar datos para los desplegables
     $illasQuery = "SELECT id, nom FROM Illa ORDER BY nom";
     $illasResult = $connexio->query($illasQuery);
@@ -79,10 +79,10 @@ echo $dataIniciFiltro;
         $sql.= " AND a.estat_id = ". intval($estatFiltro);
     }        
     if (!empty($dataIniciFiltro)) {
-        $sql.= " AND a.data_entrada >= ". $dataIniciFiltro;
+        $sql.= " AND a.data_entrada >= '". $dataIniciFiltro . "'";
     }
     if (!empty($dataFiFiltro)) {
-        $sql.= " AND a.data_entrada <= ". $dataFiFiltro;
+        $sql.= " AND a.data_entrada <= '". $dataFiFiltro . "'";
     }
     if (!empty($tecnicFiltro)) {
         $sql.= " AND a.tecnic_id = ". intval($tecnicFiltro);
@@ -299,7 +299,9 @@ echo $dataIniciFiltro;
         <table class="listado" cellpadding="0" cellspacing="0" width="100%">
             <thead>
                 <tr>
-                    <th class="campoCabeceraListadoInicial">Centre</th>
+                    <th class="campoCabeceraListadoInicial">Núm. Actuació</th>
+                    <th class="campoCabeceraListado">Centre</th>
+                    <th class="campoCabeceraListado">Data entrada</th>
                     <th class="campoCabeceraListado">Prioritat</th>
                     <th class="campoCabeceraListado">Estat</th>
                     <th class="campoCabeceraListado">Tipus</th>
@@ -314,7 +316,9 @@ echo $dataIniciFiltro;
                 if ($result_actuacions->num_rows > 0) {
                     while ($row = $result_actuacions->fetch_assoc()) {
                         echo "<tr onclick=\"window.location.href='actuacioForm.php?id=". $row["id"]. "'\">";
-                        echo "<td class='campoListadoInicial'>". $row["nom_centre"]. "</td>";
+                        echo "<td class='campoListadoInicial'>". $row["id"]. "</td>";
+                        echo "<td class='campoListado'>". $row["nom_centre"]. "</td>";
+                        echo "<td class='campoListado'>". $row["data_entrada"]. "</td>";
                         echo "<td class='campoListado'>". $row["nom_prioritat"]. "</td>";
                         echo "<td class='campoListado'>". $row["nom_estat"]. "</td>";
                         echo "<td class='campoListado'>". $row["nom_tipus"]. "</td>";
