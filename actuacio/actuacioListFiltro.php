@@ -24,9 +24,25 @@
     : "SELECT id, nom FROM Municipi ORDER BY nom";
     $municipisResult = $connexio->query($municipisQuery);
 
+	// Obtenir els tipus d'actuació
+	$sql = "SELECT id, nom FROM tipus_actuacio order by id";
+	$result_tipus_actuacio = $connexio->query($sql);
+
+	// Consulta per obtenir la llista d'estats
+	$sql_estats = "SELECT id, nom FROM estat_actuacio order by id";	
+	$result_estats = $connexio->query($sql_estats);
+
+	// Consulta per obtenir la llista de prioritats
+	$sql_prioritats = "SELECT id, nom FROM prioritat_actuacio order by id";	
+	$result_prioritats = $connexio->query($sql_prioritats);	
+
+	// Consulta per obtenir la llista de tècnics
+	$sql_tecnics = "SELECT id, nom FROM tecnic order by id";	
+	$result_tecnics = $connexio->query($sql_tecnics);	 
     // Consultar los datos de los centros utilizando códigos
     $sql = "SELECT
                 a.id,
+                a.codi,
                 a.descripcio,
                 a.pressupost,
                 a.observacions,
@@ -69,15 +85,18 @@
     if (!empty($municipiFiltro)) {
         $sql.= " AND c.id_municipi = ". intval($municipiFiltro);
     }
+    if (!empty($tipusFiltro)) {
+        $sql.= " AND s.tipus_id = ". intval($tipusFiltro);
+    }    
+    if (!empty($subtipusFiltro)) {
+        $sql.= " AND a.subtipus_id = ". intval($subtipusFiltro);
+    }    
     if (!empty($prioritatFiltro)) {
         $sql.= " AND a.prioritat_id = ". intval($prioritatFiltro);
     }
     if (!empty($estatFiltro)) {
         $sql.= " AND e.id = ". intval($estatFiltro);
-    }
-    if (!empty($estatFiltro)) {
-        $sql.= " AND a.estat_id = ". intval($estatFiltro);
-    }        
+    }   
     if (!empty($dataIniciFiltro)) {
         $sql.= " AND a.data_entrada >= '". $dataIniciFiltro . "'";
     }
@@ -93,35 +112,7 @@
 
     if (!$result_actuacions) {
         die("Query failed: " . $connexio->error);
-    }
-    	// Consulta per obtenir la llista d'illes i municipis
-	$sql_illes = "SELECT id, nom FROM Illa";
-	$result_illes = $connexio->query($sql_illes);
-
-	$sql_municipis = $illaFiltro
-		? "SELECT id, nom FROM Municipi WHERE illa_id = $illaFiltro ORDER BY nom"
-		: "SELECT id, nom FROM Municipi ORDER BY nom";
-	$result_municipis = $connexio->query($sql_municipis);
-
-	// Obtenir els tipus d'actuació
-	$sql = "SELECT id, nom FROM tipus_actuacio";
-	$result_tipus_actuacio = $connexio->query($sql);
-	$tipus_actuacions = [];
-	while ($row = $result_tipus_actuacio->fetch_assoc()) {
-		$tipus_actuacions[] = $row;
-	}	
-
-	// Consulta per obtenir la llista d'estats
-	$sql_estats = "SELECT id, nom FROM estat_actuacio order by id";	
-	$result_estats = $connexio->query($sql_estats);
-
-	// Consulta per obtenir la llista de prioritats
-	$sql_prioritats = "SELECT id, nom FROM prioritat_actuacio order by id";	
-	$result_prioritats = $connexio->query($sql_prioritats);	
-
-	// Consulta per obtenir la llista de tècnics
-	$sql_tecnics = "SELECT id, nom FROM tecnic order by id";	
-	$result_tecnics = $connexio->query($sql_tecnics);	    
+    }   
     
 ?>
 
@@ -173,27 +164,40 @@
                     }
                 });
             });
-        });
+            var tipusId = $("#tipus_filtro").val();
+            var subtipusId = "<?php echo $subtipusFiltro; ?>"; // Captura desde PHP
 
-        $(document).ready(function() {
-        $("#tipus_filtro").change(function() {
-            var tipusId = $(this).val();
-            if (tipusId) {
-                $.ajax({
-                    url: "getSubtipus.php",
-                    type: "POST",
-                    data: { tipus_id: tipusId },
-                    success: function(data) {
-                        $("#subtipus_filtro").html(data);
-                        $("#subtipus_filtro").prop("disabled", false);
-                    }
-                });
-            } else {
-                $("#subtipus_filtro").html('<option value="">Selecciona un subtipus</option>');
-                $("#subtipus_filtro").prop("disabled", true);
+            // Función para cargar subtipus
+            function cargarSubtipus(tipusId, subtipusId = null) {
+                if (tipusId) {
+                    $.ajax({
+                        url: "getSubtipus.php",
+                        type: "POST",
+                        data: {
+                            tipus_id: tipusId,
+                            subtipus_id: subtipusId
+                        },
+                        success: function(data) {
+                            $("#subtipus_filtro").html(data);
+                            $("#subtipus_filtro").prop("disabled", false);
+                        }
+                    });
+                } else {
+                    $("#subtipus_filtro").html('<option value="">Selecciona un subtipus</option>');
+                    $("#subtipus_filtro").prop("disabled", true);
+                }
             }
+
+            // Carga inicial si hay valores seleccionados tras pulsar "Cercar"
+            if (tipusId) {
+                cargarSubtipus(tipusId, subtipusId);
+            }
+
+            // Carga dinámica al cambiar el tipus
+            $("#tipus_filtro").change(function() {
+                cargarSubtipus($(this).val());
+            });       
         });
-    });
 
     </script>	
 </head>
@@ -228,15 +232,17 @@
                                 <?php endwhile;?>
                             </select>						
                             <label for="tipus_filtro" class="formularioFiltro">Tipus Actuació:</label>
-                            <select name="tipus_filtro" class="campoFicha_Blanca">
+                            <select name="tipus_filtro" id= "tipus_filtro" class="campoFicha_Blanca">
                                 <option value="">Tots</option>
-								<?php foreach ($tipus_actuacions as $tipus): ?>
-									<option value="<?= $tipus['id'] ?>"><?= htmlspecialchars($tipus['nom']) ?></option>
-								<?php endforeach; ?>                                
+                                <?php while ($row = $result_tipus_actuacio->fetch_assoc()):?>
+									<option value="<?= $row['id'] ?>" <?= $row['id'] == $tipusFiltro? 'selected': ''?>>
+                                        <?= htmlspecialchars($row['nom']) ?>
+                                    </option>
+								<?php endwhile; ?>                                
                             </select>
 
                             <label for="subtipus_filtro" class="formularioFiltro">Subtipus Actuació:</label>
-                            <select name="subtipus_filtro" class="campoFicha_Blanca">
+                            <select name="subtipus_filtro" id= "subtipus_filtro" class="campoFicha_Blanca">
                                 <option value="">Tots</option>
                             </select>                                                    
                         </div>
@@ -299,7 +305,7 @@
         <table class="listado" cellpadding="0" cellspacing="0" width="100%">
             <thead>
                 <tr>
-                    <th class="campoCabeceraListadoInicial">Núm. Actuació</th>
+                    <th class="campoCabeceraListadoInicial">Codi Actuació</th>
                     <th class="campoCabeceraListado">Centre</th>
                     <th class="campoCabeceraListado">Data entrada</th>
                     <th class="campoCabeceraListado">Prioritat</th>
@@ -316,7 +322,7 @@
                 if ($result_actuacions->num_rows > 0) {
                     while ($row = $result_actuacions->fetch_assoc()) {
                         echo "<tr onclick=\"window.location.href='actuacioForm.php?id=". $row["id"]. "'\">";
-                        echo "<td class='campoListadoInicial'>". $row["id"]. "</td>";
+                        echo "<td class='campoListadoInicial'>". $row["codi"]. "</td>";
                         echo "<td class='campoListado'>". $row["nom_centre"]. "</td>";
                         echo "<td class='campoListado'>". $row["data_entrada"]. "</td>";
                         echo "<td class='campoListado'>". $row["nom_prioritat"]. "</td>";

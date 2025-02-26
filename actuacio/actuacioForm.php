@@ -10,6 +10,7 @@
 
 	$fechaActual = date('Y-m-d');
 	$actuacio = [
+		'codi' => '',
 		'descripcio' => '',
 		'pressupost' => '',
 		'observacions' => '',
@@ -30,6 +31,7 @@
 	if ($id) {
 		$sql = "SELECT
 					a.id,
+					a.codi,
 					a.descripcio,
 					a.pressupost,
 					a.observacions,
@@ -237,8 +239,8 @@
 						<tr>
 							<td>
 								<!-- Codi d'actuació -->
-								<label for="id" class="campoFicha_Blanca">Codi d'actuació:</label>
-								<input type="text" id="id" name="id" class="formularioFicha" value="<?= $id ?>" disabled ><br><br>
+								<label for="codi" class="campoFicha_Blanca">Codi d'actuació:</label>
+								<input type="text" id="codi" name="codi" class="formularioFicha" value="<?= $actuacio['codi'] ?>" disabled ><br><br>
 							</td>						
 							<td>
 								<!-- Data d'entrada -->
@@ -423,7 +425,7 @@
 					<ul class="botoneraListado">
 						<li class="tituloListado">LLISTAT D'INFORMES TÈCNICS</li>
 						<li class="fondoBotoneraListado">
-							<input type="button" class="boton" value="Nou document" onclick="location.href='informeActuacioForm.php?id_actuacio=<?php echo $id ?>';">
+							<input type="button" class="boton" value="Nou informe" onclick="location.href='informeActuacioForm.php?id_actuacio=<?php echo $id ?>';">
 						</li>
 					</ul>
 

@@ -13,7 +13,7 @@
         }
         h1 {
             text-align: center;
-            color: #0056b3;
+            color: #8a4700;
         }
         form {
             margin-bottom: 30px;
@@ -39,7 +39,7 @@
             text-align: left;
         }
         th {
-            background-color: #0056b3;
+            background-color: #8a4700;
             color: white;
         }
         tr:nth-child(even) {
@@ -47,6 +47,7 @@
         }
         tr:hover {
             background-color: #ddd;
+			cursor: pointer;
         }
 		.formularioFichaContainer {
         display: grid;
@@ -76,7 +77,7 @@
         width: calc(100% - 160px); /* Ajusta el ancho del textarea */
     }
 
-}		
+
     </style>
 </head>
 <body>
@@ -117,19 +118,24 @@
 				<label for="data-inici">Previsió finalització d'obres</label>
 				<input type="date" id="data-inici" name="data-inici" value="2025-03-15" required>
 			</div>
+            <div class="formularioFichaRow">
 			<label for="informe">Informe actuacions:</label>
 			<select id="informe" name="informe">
 				<option value="">Selecciona</option>
 				<option value="demanat">"Demanat a l'ajuntament"</option>
 				<option value="parcialment">"Rebut parcialment"</option>
 				<option value="definitiu">"Rebut informe definitiu"</option>
-			</select>		
-			<select id="memoria" name="memoria">
-				<option value="">Selecciona</option>
-				<option value="demanat">"Pendent d'enviar a firma"</option>
-				<option value="parcialment">"Enviat a firma"</option>
-				<option value="definitiu">"Firmat"</option>
-			</select>				
+			</select>
+            </div>
+            <div class="formularioFichaRow">
+                <label for="informe">Memòria:</label>		
+                <select id="memoria" name="memoria">
+                    <option value="">Selecciona</option>
+                    <option value="demanat">"Pendent d'enviar a firma"</option>
+                    <option value="parcialment">"Enviat a firma"</option>
+                    <option value="definitiu">"Firmat"</option>
+                </select>		
+            </div>		
 			<div class="formularioFichaRow">
 				<label for="data-inici">Observacions</label>
 				<textarea id="observacions" name="observacions" rows="4" style="width: 100%;"></textarea>

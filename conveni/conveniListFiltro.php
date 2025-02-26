@@ -11,13 +11,13 @@
             background-color: #f9f9f9;
             color: #333;
         }
-        h1 {
+        h2 {
             text-align: center;
-            color: #0056b3;
+            color: #8a4700;
         }
         h3 {
             text-align: left;
-            color: #0056b3;
+            color: #8a4700;
         }		
         table {
             width: 100%;
@@ -30,7 +30,7 @@
             text-align: left;
         }
         th {
-            background-color: #0056b3;
+            background-color: #8a4700;
             color: white;
         }
         tr:nth-child(even) {
@@ -73,11 +73,11 @@
 
 	<button id="cerca">Cerca</button>
 </div>
-	<button id="afegir-conveni" onclick="window.location.href='conveniForm.php">Afegir conveni</button>
-    <h1>LLISTA DE CONVENIS</h1>
+	<h2>LLISTA DE CONVENIS</h2>
+    <button id="afegir-conveni" onclick="window.location.href='conveniForm.php'">Afegir conveni</button>
     <table>
         <thead>
-            <tr onclick="window.location.href='conveniForm.php">
+            <tr onclick="window.location.href='conveniForm.php'">
                 <th>Ajuntament</th>
                 <th>Núm centres</th>
 				<th>Data creació</th>

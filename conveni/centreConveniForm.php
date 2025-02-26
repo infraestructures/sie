@@ -13,7 +13,7 @@
         }
         h1 {
             text-align: center;
-            color: #0056b3;
+            color: #8a4700;
         }
         form {
             margin-bottom: 30px;
@@ -39,7 +39,7 @@
             text-align: left;
         }
         th {
-            background-color: #0056b3;
+            background-color: #8a4700;
             color: white;
         }
         tr:nth-child(even) {
@@ -59,7 +59,7 @@
         <input type="text" id="codi-centre" name="codi-centre" required>
 
         <label for="nom-centre">Nom del centre</label>
-		<input type="text" id="localitat" name="localitat" value="CEIP Calonge" readonly>
+		<input type="text" id="nom_centre" name="nom_centre" value="CEIP Calonge" readonly>
 
         <label for="localitat">Localitat</label>
         <input type="text" id="localitat" name="localitat" required>
@@ -70,7 +70,7 @@
     </form>
 
     <h2>Llista d'Actuacions a centres educatius</h2>
-	<button id="afegir-actuacio" onclick="window.location.href='centreActuacioForm.php">Afegir actuació</button>
+	<button id="afegir-actuacio" onclick="window.location.href='centreActuacioForm.php'">Afegir actuació</button>
     <table>
         <thead>
             <tr onclick="window.location.href='centreActuacioForm.php'">

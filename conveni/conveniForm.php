@@ -13,7 +13,7 @@
         }
         h1 {
             text-align: center;
-            color: #0056b3;
+            color: #8a4700;
         }
         form {
             margin-bottom: 30px;
@@ -39,7 +39,7 @@
             text-align: left;
         }
         th {
-            background-color: #0056b3;
+            background-color: #8a4700;
             color: white;
         }
         tr:nth-child(even) {
@@ -101,7 +101,7 @@
     </form>
 
     <h2>LLISTAT DE CENTRES</h2>
-	<button id="afegir-centre" onclick="window.location.href='centreForm.php">Afegir centre</button>
+	<button id="afegir-centre" onclick="window.location.href='centreForm.php'">Afegir centre</button>
     <table>
         <thead>
             <tr onclick="window.location.href='centreConveniForm.php'">
