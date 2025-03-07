@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <?php
-	include 'connectarBD.php';
+	include '../connectarBD.php';
 
 	// Obtenir els valors des del paràmetre GET
 	$idCentre = isset($_GET['id_centre']) ? intval($_GET['id_centre']) : 0;

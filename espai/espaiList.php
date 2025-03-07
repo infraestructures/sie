@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <?php
-	include 'connectarBD.php';
+	include '../connectarBD.php';
 
 	// Consulta para obtener los registros de la tabla espai
 	$sql = "SELECT codi, nom, metres_per_unitat FROM espai";

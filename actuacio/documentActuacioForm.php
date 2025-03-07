@@ -39,11 +39,10 @@
 
 		<link rel="stylesheet" href="../css/estilos.css" type="text/css" />
 		<link rel="stylesheet" href="../css/estilos_ficha_2.css" type="text/css" />
-		<link rel="stylesheet" href="../css/dhtmlgoodies_calendar.css" type="text/css" />
 
 		<script src="../js/utiles.js" language="javascript"></script>
 		<script src="../js/especificas.js" language="javascript"></script>
-		<script src="../js/dhtmlgoodies_calendar.js" type="text/javascript" language="JavaScript"></script>
+
 		
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">

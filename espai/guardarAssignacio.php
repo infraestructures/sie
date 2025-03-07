@@ -1,5 +1,5 @@
 <?php
-	include 'connectarBD.php';
+	include '../connectarBD.php';
 
 	// Recoge los datos del formulario
 	$id_centre = $_POST['id_centre'];

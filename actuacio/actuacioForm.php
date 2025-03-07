@@ -11,6 +11,7 @@
 	$fechaActual = date('Y-m-d');
 	$actuacio = [
 		'codi' => '',
+		'codi_extern' => '',
 		'descripcio' => '',
 		'pressupost' => '',
 		'observacions' => '',
@@ -22,16 +23,21 @@
 		'nom_municipi' => '',
 		'nom_centre' => '',
 		'data_entrada' => $fechaActual,
+		'data_enviament' => '',
 		'centre_id' => '',
 		'illa_id' => '',
 		'municipi_id' => '',
 		'tecnic_id' => '',
+		'origen_id' => '',
+		'desti_id' => '',
+		'mode_enviament_id' => '',
 	];
 
 	if ($id) {
 		$sql = "SELECT
 					a.id,
 					a.codi,
+					a.codi_extern,
 					a.descripcio,
 					a.pressupost,
 					a.observacions,
@@ -39,7 +45,11 @@
 					a.prioritat_id,
 					a.subtipus_id,
 					a.data_entrada,
+					a.data_enviament,
 					a.tecnic_id,
+					a.origen_id,
+					a.desti_id,
+					a.mode_enviament_id,
 					c.id_illa,
 					c.id_municipi,
 					a.centre_id,
@@ -113,6 +123,18 @@
 	$sql_tecnics = "SELECT id, nom FROM tecnic order by id";	
 	$result_tecnics = $connexio->query($sql_tecnics);	    
 
+		// Consulta per obtenir la llista d'origens d'actuació
+	$sql_origen = "SELECT id, nom FROM origen_actuacio order by id";	
+	$result_origen = $connexio->query($sql_origen);
+
+	// Consulta per obtenir la llista de destins d'actuació
+	$sql_desti = "SELECT id, nom FROM desti_actuacio order by id";	
+	$result_desti = $connexio->query($sql_desti);
+	
+	// Consulta per obtenir la llista de modes d'enviament
+	$sql_mode = "SELECT id, nom FROM mode_enviament order by id";	
+	$result_mode = $connexio->query($sql_mode);
+
 	// Obtenir la llista de documents i informes relacionats
 	$documents = [];
 	$informes = [];
@@ -124,7 +146,7 @@
 		$stmt->execute();
 		$result_documents = $stmt->get_result();
 		// Informes
-		$stmt = $connexio->prepare("SELECT id, nom, url FROM informe_actuacio WHERE actuacio_id = ?");
+		$stmt = $connexio->prepare("SELECT id, nom, data, url FROM informe_actuacio WHERE actuacio_id = ?");
 		$stmt->bind_param("i", $id);
 		$stmt->execute();
 		$result_informes = $stmt->get_result();
@@ -139,11 +161,9 @@
 
 	<link rel="stylesheet" href="../css/estilos.css" type="text/css" />
 	<link rel="stylesheet" href="../css/estilos_ficha_2.css" type="text/css" />
-	<link rel="stylesheet" href="../css/dhtmlgoodies_calendar.css" type="text/css" />
 
 	<script src="../js/utiles.js" language="javascript"></script>
 	<script src="../js/especificas.js" language="javascript"></script>
-	<script src="../js/dhtmlgoodies_calendar.js" type="text/javascript" language="JavaScript"></script>
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<script>
 		$(document).ready(function() {
@@ -243,6 +263,23 @@
 								<input type="text" id="codi" name="codi" class="formularioFicha" value="<?= $actuacio['codi'] ?>" disabled ><br><br>
 							</td>						
 							<td>
+								<!-- Origen actuació -->
+								<label for="origen" class="campoFicha_Blanca">Origen:</label>
+								<select id="origen" name="origen" class="campoFicha_Blanca">
+									<option value="">Selecciona un origen</option>
+									<?php while ($row = $result_origen->fetch_assoc()): ?>
+										<option value="<?= $row['id'] ?>" <?= $row['id'] == $actuacio['origen_id'] ? 'selected' : '' ?>>
+											<?= htmlspecialchars($row['nom']) ?>
+										</option>
+									<?php endwhile; ?>
+								</select>
+							</td>
+							<td>
+								<!-- Codi extern -->
+								<label for="codi_extern" class="campoFicha_Blanca">Codi extern:</label>
+								<input type="text" id="codi_extern" name="codi_extern" class="formularioFicha" value="<?= $actuacio['codi_extern'] ?>"><br><br>
+							</td>
+							<td>
 								<!-- Data d'entrada -->
 								<label for="data_entrada" class="campoFicha_Blanca">Data d'entrada:</label>
 								<input type="date" id="data_entrada" name="data_entrada" class="formularioFicha" value="<?= date('Y-m-d', strtotime($actuacio['data_entrada'])) ?>"><br><br>
@@ -271,7 +308,7 @@
 								<?php if ($id): ?>
 									<input type="text" name="municipi" value="<?= $actuacio['nom_municipi'] ?>" readonly>
 								<?php else: ?>
-									<select id="municipi" name="municipi" class="campoFicha_Blanca">
+									<select id="municipi" name="municipi" class="campoFicha_Blanca" required>
 										<option value="">Selecciona un municipi</option>
 									</select>
 								<?php endif; ?>
@@ -282,7 +319,7 @@
 								<?php if ($id): ?>
 									<input type="text" name="centre" value="<?= $actuacio['nom_centre'] ?>" readonly>
 								<?php else: ?>
-									<select id="centre" name="centre" class="campoFicha_Blanca">
+									<select id="centre" name="centre" class="campoFicha_Blanca" required>
 										<option value="">Selecciona un centre</option>
 									</select>
 								<?php endif; ?>
@@ -292,7 +329,7 @@
 							<td>
 								<!-- Tipus d'actuació -->
 								<label class="campoFicha_Blanca">Tipus d'actuació:</label>
-								<select id="tipus_actuacio" name="tipus_actuacio" class="campoFicha_Blanca">
+								<select id="tipus_actuacio" name="tipus_actuacio" class="campoFicha_Blanca" required>
 									<option value="">Selecciona un tipus</option>
 									<?php foreach ($tipus_actuacions as $tipus): ?>
 										<option value="<?= $tipus['id'] ?>" <?= $tipus['id'] == $actuacio['tipus_id']? 'selected': ''?>>
@@ -318,14 +355,25 @@
 									</select>
 								<?php endif; ?>							
 							</td>
+							<td>
+								<!-- Prioritat -->
+								<label for="prioritat" class="campoFicha_Blanca">Prioritat:</label>
+								<select id="prioritat" name="prioritat" class="campoFicha_Blanca">
+									<?php while ($row = $result_prioritats->fetch_assoc()): ?>
+										<option value="<?= $row['id'] ?>" <?= $row['id'] == $actuacio['prioritat_id'] ? 'selected' : '' ?>>
+											<?= htmlspecialchars($row['nom']) ?>
+										</option>
+									<?php endwhile; ?>
+								</select>
+							</td>	
 						</tr>
 						<tr>
-							<td>
+							<td colspan="2">
 								<!-- Descripció -->
 								<label for="descripcio" class="campoFicha_Blanca">Descripció:</label>
 								<input type="text" id="descripcio" name="descripcio" class="formularioFicha" SIZE="50" value="<?= $actuacio['descripcio'] ?>"><br><br>
 							</td>
-							<td>
+							<td colspan="2">
 								<!-- Pressupost -->
 								<label for="pressupost" class="campoFicha_Blanca">Pressupost:</label>
 								<input type="text" id="pressupost" name="pressupost" class="formularioFicha" value="<?= $actuacio['pressupost'] ?>"><br><br>
@@ -336,7 +384,6 @@
 								<!-- Estat -->
 								<label for="estat" class="campoFicha_Blanca">Estat:</label>
 								<select id="estat" name="estat" class="campoFicha_Blanca">
-									<option value="">Selecciona un estat</option>
 									<?php while ($row = $result_estats->fetch_assoc()): ?>
 										<option value="<?= $row['id'] ?>" <?= $row['id'] == $actuacio['estat_id'] ? 'selected' : '' ?>>
 											<?= htmlspecialchars($row['nom']) ?>
@@ -345,16 +392,35 @@
 								</select>
 							</td>
 							<td>
-								<!-- Prioritat -->
-								<label for="prioritat" class="campoFicha_Blanca">Prioritat:</label>
-								<select id="prioritat" name="prioritat" class="campoFicha_Blanca">
-									<option value="">Selecciona una prioritat</option>
-									<?php while ($row = $result_prioritats->fetch_assoc()): ?>
-										<option value="<?= $row['id'] ?>" <?= $row['id'] == $actuacio['prioritat_id'] ? 'selected' : '' ?>>
+								<!-- Mode d'enviament -->
+								<label for="mode" class="campoFicha_Blanca">Mode d'enviament:</label>
+								<select id="mode" name="mode" class="campoFicha_Blanca">
+									<option value="">Selecciona un mode</option>
+									<?php while ($row = $result_mode->fetch_assoc()): ?>
+										<option value="<?= $row['id'] ?>" <?= $row['id'] == $actuacio['mode_enviament_id'] ? 'selected' : '' ?>>
 											<?= htmlspecialchars($row['nom']) ?>
 										</option>
 									<?php endwhile; ?>
 								</select>
+							</td>							
+							<td>
+								<!-- Data d'enviament -->
+								<label for="data_enviament" class="campoFicha_Blanca">Data d'enviament:</label>
+								<input type="date" id="data_enviament" name="data_enviament" class="formularioFicha" value="<?= !empty($actuacio['data_enviament']) ? date('Y-m-d', strtotime($actuacio['data_enviament'])) : '' ?>">
+								<br><br>
+							</td>														
+						</tr>	
+						<tr>
+							<td>
+								<label for="desti" class="campoFicha_Blanca">Destí:</label>
+								<select id= "desti" name="desti" class="campoFicha_Blanca">
+									<option value="">Selecciona un destí</option>
+									<?php while ($row = $result_desti->fetch_assoc()):?>
+										<option value="<?= $row['id']?>" <?= $row['id'] ==  $actuacio['desti_id'] ? 'selected': ''?>>
+											<?= htmlspecialchars($row['nom'])?>
+										</option>
+									<?php endwhile;?>
+								</select> 
 							</td>
 							<td>
 								<label for="tecnic" class="campoFicha_Blanca">Tècnic:</label>
@@ -366,12 +432,12 @@
 										</option>
 									<?php endwhile;?>
 								</select> 
-							</td>							
-						</tr>
+							</td>
+						</tr>				
 						<tr>
 							<td colspan="3">
 								<label for="observacions" class="campoFicha_Blanca" style="align-self:start; display:grid">Observacions:</label>
-								<textarea name="observacions" id="observacions" rows="6" cols="100"><?= $actuacio['observacions'] ?></textarea>
+								<textarea name="observacions" id="observacions" class="contenedorFicha_Blanca" rows="6" cols="100"><?= $actuacio['observacions'] ?></textarea>
 							</td>
 						</tr>
 					</table>
@@ -435,7 +501,8 @@
 						<table class="listado" cellpadding="0" cellspacing="0" width="100%">
 							<thead>
 								<tr>
-									<th class="campoCabeceraListadoInicial">Nom</th>
+									<th class="campoCabeceraListadoInicial">Data</th>
+									<th class="campoCabeceraListado">Nom</th>
 									<th class="campoCabeceraListado">URL</th>
 								</tr>
 							</thead>
@@ -445,7 +512,8 @@
 								if ($result_informes && $result_informes->num_rows > 0) {
 									while ($row = $result_informes->fetch_assoc()) {
 										echo "<tr onclick=\"window.location.href='informeActuacioForm.php?id_informe=". $row["id"]. "&id_actuacio=". $id."'\">";
-										echo "<td class='campoListadoInicial'>". $row["nom"]. "</td>";
+										echo "<td class='campoListadoInicial'>". $row["data"]. "</td>";
+										echo "<td class='campoListado'>". $row["nom"]. "</td>";
 										echo "<td class='campoListado'>
 												<a href='" . htmlspecialchars($row['url']) . "' onclick=\"event.preventDefault(); event.stopPropagation(); window.open(this.href, '_blank');\">Veure Document</a>
 											  </td>";
@@ -465,7 +533,7 @@
 			</div>
 			
 			<li class="fondoBotoneraFicha">
-				<input type="submit" class="boton" value="Desar canvis">
+				<input type="submit" class="boton" onclick="return confirm('Estàs segur de desar els canvis?');" value="Desar canvis">
 			</li>
 		</div>	
 	</form>
@@ -478,7 +546,7 @@
 	</form>
 
 	<li class="volverFicha">
-		<input type="button" class="boton" value="Tornar al llistat" onclick="window.history.back();">
+		<input type="button" class="boton" value="Tornar al llistat" onclick="window.location.href='actuacioListFiltro.php'">
 	</li>
 	<script>
 		document.addEventListener('DOMContentLoaded', function() {

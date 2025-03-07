@@ -25,6 +25,5 @@
 		<img src="imagenes/logoGovernCentral.png" />
 	</div>
 	<div class="finalListado"></div>
-	<div class="piePagina"></div>
 </body>
 </html>

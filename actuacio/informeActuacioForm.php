@@ -12,7 +12,7 @@
 	// Si es rep un `codi`, consultar la taula `informe_actuacio` per obtenir les dades
 	if ($idInforme) {
 		$sql = "
-			SELECT id, nom, url, observacions, actuacio_id
+			SELECT id, nom, data, url, observacions, actuacio_id
 			FROM informe_actuacio 
 			WHERE id = ?
 		";
@@ -25,6 +25,7 @@
 		if ($resultat->num_rows > 0) {
 			$row = $resultat->fetch_assoc();
 			$nom = $row['nom'];
+			$data = $row['data'];
 			$url = $row['url'];
 			$observacions = $row['observacions'];
 		}
@@ -41,11 +42,9 @@
 
 		<link rel="stylesheet" href="../css/estilos.css" type="text/css" />
 		<link rel="stylesheet" href="../css/estilos_ficha_2.css" type="text/css" />
-		<link rel="stylesheet" href="../css/dhtmlgoodies_calendar.css" type="text/css" />
 
 		<script src="../js/utiles.js" language="javascript"></script>
 		<script src="../js/especificas.js" language="javascript"></script>
-		<script src="../js/dhtmlgoodies_calendar.js" type="text/javascript" language="JavaScript"></script>
 		
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -65,6 +64,8 @@
 			<div class="contenedorFicha">
 				<div class="contenidoSeccion">
 					<div class="fila">						
+						<label for="data" class="campoFicha_Blanca">Data:</label>
+						<input type="text" id="data" name="data" class="formularioFicha" size="50" value="<?php echo $nom; ?>"><br>						
 						<label for="nom" class="campoFicha_Blanca">Nom de l'informe:</label>
 						<input type="text" id="nom" name="nom" class="formularioFicha" size="50" value="<?php echo $nom; ?>"><br>						
 						<label for="url" class="campoFicha_Blanca">URL:</label>

@@ -106,7 +106,7 @@
     if (!empty($tecnicFiltro)) {
         $sql.= " AND a.tecnic_id = ". intval($tecnicFiltro);
     }    
-    $sql.= " ORDER BY c.Centre";
+    $sql.= " ORDER BY a.codi desc";
 
     $result_actuacions = $connexio->query($sql);
 
@@ -278,7 +278,7 @@
                             
                             <label for="tecnic_filtro" class="formularioFiltro">Tècnic:</label>
                             <select name="tecnic_filtro" class="campoFicha_Blanca">
-                                <option value="">Sense assignar</option>
+                                <option value="">Tots</option>
                                 <?php while ($row = $result_tecnics->fetch_assoc()):?>
                                     <option value="<?= $row['id']?>" <?= $row['id'] == $tecnicFiltro ? 'selected': ''?>>
                                         <?= htmlspecialchars($row['nom'])?>

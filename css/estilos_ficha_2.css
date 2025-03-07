@@ -27,7 +27,7 @@
 	padding:10px;
 }
 .tituloFicha {
-	font-size:8pt;
+	font-size:14pt;
 	font-weight:bold;
 	white-space:nowrap;
 	color:#8a4700;
@@ -63,7 +63,7 @@
 	float:left;
 	height:23px;
 	background:transparent url(../imagenes/fondoPestFichaActiva.gif) repeat-x bottom;
-	font-size:8pt;
+	font-size:10pt;
 	color:#657BB6;
 	border-right:1px solid #A5B7E6;
 	border-left:1px solid #ffffff;
@@ -74,7 +74,7 @@
 	float:left;
 	height:23px;
 	background:transparent url(../imagenes/fondoPestFicha.gif) repeat-x bottom;
-	font-size:8pt;
+	font-size:10pt;
 	color:#7c7c7c;
 	border-right:1px solid #c8c8c8;
 	border-left:1px solid #ffffff;
@@ -115,7 +115,7 @@ ul.grupoReceptoresLis li ul.receptorLis li {
 .respuestaLis {
 	margin:10px;
 	margin-left:20px;
-	font-size:8pt;
+	font-size:10pt;
 	width:400px;
 }
 
@@ -215,8 +215,7 @@ white-space:nowrap;}
 
 .contenedorFicha_Blanca {
 	background-color:#f2f2f2;
-	margin:0px;
-	padding:20px;
+	margin-left:12px;
 	clear:both;
 	vertical-align:top;
 }
@@ -243,7 +242,7 @@ white-space:nowrap;}
 
 .tablaMedicamento_Blanca {
 	font-family:Arial, Helvetica, sans-serif;
-	font-size:8pt;
+	font-size:10pt;
 	background-color:#FFFFFF;
 	color:#000000;
 	width:50%;
@@ -264,7 +263,7 @@ white-space:nowrap;}
 
 .tablaMedicamento {
 	font-family:Arial, Helvetica, sans-serif;
-	font-size:8pt;
+	font-size:10pt;
 	background-color:#887423;
 	width:99%;
 	color:#887423;
@@ -280,7 +279,7 @@ padding:4px;}
 
 .tablaSubvencion {
 	font-family:Arial, Helvetica, sans-serif;
-	font-size:8pt;
+	font-size:10pt;
 }
 .tablaSubvencion thead td {
 	padding:2px;
@@ -293,7 +292,7 @@ padding:4px;}
 
 
 .formularioFicha {
-	font-size:8pt;
+	font-size:10pt;
 	color:#000000;
 	border:0px;
 	border-bottom:1px dotted #c8c8c8;
@@ -315,20 +314,20 @@ input.formularioFicha:read-only {
 }
 
 .formulario {
-	font-size:8pt;
+	font-size:10pt;
 	color:#000000;
 	border:1px dotted #a9a9a9;
 }
 
 .formularioTabla {
-	font-size:8pt;
+	font-size:10pt;
 	color:#000000;
 	border:0px;
 	border-bottom:1px dotted #c8c8c8;
 	width:99%;
 }
 .formularioTablaSubvencion {
-	font-size:8pt;
+	font-size:10pt;
 	color:#000000;
 	border:0px;
 	border:1px solid #c8c8c8;
@@ -419,7 +418,7 @@ textarea.formularioFicha {
 	list-style:none;
 	margin:10px 0px 10px 20px;
 	padding:0px;
-	font-size:8pt;
+	font-size:10pt;
 }
 .listadoDoc li {
 	padding:0px 0px 10px 0px;
@@ -450,7 +449,7 @@ li {
 }
 
 .formularioFicha_readonlyselect {
-	font-size:8pt;
+	font-size:14pt;
 	margin-right:10px;
 	pointer-events: none; /* Desactiva la interacción del usuario */
 	background-color: #f0f0f0; /* Cambia el color de fondo */

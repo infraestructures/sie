@@ -1,5 +1,5 @@
 <?php
-	include 'connectarBD.php';
+	include '../connectarBD.php';
 
 	$codi = $_POST['codi'];
 
@@ -10,6 +10,6 @@
 	if ($stmt->execute()) {
 		header("Location: espaiList.php");
 	} else {
-		echo "Error: " . $conn->error;
+		echo "Error: " . $connexio->error;
 	}
 ?>
