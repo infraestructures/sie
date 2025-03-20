@@ -55,6 +55,7 @@
                 c.id_municipi,
                 a.centre_id,
                 s.tipus_id,
+                e.color,
                 i.nom AS nom_illa,
                 m.nom AS nom_municipi,
                 c.Centre AS nom_centre,
@@ -106,7 +107,8 @@
     if (!empty($tecnicFiltro)) {
         $sql.= " AND a.tecnic_id = ". intval($tecnicFiltro);
     }    
-    $sql.= " ORDER BY a.codi desc";
+    $sql.= " ORDER BY CAST(SUBSTRING_INDEX(a.codi, '-', -1) AS UNSIGNED) ASC, 
+             CAST(SUBSTRING_INDEX(a.codi, '-', 1) AS UNSIGNED) ASC;";
 
     $result_actuacions = $connexio->query($sql);
 
@@ -125,7 +127,6 @@
     <title>Gestió d'actuacions</title>
 
     <link rel="stylesheet" href="../css/estilos.css" type="text/css" />
-
     <script src="../js/utiles.js" type="" language="JavaScript"></script>
     <script src="../js/especificas.js" type="" language="JavaScript"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -321,7 +322,8 @@
                 // Recorre els resultats i mostra cada centre en una fila
                 if ($result_actuacions->num_rows > 0) {
                     while ($row = $result_actuacions->fetch_assoc()) {
-                        echo "<tr onclick=\"window.location.href='actuacioForm.php?id=". $row["id"]. "'\">";
+                        $color = $row["color"];
+                        echo "<tr style='background-color: ".$color."' onclick=\"window.location.href='actuacioForm.php?id=". $row["id"]. "'\">";
                         echo "<td class='campoListadoInicial'>". $row["codi"]. "</td>";
                         echo "<td class='campoListado'>". $row["nom_centre"]. "</td>";
                         echo "<td class='campoListado'>". $row["data_entrada"]. "</td>";

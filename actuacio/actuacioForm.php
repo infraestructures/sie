@@ -31,6 +31,7 @@
 		'origen_id' => '',
 		'desti_id' => '',
 		'mode_enviament_id' => '',
+		'color' => ''
 	];
 
 	if ($id) {
@@ -54,6 +55,7 @@
 					c.id_municipi,
 					a.centre_id,
 					s.tipus_id,
+					e.color,
 					i.nom AS nom_illa,
 					m.nom AS nom_municipi,
 					c.Centre AS nom_centre,
@@ -469,10 +471,11 @@
 									while ($row = $result_documents->fetch_assoc()) {
 										echo "<tr onclick=\"window.location.href='documentActuacioForm.php?id_document=". $row["id"]. "&id_actuacio=". $id."'\">";
 										echo "<td class='campoListadoInicial'>". $row["nom"]. "</td>";
-										echo "<td class='campoListado'>
-												<a href='" . htmlspecialchars($row['url']) . "' onclick=\"event.preventDefault(); event.stopPropagation(); window.open(this.href, '_blank');\">Veure Document</a>
-											  </td>";
-
+										echo "<td class='campoListado'>";
+										if (!empty($row['url'])) {
+											echo "<a href='" . htmlspecialchars($row['url']) . "' onclick=\"event.preventDefault(); event.stopPropagation(); window.open(this.href, '_blank');\">Veure Document</a>";
+										}
+										echo "</td>";										
 										echo "</a></tr>";
 									}
 								} else {
@@ -514,10 +517,11 @@
 										echo "<tr onclick=\"window.location.href='informeActuacioForm.php?id_informe=". $row["id"]. "&id_actuacio=". $id."'\">";
 										echo "<td class='campoListadoInicial'>". $row["data"]. "</td>";
 										echo "<td class='campoListado'>". $row["nom"]. "</td>";
-										echo "<td class='campoListado'>
-												<a href='" . htmlspecialchars($row['url']) . "' onclick=\"event.preventDefault(); event.stopPropagation(); window.open(this.href, '_blank');\">Veure Document</a>
-											  </td>";
-
+										echo "<td class='campoListado'>";
+										if (!empty($row['url'])) {
+											echo "<a href='" . htmlspecialchars($row['url']) . "' onclick=\"event.preventDefault(); event.stopPropagation(); window.open(this.href, '_blank');\">Veure Document</a>";
+										}
+										echo "</td>";										
 										echo "</a></tr>";
 									}
 								} else {

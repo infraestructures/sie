@@ -1,5 +1,5 @@
 <?php
-	include 'connectarBD.php';
+	include '../connectarBD.php';
 
 	// Recollir dades del formulari amb variables en camelCase
 	$idCentre = $_POST['id_centre'];
