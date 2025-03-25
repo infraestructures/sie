@@ -107,8 +107,8 @@
     if (!empty($tecnicFiltro)) {
         $sql.= " AND a.tecnic_id = ". intval($tecnicFiltro);
     }    
-    $sql.= " ORDER BY CAST(SUBSTRING_INDEX(a.codi, '-', -1) AS UNSIGNED) ASC, 
-             CAST(SUBSTRING_INDEX(a.codi, '-', 1) AS UNSIGNED) ASC;";
+    $sql.= " ORDER BY CAST(SUBSTRING_INDEX(a.codi, '-', -1) AS UNSIGNED) DESC, 
+             CAST(SUBSTRING_INDEX(a.codi, '-', 1) AS UNSIGNED) DESC;";
 
     $result_actuacions = $connexio->query($sql);
 

@@ -13,6 +13,7 @@
     $prioritat_id = isset($_POST['prioritat']) ? intval($_POST['prioritat']) : null;
     $centre_id = isset($_POST['centre']) ? intval($_POST['centre']) : null;
     $pressupost = isset($_POST['pressupost']) ? floatval($_POST['pressupost']) : null;
+    $assumitServei = isset($_POST['assumit_servei']) ? 'S' : 'N';
     $tecnic_id = isset($_POST['tecnic']) ? intval($_POST['tecnic']) : null;
     $origen_id = isset($_POST['origen']) ? intval($_POST['origen']) : null;
     $desti_id = isset($_POST['desti']) ? intval($_POST['desti']) : null;
@@ -35,6 +36,7 @@
                     subtipus_id=?,
                     prioritat_id=?,
                     pressupost=?,
+                    assumit_servei=?,
                     tecnic_id=?,
                     origen_id=?,
                     desti_id=?,
@@ -43,7 +45,7 @@
                 WHERE id=?
                 ";
         $stmt = $connexio->prepare($sql);
-        if (!$stmt->bind_param("ssssiiidiiiisi", $codi_extern, $descripcio, $data_entrada, $observacions, $estat_id, $subtipus_id, $prioritat_id,$pressupost, $tecnic_id, $origen_id, $desti_id,$mode_enviament_id,$data_enviament,$id)) {
+        if (!$stmt->bind_param("ssssiiidsiiiisi", $codi_extern, $descripcio, $data_entrada, $observacions, $estat_id, $subtipus_id, $prioritat_id,$pressupost, $assumitServei, $tecnic_id, $origen_id, $desti_id,$mode_enviament_id,$data_enviament,$id)) {
             die("Bind failed: (" . $stmt->errno . ") " . $stmt->error);
         }    
     } else {
@@ -58,16 +60,17 @@
                     prioritat_id,
                     centre_id,
                     pressupost,
+                    assumit_servei,
                     tecnic_id,
                     origen_id,
                     desti_id,
                     mode_enviament_id,
                     data_enviament) 
                 VALUES 
-                    (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                    (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         $stmt = $connexio->prepare($sql);
-        $stmt->bind_param("ssssiiiidiiiis", $codi_extern, $descripcio, $data_entrada, $observacions, $estat_id, $subtipus_id, $prioritat_id, $centre_id, $pressupost, $tecnic_id,$origen_id, $desti_id,$mode_enviament_id,$data_enviament);
+        $stmt->bind_param("ssssiiiidsiiiis", $codi_extern, $descripcio, $data_entrada, $observacions, $estat_id, $subtipus_id, $prioritat_id, $centre_id, $pressupost, $assumitServei, $tecnic_id,$origen_id, $desti_id,$mode_enviament_id,$data_enviament);
     }
 
     if ($stmt->execute()) {

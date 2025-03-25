@@ -14,6 +14,7 @@
 		'codi_extern' => '',
 		'descripcio' => '',
 		'pressupost' => '',
+		'assumit_servei' => '',
 		'observacions' => '',
 		'estat_id' => '',
 		'subtipus_id' => '',
@@ -22,6 +23,7 @@
 		'nom_illa' => '',
 		'nom_municipi' => '',
 		'nom_centre' => '',
+		'Localitat' => '',
 		'data_entrada' => $fechaActual,
 		'data_enviament' => '',
 		'centre_id' => '',
@@ -51,11 +53,13 @@
 					a.origen_id,
 					a.desti_id,
 					a.mode_enviament_id,
+					a.assumit_servei,
 					c.id_illa,
 					c.id_municipi,
 					a.centre_id,
 					s.tipus_id,
 					e.color,
+					c.Localitat,
 					i.nom AS nom_illa,
 					m.nom AS nom_municipi,
 					c.Centre AS nom_centre,
@@ -143,7 +147,7 @@
 
 	if ($id) {
 		// Documents
-		$stmt = $connexio->prepare("SELECT id, nom, url FROM document_actuacio WHERE actuacio_id = ?");
+		$stmt = $connexio->prepare("SELECT id, nom, data, url FROM document_actuacio WHERE actuacio_id = ?");
 		$stmt->bind_param("i", $id);
 		$stmt->execute();
 		$result_documents = $stmt->get_result();
@@ -153,6 +157,11 @@
 		$stmt->execute();
 		$result_informes = $stmt->get_result();
 	}
+
+	$nomCentre = $actuacio['nom_centre']."-".$actuacio['Localitat'];
+	$assumitServei = $actuacio['assumit_servei'];
+	$centreId = $actuacio['centre_id'];
+
 ?>
 
 <html>
@@ -235,6 +244,23 @@
 				}
 			});
 		});
+
+	function obrirCentre() {
+		const codiCentre = document.getElementById('centre_id').value;
+		if (!codiCentre) {
+			alert("Selecciona un centre.");
+			return;
+		}		
+		const url = `../centre/centreForm.php?id=${encodeURIComponent(codiCentre)}`;
+		window.open(url, 'Centre', 'width=800,height=600,scrollbars=yes,resizable=yes');
+	}		
+
+	function actualitzaCentreId() {
+		const select = document.getElementById('centre');
+		const centreId = select.value;
+		document.getElementById('centre_id').value = centreId;
+	}	
+	
 	</script>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -319,12 +345,15 @@
 								<!-- Centre -->
 								<label class="campoFicha_Blanca">Centre:</label>
 								<?php if ($id): ?>
-									<input type="text" name="centre" value="<?= $actuacio['nom_centre'] ?>" readonly>
+									<input type="text" name="centre" value="<?= $nomCentre ?>" readonly>
+									<input type="hidden" id="centre_id" name="centre_id" value="<?= $centreId ?>">
 								<?php else: ?>
-									<select id="centre" name="centre" class="campoFicha_Blanca" required>
+									<select id="centre" name="centre" class="campoFicha_Blanca" onchange="actualitzaCentreId()" required>
 										<option value="">Selecciona un centre</option>
 									</select>
-								<?php endif; ?>
+									<input type="hidden" id="centre_id" name="centre_id" value="">
+								<?php endif; ?>								
+								<button type="button" onclick="obrirCentre()">Veure centre</button>
 							</td>
 						</tr>
 						<tr>
@@ -377,9 +406,15 @@
 							</td>
 							<td colspan="2">
 								<!-- Pressupost -->
-								<label for="pressupost" class="campoFicha_Blanca">Pressupost:</label>
+								<label for="pressupost" class="campoFicha_Blanca">Pressupost en euros (IVA inclòs):</label>
 								<input type="text" id="pressupost" name="pressupost" class="formularioFicha" value="<?= $actuacio['pressupost'] ?>"><br><br>
 							</td>
+							<td>
+								<label label for="assumit_servei" class="campoFicha_Blanca"></label>
+								<input type="checkbox" id="assumit_servei" name="assumit_servei" class="formularioFicha" <?php echo $assumitServei == "S"? "checked" : ""?>>
+								<label label class="campoFicha_Blanca">Assumit pel servei</label>								
+							</td>
+
 						</tr>
 						<tr>
 							<td>
@@ -460,7 +495,8 @@
 						<table class="listado" cellpadding="0" cellspacing="0" width="100%">
 							<thead>
 								<tr>
-									<th class="campoCabeceraListadoInicial">Nom</th>
+									<th class="campoCabeceraListadoInicial">Data</th>
+									<th class="campoCabeceraListado">Nom</th>
 									<th class="campoCabeceraListado">URL</th>
 								</tr>
 							</thead>
@@ -470,6 +506,7 @@
 								if ($result_documents && $result_documents->num_rows > 0) {
 									while ($row = $result_documents->fetch_assoc()) {
 										echo "<tr onclick=\"window.location.href='documentActuacioForm.php?id_document=". $row["id"]. "&id_actuacio=". $id."'\">";
+										echo "<td class='campoListadoInicial'>". date('Y-m-d', strtotime($row["data"])). "</td>";
 										echo "<td class='campoListadoInicial'>". $row["nom"]. "</td>";
 										echo "<td class='campoListado'>";
 										if (!empty($row['url'])) {
@@ -515,7 +552,7 @@
 								if ($result_informes && $result_informes->num_rows > 0) {
 									while ($row = $result_informes->fetch_assoc()) {
 										echo "<tr onclick=\"window.location.href='informeActuacioForm.php?id_informe=". $row["id"]. "&id_actuacio=". $id."'\">";
-										echo "<td class='campoListadoInicial'>". $row["data"]. "</td>";
+										echo "<td class='campoListadoInicial'>". date('Y-m-d', strtotime($row["data"])). "</td>";
 										echo "<td class='campoListado'>". $row["nom"]. "</td>";
 										echo "<td class='campoListado'>";
 										if (!empty($row['url'])) {

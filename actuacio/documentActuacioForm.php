@@ -11,7 +11,7 @@
 	// Si es rep un `codi`, consultar la taula `document_actuacio` per obtenir les dades
 	if ($idDocument) {
 		$sql = "
-			SELECT id, nom, url, actuacio_id
+			SELECT id, nom, url, data, actuacio_id
 			FROM document_actuacio 
 			WHERE id = ?
 		";
@@ -24,6 +24,7 @@
 		if ($resultat->num_rows > 0) {
 			$row = $resultat->fetch_assoc();
 			$nom = $row['nom'];
+			$data = $row['data'];
 			$url = $row['url'];
 		}
 
@@ -62,9 +63,10 @@
 			<div class="contenedorFicha">
 				<div class="contenidoSeccion">
 					<div class="fila">						
+						<label for="data" class="campoFicha_Blanca">Data:</label>
+						<input type="date" id="data" name="data" class="formularioFicha" size="50" value="<?php echo $data; ?>"><br>						
 						<label for="nom" class="campoFicha_Blanca">Nom del document:</label>
-						<input type="text" id="nom" name="nom" class="formularioFicha" size="50" value="<?php echo $nom; ?>"><br>
-						
+						<input type="text" id="nom" name="nom" class="formularioFicha" size="50" value="<?php echo $nom; ?>"><br>						
 						<label for="url" class="campoFicha_Blanca">URL:</label>
 						<input type="text" id="url" name="url" class="formularioFicha" size="150" value="<?php echo $url; ?>"><br>
 					</div>

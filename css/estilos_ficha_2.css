@@ -303,14 +303,12 @@ select.formularioFicha:disabled {
 	background-color: #f0f0f0; /* Gris claro */
 	color: #a0a0a0; /* Texto gris tenue */
 	border: 1px solid #d0d0d0; /* Borde gris claro */
-	cursor: not-allowed; /* Cursor de "no permitido" */
 }
 
 input.formularioFicha:read-only {
 	background-color: #f0f0f0; /* Gris claro */
 	color: #a0a0a0; /* Texto gris tenue */
 	border: 1px solid #d0d0d0; /* Borde gris claro */
-	cursor: not-allowed; /* Cursor de "no permitido" */
 }
 
 .formulario {
@@ -455,7 +453,6 @@ li {
 	background-color: #f0f0f0; /* Cambia el color de fondo */
 	color: #a0a0a0; /* Cambia el color del texto */
 	border: 1px solid #d0d0d0; /* Cambia el color del borde */
-	cursor: not-allowed; /* Muestra un cursor de no permitido */
 }
 .formularioFichaContainer {
 	display: flex;

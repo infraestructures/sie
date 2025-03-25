@@ -65,7 +65,7 @@
 				<div class="contenidoSeccion">
 					<div class="fila">						
 						<label for="data" class="campoFicha_Blanca">Data:</label>
-						<input type="text" id="data" name="data" class="formularioFicha" size="50" value="<?php echo $nom; ?>"><br>						
+						<input type="date" id="data" name="data" class="formularioFicha" size="50" value="<?php echo $nom; ?>"><br>						
 						<label for="nom" class="campoFicha_Blanca">Nom de l'informe:</label>
 						<input type="text" id="nom" name="nom" class="formularioFicha" size="50" value="<?php echo $nom; ?>"><br>						
 						<label for="url" class="campoFicha_Blanca">URL:</label>

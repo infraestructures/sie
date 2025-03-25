@@ -11,22 +11,24 @@
         // UPDATE si s'ha rebut un ID
         $sql = "UPDATE document_actuacio 
                 SET nom=?, 
+                    data=?,
                     url=?
                 WHERE id=?
                 ";
         $stmt = $connexio->prepare($sql);
-        $stmt->bind_param("ssi", $nom, $url, $id);
+        $stmt->bind_param("sssi", $nom, $data, $url, $id);
     } else {
         // INSERT si no hi ha ID
         $sql = "INSERT INTO document_actuacio 
                     (nom, 
+                    data,
                     url,
                     actuacio_id) 
                 VALUES 
-                    (?, ?, ?)";
+                    (?, ?, ?, ?)";
 
         $stmt = $connexio->prepare($sql);
-        $stmt->bind_param("ssi", $nom, $url, $idActuacio);
+        $stmt->bind_param("ssi", $nom, $data, $url, $idActuacio);
     }
 
     if ($stmt->execute()) {
