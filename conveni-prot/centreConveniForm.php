@@ -53,21 +53,28 @@
 <body>
     <h1>Centre Educatiu</h1>
 
-    <form id="centre-form">
-	
-        <label for="codi-centre">Codi del centre</label>
-        <input type="text" id="codi-centre" name="codi-centre" required>
+    
 
-        <label for="nom-centre">Nom del centre</label>
-		<input type="text" id="nom_centre" name="nom_centre" value="CEIP Calonge" readonly>
+<form id="form-centre-conveni">
+    <label for="conveni_id">Conveni</label>
+    <select id="conveni_id" name="conveni_id" required>
+        <option value="">-- Selecciona un conveni --</option>
+        <option value="1">Conveni 1</option>
+        <option value="2">Conveni 2</option>
+    </select>
 
-        <label for="localitat">Localitat</label>
-        <input type="text" id="localitat" name="localitat" required>
+    <label for="centre_id">Centre</label>
+    <select id="centre_id" name="centre_id" required>
+        <option value="">-- Selecciona un centre --</option>
+        <option value="1">Centre A</option>
+        <option value="2">Centre B</option>
+    </select>
 
-        <label for="pressupost">Pressupost</label>
-        <input type="number" id="pressupost" name="pressupost" required>	
-		
-    </form>
+    <label for="import_total">Import total</label>
+    <input type="number" id="import_total" name="import_total" step="0.01" required>
+</form>
+
+
 
     <h2>Llista d'Actuacions a centres educatius</h2>
 	<button id="afegir-actuacio" onclick="window.location.href='centreActuacioForm.php'">Afegir actuació</button>

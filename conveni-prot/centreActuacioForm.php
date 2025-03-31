@@ -117,25 +117,15 @@
 			<div class="formularioFichaRow">
 				<label for="data-inici">Previsió finalització d'obres</label>
 				<input type="date" id="data-inici" name="data-inici" value="2025-03-15" required>
+			</div> 
+			<div class="formularioFichaRow">
+				<label for="data-inici">Data comissió de seguiment</label>
+				<input type="date" id="data-inici" name="data-inici" value="2025-02-15" required>
 			</div>
-            <div class="formularioFichaRow">
-			<label for="informe">Informe actuacions:</label>
-			<select id="informe" name="informe">
-				<option value="">Selecciona</option>
-				<option value="demanat">"Demanat a l'ajuntament"</option>
-				<option value="parcialment">"Rebut parcialment"</option>
-				<option value="definitiu">"Rebut informe definitiu"</option>
-			</select>
-            </div>
-            <div class="formularioFichaRow">
-                <label for="informe">Memòria:</label>		
-                <select id="memoria" name="memoria">
-                    <option value="">Selecciona</option>
-                    <option value="demanat">"Pendent d'enviar a firma"</option>
-                    <option value="parcialment">"Enviat a firma"</option>
-                    <option value="definitiu">"Firmat"</option>
-                </select>		
-            </div>		
+			<div class="formularioFichaRow">
+				<label for="data-inici">Enllaç comissió de seguiment</label>
+				<input type="date" id="data-inici" name="data-inici" value="2025-03-15" required>
+			</div>                     
 			<div class="formularioFichaRow">
 				<label for="data-inici">Observacions</label>
 				<textarea id="observacions" name="observacions" rows="4" style="width: 100%;"></textarea>
@@ -144,6 +134,7 @@
     </form>
 
     <h2>Pagaments</h2>
+    <button id="afegir-pagament" onclick="window.location.href='pagamentActuacioForm.php'">Nou pagament</button>
     <table>
         <thead>
             <tr>
@@ -166,7 +157,8 @@
         </tbody>
     </table>
 
-    <h2>Informe d'actuacions</h2>
+    <h2>Documents d'actuacions</h2>
+    <button id="afegir-document" onclick="window.location.href='documentActuacioForm.php'">Nou document</button>
     <table>
         <thead>
             <tr>
@@ -176,46 +168,13 @@
         </thead>
         <tbody>
             <tr>
-                <td>Demanat a l'ajuntament</td>
+                <td>Documentació tècnica</td>
                 <td>01/12/2024</td>
             </tr>
             <tr>
-                <td>Rebut parcialment</td>
+                <td>Informe de valoració</td>
                 <td>05/12/2024</td>
-            </tr>
-            <tr>
-                <td>Rebut informe definitiu</td>
-                <td>10/12/2024</td>
-            </tr>			
-        </tbody>
-    </table>
-	
-    <h2>Seguiment de l'actuació</h2>
-    <table>
-        <thead>
-            <tr>
-                <th>Codi</th>
-                <th>Nom</th>
-                <th>Inici execució</th>
-                <th>Fi execució</th>
-                <th>Pressupost</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>001</td>
-                <td>Renovació de la biblioteca</td>
-                <td>2024-01-15</td>
-                <td>2024-06-30</td>
-                <td>50.000 €</td>
-            </tr>
-            <tr>
-                <td>002</td>
-                <td>Millora de les instal·lacions esportives</td>
-                <td>2024-03-01</td>
-                <td>2024-09-01</td>
-                <td>120.000 €</td>
-            </tr>
+            </tr>		
         </tbody>
     </table>
 	<button type="submit">Desar</button>

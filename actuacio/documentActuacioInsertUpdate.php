@@ -5,6 +5,7 @@
     $id = isset($_POST['id_document']) ? intval($_POST['id_document']) : null;
     $idActuacio = isset($_POST['id_actuacio']) ? intval($_POST['id_actuacio']) : null;
     $nom = isset($_POST['nom']) ? trim($_POST['nom']) : '';
+    $data = isset($_POST['data']) ? trim($_POST['data']) : '';
     $url = isset($_POST['url']) ? trim($_POST['url']) : '';
 
     if ($id) {
@@ -28,7 +29,7 @@
                     (?, ?, ?, ?)";
 
         $stmt = $connexio->prepare($sql);
-        $stmt->bind_param("ssi", $nom, $data, $url, $idActuacio);
+        $stmt->bind_param("sssi", $nom, $data, $url, $idActuacio);
     }
 
     if ($stmt->execute()) {
