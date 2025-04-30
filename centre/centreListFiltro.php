@@ -98,7 +98,7 @@ $result = $connexio->query($sql);?>
     <ul class="botoneraListado">
         <li class="tituloListado">LLISTAT DE CENTRES</li>
         <li class="fondoBotoneraListado">
-            <input type="button" class="boton" value="Insertar" onclick="location.href='centreForm.php';">
+            <input type="button" class="boton" value="Nou centre" onclick="location.href='centreForm.php';">
         </li>
     </ul>
 

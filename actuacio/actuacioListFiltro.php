@@ -14,6 +14,7 @@
     $prioritatFiltro = isset($_POST['prioritat_filtro'])? $_POST['prioritat_filtro']: '';
     $estatFiltro = isset($_POST['estat_filtro'])? $_POST['estat_filtro']: '';
     $tecnicFiltro = isset($_POST['tecnic_filtro'])? $_POST['tecnic_filtro']: '';
+    $descripcioFiltro = isset($_POST['descripcio_filtro']) ? $_POST['descripcio_filtro'] : '';
 
     // Consultar datos para los desplegables
     $illasQuery = "SELECT id, nom FROM Illa ORDER BY nom";
@@ -106,7 +107,10 @@
     }
     if (!empty($tecnicFiltro)) {
         $sql.= " AND a.tecnic_id = ". intval($tecnicFiltro);
-    }    
+    }
+    if (!empty($descripcioFiltro)) {
+        $sql .= " AND a.descripcio LIKE '%" . $connexio->real_escape_string($descripcioFiltro) . "%'";
+    }
     $sql.= " ORDER BY CAST(SUBSTRING_INDEX(a.codi, '-', -1) AS UNSIGNED) DESC, 
              CAST(SUBSTRING_INDEX(a.codi, '-', 1) AS UNSIGNED) DESC;";
 
@@ -285,7 +289,9 @@
                                         <?= htmlspecialchars($row['nom'])?>
                                     </option>
                                 <?php endwhile;?>
-                            </select>     
+                            </select>   
+                            <label for="descripcio_filtro" class="formularioFiltro">Descripcio:</label>
+                            <input type="text" name="descripcio_filtro" value="<?= htmlspecialchars($descripcioFiltro) ?>">
                             <button type="submit" class="boton">Cercar</button>					        
                         </div>                                          
 				    </td>
@@ -320,6 +326,7 @@
             <tbody>
                 <?php
                 // Recorre els resultats i mostra cada centre en una fila
+                $total = 0;
                 if ($result_actuacions->num_rows > 0) {
                     while ($row = $result_actuacions->fetch_assoc()) {
                         $color = $row["color"];
@@ -334,11 +341,13 @@
                         echo "<td class='campoListado'>". $row["descripcio"]. "</td>";
                         echo "<td class='campoListado'>". $row["nom_tecnic"]. "</td>";
                         echo "</a></tr>";
+                        $total++;
                     }
                 } else {
                     // Si no hi ha resultats, mostra un missatge
-                    echo "<tr><td colspan='6'>No s'han trobat resultats.</td></tr>";
+                    echo "<tr><td colspan='6' class='campoListado'>No s'han trobat resultats.</td></tr>";
                 }
+                echo "<tr><td colspan='6' class='campoListado'>Total actuacions: ".$total;
               ?>
             </tbody>
         </table>

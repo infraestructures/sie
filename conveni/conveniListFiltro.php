@@ -26,7 +26,7 @@
                 conv.codi,
                 conv.descripcio,
                 conv.pressupost,
-                conv.estat_id, 
+                conv.estat_conveni_id, 
                 conv.data_inici,
                 conv.data_pagament,
                 conv.data_signatura,
@@ -35,33 +35,32 @@
                 m.nom AS nom_municipi,
                 e.nom AS nom_estat
             FROM conveni conv
-                JOIN illa i ON m.ila_id = i.id
-                JOIN municipi m ON c.id_municipi = m.id
-                JOIN estat_conveni e ON a.estat_conveni_id = e.id
+                JOIN municipi m ON conv.ajuntament_id = m.id
+                JOIN illa i ON m.illa_id = i.id
+                JOIN estat_conveni e ON conv.estat_conveni_id = e.id
             WHERE 1 = 1			
             ";
 
     if (!empty($illaFiltro)) {
-        $sql.= " AND c.id_illa = ". intval($illaFiltro);
+        $sql.= " AND m.illa_id = ". intval($illaFiltro);
     }
     if (!empty($municipiFiltro)) {
-        $sql.= " AND c.id_municipi = ". intval($municipiFiltro);
+        $sql.= " AND conv.ajuntament_id = ". intval($municipiFiltro);
     }
     if (!empty($estatFiltro)) {
         $sql.= " AND e.id = ". intval($estatFiltro);
     }   
     if (!empty($dataIniciFiltro)) {
-        $sql.= " AND a.data_entrada >= '". $dataIniciFiltro . "'";
+        $sql.= " AND conv.data_inici >= '". $dataIniciFiltro . "'";
     }
     if (!empty($dataFiFiltro)) {
-        $sql.= " AND a.data_entrada <= '". $dataFiFiltro . "'";
+        $sql.= " AND conv.data_inici <= '". $dataFiFiltro . "'";
     }  
-    $sql.= " ORDER BY CAST(SUBSTRING_INDEX(a.codi, '-', -1) AS UNSIGNED) DESC, 
-             CAST(SUBSTRING_INDEX(a.codi, '-', 1) AS UNSIGNED) DESC;";
+    $sql.= " ORDER BY conv.codi DESC;";
 
     $result_convenis = $connexio->query($sql);
 
-    if (!$result_actuacions) {
+    if (!$result_convenis) {
         die("Query failed: " . $connexio->error);
     }   
     
@@ -86,7 +85,7 @@
                 console.log("Illa seleccionada:", illaID); 
                 $.ajax({
                     type: 'POST',
-                    url: 'getMunicipis.php',
+                    url: '../actuacio/getMunicipis.php',
                     data: { illa: illaID },
                     success: function(response) {
                         console.log("Resposta AJAX:", response); // DEBUG
@@ -105,12 +104,12 @@
 
 <body class="contenido" onload="ocultarFondoPrincipal();">
     <div class="contenedorFiltro">
-	<h2>Gestió de convenis</h2>
-        <table cellpadding="0" cellspacing="0" class="cajaFiltro">
-            <tr>		
-                <td class="contenedorCamposFiltro">
-                    <div class="filtro">
-                        <form method="POST" action="conveniListFiltro.php">
+	    <h2>Gestió de convenis</h2>
+        <form method="POST" action="conveniListFiltro.php">
+            <table cellpadding="0" cellspacing="0" class="cajaFiltro">
+                <tr>		
+                    <td class="contenedorCamposFiltro">
+                        <div class="filtro">                        
                             <label for="centre_filtro" class="formularioFiltro">Centre:</label>
                             <input type="text" name="centre_filtro" value="<?= htmlspecialchars($centreFiltro) ?>">						
                             <label for="illa_filtro" class="formularioFiltro">Illa:</label>
@@ -169,19 +168,18 @@
                     <th class="campoCabeceraListado">Data entrada</th>
                     <th class="campoCabeceraListado">Data signatura</th>
                     <th class="campoCabeceraListado">Estat</th>
-                    <th class="campoCabeceraListado">Descripció</th>                    
+                    <th class="campoCabeceraListado">Descripció</th>
                 </tr>
             </thead>
             <tbody>
                 <?php
                 // Recorre els resultats i mostra cada centre en una fila
-                if ($result_actuacions->num_rows > 0) {
-                    while ($row = $result_actuacions->fetch_assoc()) {
-                        $color = $row["color"];
-                        echo "<tr style='background-color: ".$color."' onclick=\"window.location.href='conveniForm.php?id=". $row["id"]. "'\">";
+                if ($result_convenis->num_rows > 0) {
+                    while ($row = $result_convenis->fetch_assoc()) {
+                        echo "<tr onclick=\"window.location.href='conveniForm.php?id=". $row["id"]. "'\">";
                         echo "<td class='campoListadoInicial'>". $row["codi"]. "</td>";
-                        echo "<td class='campoListado'>". $row["Ajuntament"]. "</td>";
-                        echo "<td class='campoListado'>". $row["data_entrada"]. "</td>";
+                        echo "<td class='campoListado'>". $row["nom_municipi"]. "</td>";
+                        echo "<td class='campoListado'>". $row["data_inici"]. "</td>";
                         echo "<td class='campoListado'>". $row["data_signatura"]. "</td>";
                         echo "<td class='campoListado'>". $row["nom_estat"]. "</td>";
                         echo "<td class='campoListado'>". $row["descripcio"]. "</td>";
@@ -189,13 +187,12 @@
                     }
                 } else {
                     // Si no hi ha resultats, mostra un missatge
-                    echo "<tr><td colspan='5'>No s'han trobat resultats.</td></tr>";
+                    echo "<tr><td class='campoListado' colspan='5'>No s'han trobat resultats.</td></tr>";
                 }
               ?>
             </tbody>
         </table>
     </div>
-    </form>
 </body>
 
 </html>

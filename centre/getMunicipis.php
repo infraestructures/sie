@@ -9,6 +9,6 @@
 			echo "<option value='{$municipi['id_municipi']}'>{$municipi['nom_municipi']}</option>";
 		}
 	} else {
-		echo "<option value=''>Selecciona un municipio</option>";
+		echo "<option value=''>Selecciona un municipi</option>";
 	}
 ?>

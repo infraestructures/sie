@@ -576,8 +576,8 @@
 			<li class="fondoBotoneraFicha">
 				<input type="submit" class="boton" onclick="return confirm('Estàs segur de desar els canvis?');" value="Desar canvis">
 			</li>
-		</div>	
-	</form>
+		</form>
+	</div>	
 	<!-- Formulario para eliminar -->
 	<form method="post" action="actuacioDelete.php">
 		<li class="fondoBotoneraFicha">

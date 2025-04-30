@@ -2,7 +2,7 @@
 
 <html>
 <head>
-	<title>Gestió de centres educatius</title>
+	<title>Servei d'Infraestructures Educatives</title>
 	<link rel="stylesheet" href="css/estilos.css" type="text/css" />
 
 	<script src="js/utiles.js" type="" language="JavaScript"></script>
