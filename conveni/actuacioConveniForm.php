@@ -39,7 +39,6 @@
 			act.comissio_seguiment_data,
 			act.comissio_seguiment_enllac
 		FROM actuacio_conveni act
-			JOIN centre_conveni cc ON cc.conveni_id = act.id_conveni AND cc.centre_id = act.centre_id
 		WHERE act.id = ?;";
 		$stmt = $connexio->prepare($sql);
 
@@ -83,62 +82,21 @@
 	<script src="../js/especificas.js" language="javascript"></script>
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<script>
-		$(document).ready(function() {
-			$('#illa').change(function() {
-				var illaID = $(this).val();
-				console.log("Illa seleccionada:", illaID);
-				$.ajax({
-					type: 'POST',
-					url: 'getMunicipis.php',
-					data: {
-						illa: illaID
-					},
-					success: function(response) {
-						console.log("Resposta AJAX:", response); // DEBUG
-						$('#municipi').html(response);
-						$('#centre').html('<option value="">Selecciona un centre</option>');
-					},
-					error: function(xhr, status, error) {
-						console.error("Error en AJAX:", error);
-					}
-				});
-			});
-
-			$('#municipi').change(function() {
-				var municipiID = $(this).val();
-				console.log("Municipi seleccionat:", municipiID);
-				$.ajax({
-					type: 'POST',
-					url: 'getCentres.php',
-					data: {
-						municipi: municipiID
-					},
-					success: function(response) {
-						$('#centre').html(response);
-					},
-					error: function(xhr, status, error) {
-						console.error("Error en AJAX:", error);
-					}
-				});
-			});
-		});
-
-	function obrirCentre() {
-		const codiCentre = document.getElementById('centre_id').value;
-		if (!codiCentre) {
-			alert("Selecciona un centre.");
-			return;
+		function obrirCentre() {
+			const codiCentre = document.getElementById('centre_id').value;
+			if (!codiCentre) {
+				alert("Selecciona un centre.");
+				return;
+			}		
+			const url = `../centre/centreForm.php?id=${encodeURIComponent(codiCentre)}`;
+			window.open(url, 'Centre', 'width=800,height=600,scrollbars=yes,resizable=yes');
 		}		
-		const url = `../centre/centreForm.php?id=${encodeURIComponent(codiCentre)}`;
-		window.open(url, 'Centre', 'width=800,height=600,scrollbars=yes,resizable=yes');
-	}		
 
-	function actualitzaCentreId() {
-		const select = document.getElementById('centre');
-		const centreId = select.value;
-		document.getElementById('centre_id').value = centreId;
-	}	
-	
+		function actualitzaCentreId() {
+			const select = document.getElementById('centre');
+			const centreId = select.value;
+			document.getElementById('centre_id').value = centreId;
+		}		
 	</script>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -161,6 +119,7 @@
 						<p class="textoTituloSeccion">Dades generals</p>
 					</div>
 					<input type="hidden" name="id" value="<?php echo $id ?>">
+					<input type="hidden" name="id_conveni" value="<?php echo $id_conveni ?>">
 					<table>
 						<tr>
 							<td>
@@ -199,12 +158,13 @@
 							<td>
 								<!-- Data d'aprovació inicial -->
 								<label for="aprovacio_inicial" class="campoFicha_Blanca">Data d'aprovació inicial:</label>
-								<input type="date" id="aprovacio_inicial" name="aprovacio_inicial" class="formularioFicha" value="<?= date('Y-m-d', strtotime($actuacio['aprovacio_inicial'])) ?>"><br><br>
+								<input type="date" id="aprovacio_inicial" name="aprovacio_inicial" class="formularioFicha"
+									value="<?= !empty($actuacio['aprovacio_inicial']) ? date('Y-m-d', strtotime($actuacio['aprovacio_inicial'])) : '' ?>"><br><br>
 							</td>
 							<td>
 								<!-- Data d'aprovació definitiva -->
 								<label for="aprovacio_definitiva" class="campoFicha_Blanca">Data d'aprovació definitiva:</label>
-								<input type="date" id="aprovacio_definitiva" name="aprovacio_definitiva" class="formularioFicha" value="<?= date('Y-m-d', strtotime($actuacio['aprovacio_definitiva'])) ?>"><br><br>
+								<input type="date" id="aprovacio_definitiva" name="aprovacio_definitiva" class="formularioFicha" value="<?= !empty($actuacio['aprovacio_definitiva']) ? date('Y-m-d', strtotime($actuacio['aprovacio_definitiva'])) : '' ?>"><br><br>
 							</td>
 						</tr>
 						<tr>

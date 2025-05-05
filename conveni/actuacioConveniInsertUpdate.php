@@ -13,7 +13,7 @@
     $pressupost_definitiu = isset($_POST['pressupost_definitiu']) ? floatval($_POST['pressupost_definitiu']) : null;
     $aprovacio_inicial = trim($_POST['aprovacio_inicial'] ?? null);
     $aprovacio_definitiva = trim($_POST['aprovacio_definitiva'] ?? null);
-    $previsio_inic = trim($_POST['previsio_inic'] ?? null);
+    $previsio_inici = trim($_POST['previsio_inici'] ?? null);
     $previsio_final = trim($_POST['previsio_final'] ?? null);
     $comissio_seguiment_data = trim($_POST['comissio_seguiment_data'] ?? null);
     $comissio_seguiment_enllac = trim($_POST['comissio_seguiment_enllac'] ?? null);
@@ -28,7 +28,7 @@
                 pressupost_definitiu=?,
                 aprovacio_inicial=?,
                 aprovacio_definitiva=?,
-                previsio_inic=?,
+                previsio_inici=?,
                 previsio_final=?,
                 comissio_seguiment_data=?,
                 comissio_seguiment_enllac=?
@@ -48,7 +48,7 @@
                 $pressupost_definitiu,
                 $aprovacio_inicial,
                 $aprovacio_definitiva,
-                $previsio_inic,
+                $previsio_inici,
                 $previsio_final,
                 $comissio_seguiment_data,
                 $comissio_seguiment_enllac,
@@ -69,7 +69,7 @@
                 pressupost_definitiu,
                 aprovacio_inicial,
                 aprovacio_definitiva,
-                previsio_inic,
+                previsio_inici,
                 previsio_final,
                 comissio_seguiment_data,
                 comissio_seguiment_enllac
@@ -91,7 +91,7 @@
                 $pressupost_definitiu,
                 $aprovacio_inicial,
                 $aprovacio_definitiva,
-                $previsio_inic,
+                $previsio_inici,
                 $previsio_final,
                 $comissio_seguiment_data,
                 $comissio_seguiment_enllac

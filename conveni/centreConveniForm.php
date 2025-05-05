@@ -61,18 +61,22 @@
 	// Llista d'actuacions associades al centre
 	$sql_actuacions_centres = "SELECT 
 						a.id, 
-						a.codi, 
-						c.Centre, 
-						Municipi.nom AS Municipi, 
-						Illa.nom AS Illa,
-						centre_conveni.id_conveni,
-						centre_conveni.pressupost				
+						a.descripcio,
+						a.previsio_inici,
+						a.previsio_final,
+						a.pressupost_inicial,
+						a.conveni_id,
+						a.centre_id,
+						a.pressupost_inicial,
+						c.Centre
 					FROM actuacio_conveni a
-					JOIN centre_conveni ON CENTRES.id = centre_conveni.id_centre
-					JOIN Municipi ON CENTRES.id_municipi = Municipi.id
-					JOIN Illa ON CENTRES.id_illa = Illa.id
-					WHERE centre_conveni.id_conveni = $id_conveni;";
-	$result_actuacions_centres = $connexio->query($sql_centres);
+					JOIN centre_conveni cc ON cc.id_centre = a.centre_id AND cc.id_conveni = a.conveni_id
+					JOIN centres c ON c.id = cc.id_centre
+					WHERE a.conveni_id = $id_conveni
+					AND	a.centre_id = $id_centre;";
+	$result_actuacions_centres = $connexio->query($sql_actuacions_centres);
+echo $sql_actuacions_centres;
+
 ?>
 <html>
 
@@ -186,11 +190,12 @@
 							// Recorre els resultats i mostra cada actuacio en una fila
 							if ($result_actuacions_centres && $result_actuacions_centres->num_rows > 0) {
 								while ($row = $result_actuacions_centres->fetch_assoc()) {
-									echo "<tr onclick=\"window.location.href='actuacioConveniForm.php?id=". $row["id"]."&id_conveni=" . $row["id_conveni"] . "&id_centre= ". $row["id_centre"]."&nom_centre=" . $row["nom_centre"] . "'\">";
+									echo "<tr onclick=\"window.location.href='actuacioConveniForm.php?id=". $row["id"]."&id_conveni=" . $row["conveni_id"] . "&id_centre= ". $row["centre_id"]."&nom_centre=" . $row["Centre"] . "'\">";
 									echo "<td class='campoListadoInicial'>". $row["id"]. "</td>";
 									echo "<td class='campoListado'>". $row["descripcio"]. "</td>";
 									echo "<td class='campoListado'>". $row["previsio_inici"]. "</td>";
                                     echo "<td class='campoListado'>" . $row["previsio_final"] . "</td>";
+                                    echo "<td class='campoListado'>" . $row["pressupost_inicial"] . "</td>";
 									echo "</tr>";										
 								}
 							} else {
