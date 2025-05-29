@@ -18,6 +18,7 @@
     $origen_id = isset($_POST['origen']) ? intval($_POST['origen']) : null;
     $desti_id = isset($_POST['desti']) ? intval($_POST['desti']) : null;
     $mode_enviament_id = isset($_POST['mode']) ? intval($_POST['mode']) : null;
+    $url_ibisec = isset($_POST['url_ibisec']) ? trim($_POST['url_ibisec']) : null;
 
     if ($subtipus_id == 0) $subtipus_id = null;
     if ($tecnic_id == 0) $tecnic_id = null;
@@ -41,11 +42,12 @@
                     origen_id=?,
                     desti_id=?,
                     mode_enviament_id=?,
-                    data_enviament=?
+                    data_enviament=?,
+                    url_ibisec=?
                 WHERE id=?
                 ";
         $stmt = $connexio->prepare($sql);
-        if (!$stmt->bind_param("ssssiiidsiiiisi", $codi_extern, $descripcio, $data_entrada, $observacions, $estat_id, $subtipus_id, $prioritat_id,$pressupost, $assumitServei, $tecnic_id, $origen_id, $desti_id,$mode_enviament_id,$data_enviament,$id)) {
+        if (!$stmt->bind_param("ssssiiidsiiiissi", $codi_extern, $descripcio, $data_entrada, $observacions, $estat_id, $subtipus_id, $prioritat_id,$pressupost, $assumitServei, $tecnic_id, $origen_id, $desti_id,$mode_enviament_id,$data_enviament,$url_ibisec,$id)) {
             die("Bind failed: (" . $stmt->errno . ") " . $stmt->error);
         }    
     } else {
@@ -65,12 +67,13 @@
                     origen_id,
                     desti_id,
                     mode_enviament_id,
-                    data_enviament) 
+                    data_enviament,
+                    url_ibisec)     
                 VALUES 
-                    (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                    (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         $stmt = $connexio->prepare($sql);
-        $stmt->bind_param("ssssiiiidsiiiis", $codi_extern, $descripcio, $data_entrada, $observacions, $estat_id, $subtipus_id, $prioritat_id, $centre_id, $pressupost, $assumitServei, $tecnic_id,$origen_id, $desti_id,$mode_enviament_id,$data_enviament);
+        $stmt->bind_param("ssssiiiidsiiiiss", $codi_extern, $descripcio, $data_entrada, $observacions, $estat_id, $subtipus_id, $prioritat_id, $centre_id, $pressupost, $assumitServei, $tecnic_id,$origen_id, $desti_id,$mode_enviament_id,$data_enviament,$url_ibisec);
     }
 
     if ($stmt->execute()) {

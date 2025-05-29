@@ -234,9 +234,10 @@ if (!$result_actuacions) {
             }
 
             // Carga dinámica al cambiar el tipus
-            <span class="math-inline">\("\#tipus\_filtro"\)\.change\(function\(\) \{
-cargarSubtipus\(</span>(this).val());
-            });       
+            $("#tipus_filtro").change(function() {
+                cargarSubtipus($(this).val());
+            });
+       
         });
 
     </script>  
@@ -329,6 +330,7 @@ cargarSubtipus\(</span>(this).val());
                             <label for="descripcio_filtro" class="formularioFiltro">Descripcio:</label>
                             <input type="text" name="descripcio_filtro" value="<?= htmlspecialchars($descripcioFiltro) ?>">
                             <button type="submit" class="boton">Cercar</button>                  
+                            <button type="button" class="boton" onclick="location.href='PDFListFiltro.php'">Informes</button>                  
                         </div>                                          
                     </td>
                 </tr>

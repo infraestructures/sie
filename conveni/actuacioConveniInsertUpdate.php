@@ -7,7 +7,6 @@
     $id_conveni = isset($_POST['id_conveni']) ? intval($_POST['id_conveni']) : null;
     $descripcio = trim($_POST['descripcio'] ?? null);
     $observacions = trim($_POST['observacions'] ?? '');
-    $operacio = trim($_POST['operacio'] ?? '');
 
     $pressupost_inicial = isset($_POST['pressupost_inicial']) ? floatval($_POST['pressupost_inicial']) : null;
     $pressupost_definitiu = isset($_POST['pressupost_definitiu']) ? floatval($_POST['pressupost_definitiu']) : null;
@@ -19,7 +18,7 @@
     $comissio_seguiment_enllac = trim($_POST['comissio_seguiment_enllac'] ?? null);
 
 
-    if ($operacio == "modificar") {
+    if ($id) {
         // UPDATE si s'ha rebut un ID
         $sql = "UPDATE actuacio_conveni SET
                 descripcio=?,

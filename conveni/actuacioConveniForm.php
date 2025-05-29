@@ -57,7 +57,7 @@
 
 	if ($id) {
 		// Documents
-		$stmt = $connexio->prepare("SELECT id, nom, data, url, tipus_id FROM document_conveni WHERE actuacio_id = ?");
+		$stmt = $connexio->prepare("SELECT id, nom, data, url, tipus_id FROM document_actuacio_conveni WHERE actuacio_id = ?");
 		$stmt->bind_param("i", $id);
 		$stmt->execute();
 		$result_documents = $stmt->get_result();
@@ -65,7 +65,7 @@
 		$stmt = $connexio->prepare("SELECT id, concepte, data_pagament, import FROM pagament_conveni WHERE actuacio_id = ?");
 		$stmt->bind_param("i", $id);
 		$stmt->execute();
-		$result_informes = $stmt->get_result();
+		$result_pagaments = $stmt->get_result();
 	}
 ?>
 
@@ -203,7 +203,7 @@
 					<ul class="botoneraListado">
 						<li class="tituloListado">LLISTAT DE DOCUMENTS</li>
 						<li class="fondoBotoneraListado">
-							<input type="button" class="boton" value="Nou document" onclick="location.href='documentConveniForm.php?id_conveni=<?php echo $id ?>';">
+							<input type="button" class="boton" value="Nou document" onclick="location.href='documentActuacioConveniForm.php?id_actuacio=<?php echo $id ?>';">
 						</li>
 					</ul>
 
@@ -223,7 +223,7 @@
 								// Recorre els resultats i mostra cada document en una fila
 								if ($result_documents && $result_documents->num_rows > 0) {
 									while ($row = $result_documents->fetch_assoc()) {
-										echo "<tr onclick=\"window.location.href='documentConveniForm.php?id_document=". $row["id"]. "&id_conveni=". $id."'\">";
+										echo "<tr onclick=\"window.location.href='documentActuacioConveniForm.php?id_document=". $row["id"]. "&id_actuacio=". $id."'\">";
 										echo "<td class='campoListadoInicial'>". date('Y-m-d', strtotime($row["data"])). "</td>";
 										echo "<td class='campoListadoInicial'>". $row["nom"]. "</td>";
 										echo "<td class='campoListado'>";
@@ -247,9 +247,9 @@
 				<br><br>
 				<div class="contenedorFicha">
 					<ul class="botoneraListado">
-						<li class="tituloListado">LLISTAT D'INFORMES TÈCNICS</li>
+						<li class="tituloListado">LLISTAT DE PAGAMENTS</li>
 						<li class="fondoBotoneraListado">
-							<input type="button" class="boton" value="Nou informe" onclick="location.href='informeConveniForm.php?id_conveni=<?php echo $id ?>';">
+							<input type="button" class="boton" value="Nou informe" onclick="location.href='pagamentActuacioConveniForm.php?id_conveni=<?php echo $id ?>';">
 						</li>
 					</ul>
 
@@ -267,8 +267,8 @@
 							<tbody>
 								<?php
 								// Recorre els resultats i mostra cada document en una fila
-								if ($result_informes && $result_informes->num_rows > 0) {
-									while ($row = $result_informes->fetch_assoc()) {
+								if ($result_pagaments && $result_pagaments->num_rows > 0) {
+									while ($row = $result_pagaments->fetch_assoc()) {
 										echo "<tr onclick=\"window.location.href='informeConveniForm.php?id_informe=". $row["id"]. "&id_conveni=". $id."'\">";
 										echo "<td class='campoListadoInicial'>". date('Y-m-d', strtotime($row["data"])). "</td>";
 										echo "<td class='campoListado'>". $row["nom"]. "</td>";

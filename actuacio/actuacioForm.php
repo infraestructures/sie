@@ -33,7 +33,8 @@
 		'origen_id' => '',
 		'desti_id' => '',
 		'mode_enviament_id' => '',
-		'color' => ''
+		'color' => '',
+		'url_ibisec' => ''
 	];
 
 	if ($id) {
@@ -54,6 +55,7 @@
 					a.desti_id,
 					a.mode_enviament_id,
 					a.assumit_servei,
+					a.url_ibisec,
 					c.id_illa,
 					c.id_municipi,
 					a.centre_id,
@@ -156,6 +158,11 @@
 		$stmt->bind_param("i", $id);
 		$stmt->execute();
 		$result_informes = $stmt->get_result();
+		// Seguiment
+		$stmt = $connexio->prepare("SELECT id, data, url, accio FROM seguiment_actuacio WHERE actuacio_id = ?");
+		$stmt->bind_param("i", $id);
+		$stmt->execute();
+		$result_seguiment = $stmt->get_result();
 	}
 
 	$nomCentre = $actuacio['nom_centre']."-".$actuacio['Localitat'];
@@ -399,12 +406,14 @@
 							</td>	
 						</tr>
 						<tr>
-							<td colspan="2">
+							<td colspan="3">
 								<!-- Descripció -->
 								<label for="descripcio" class="campoFicha_Blanca">Descripció:</label>
-								<input type="text" id="descripcio" name="descripcio" class="formularioFicha" SIZE="50" value="<?= $actuacio['descripcio'] ?>"><br><br>
+								<input type="text" id="descripcio" name="descripcio" class="formularioFicha" size="150" value="<?= $actuacio['descripcio'] ?>"><br><br>
 							</td>
-							<td colspan="2">
+						</tr>
+						<tr>
+							<td>
 								<!-- Pressupost -->
 								<label for="pressupost" class="campoFicha_Blanca">Pressupost en euros (IVA inclòs):</label>
 								<input type="text" id="pressupost" name="pressupost" class="formularioFicha" value="<?= $actuacio['pressupost'] ?>"><br><br>
@@ -470,11 +479,23 @@
 									<?php endwhile;?>
 								</select> 
 							</td>
-						</tr>				
+						</tr>	
 						<tr>
-							<td colspan="3">
+							<td>
+								<label for="url_ibisec" class="campoFicha_Blanca">URL IBISEC:</label>
+								<input type="text" id="url_ibisec" name="url_ibisec" class="formularioFicha" value="<?= $actuacio['url_ibisec'] ?>"><br><br>
+							</td>
+							<td>
+							  <a href="#" 
+								 onclick="event.preventDefault(); event.stopPropagation(); window.open(document.getElementById('url_ibisec').value, '_blank')">
+								 Obrir enllaç
+							  </a>
+							</td>
+						</tr>						
+						<tr>
+							<td colspan="5">
 								<label for="observacions" class="campoFicha_Blanca" style="align-self:start; display:grid">Observacions:</label>
-								<textarea name="observacions" id="observacions" class="contenedorFicha_Blanca" rows="6" cols="100"><?= $actuacio['observacions'] ?></textarea>
+								<textarea name="observacions" id="observacions" class="contenedorFicha_Blanca" rows="12" cols="100"><?= $actuacio['observacions'] ?></textarea>
 							</td>
 						</tr>
 					</table>
@@ -517,7 +538,7 @@
 									}
 								} else {
 									// Si no hi ha resultats, mostra un missatge
-									echo "<tr><td colspan='3'>No s'han trobat resultats.</td></tr>";
+									echo "<tr class='campoListado'><td colspan='3'>No s'han trobat resultats.</td></tr>";
 								}
 							?>
 							</tbody>
@@ -563,7 +584,7 @@
 									}
 								} else {
 									// Si no hi ha resultats, mostra un missatge
-									echo "<tr><td colspan='3'>No s'han trobat resultats.</td></tr>";
+									echo "<tr class='campoListado'><td colspan='3'>No s'han trobat resultats.</td></tr>";
 								}
 							?>
 							</tbody>
@@ -571,6 +592,54 @@
 					</div>			
 				</div>
 				<?php endif; ?>	
+
+				<?php if ($id): ?>
+				<br><br>
+				<div class="contenedorFicha">
+					<ul class="botoneraListado">
+						<li class="tituloListado">SEGUIMENT DE L'ACTUACIÓ</li>
+						<li class="fondoBotoneraListado">
+							<input type="button" class="boton" value="Nova acció" onclick="location.href='seguimentActuacioForm.php?id_actuacio=<?php echo $id ?>';">
+						</li>
+					</ul>
+
+					<div class="espacioMarronClaro"></div>
+
+					<div id="cuerpo" class="scroll_total">
+						<table class="listado" cellpadding="0" cellspacing="0" width="100%">
+							<thead>
+								<tr>
+									<th class="campoCabeceraListadoInicial">Data</th>
+									<th class="campoCabeceraListado">Acció</th>
+									<th class="campoCabeceraListado">URL</th>
+								</tr>
+							</thead>
+							<tbody>
+								<?php
+                                // Recorre els resultats i mostra cada document en una fila
+                                if ($result_seguiment && $result_seguiment->num_rows > 0) {
+                                    while ($row = $result_seguiment->fetch_assoc()) {
+                                        echo "<tr onclick=\"window.location.href='seguimentActuacioForm.php?id_seguiment=" . $row["id"] . "&id_actuacio=" . $id . "'\">";
+                                        echo "<td class='campoListadoInicial'>" . date('Y-m-d', strtotime($row["data"])) . "</td>";
+                                        echo "<td class='campoListado'>" . $row["accio"] . "</td>";
+                                        echo "<td class='campoListado'>";
+                                        if (!empty($row['url'])) {
+                                            echo "<a href='" . htmlspecialchars($row['url']) . "' onclick=\"event.preventDefault(); event.stopPropagation(); window.open(this.href, '_blank');\">Veure Document</a>";
+                                        }
+                                        echo "</td>";
+                                        echo "</a></tr>";
+                                    }
+                                } else {
+                                    // Si no hi ha resultats, mostra un missatge
+                                    echo "<tr class='campoListado'><td colspan='3'>No s'han trobat resultats.</td></tr>";
+                                }
+                                ?>
+							</tbody>
+						</table>
+					</div>			
+				</div>
+				<?php endif; ?>	
+
 			</div>
 			
 			<li class="fondoBotoneraFicha">
