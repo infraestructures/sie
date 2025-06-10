@@ -8,6 +8,7 @@
 	$nom = '';
 	$url = '';
 	$accio = '';
+$data = '';
 
 	// Si es rep un `codi`, consultar la taula `informe_actuacio` per obtenir les dades
 	if ($idSeguiment) {

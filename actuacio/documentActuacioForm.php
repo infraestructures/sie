@@ -7,6 +7,7 @@
 	$idActuacio = isset($_GET['id_actuacio']) ? intval($_GET['id_actuacio']) : null;
 	$nom = 'Carpeta dels documents';
 	$url = '';
+	$data = '';
 
 	// Si es rep un `codi`, consultar la taula `document_actuacio` per obtenir les dades
 	if ($idDocument) {

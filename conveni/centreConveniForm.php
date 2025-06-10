@@ -75,7 +75,6 @@
 					WHERE a.conveni_id = $id_conveni
 					AND	a.centre_id = $id_centre;";
 	$result_actuacions_centres = $connexio->query($sql_actuacions_centres);
-echo $sql_actuacions_centres;
 
 ?>
 <html>

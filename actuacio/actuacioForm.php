@@ -486,11 +486,13 @@
 								<input type="text" id="url_ibisec" name="url_ibisec" class="formularioFicha" value="<?= $actuacio['url_ibisec'] ?>"><br><br>
 							</td>
 							<td>
+							<?php if ($actuacio['url_ibisec']): ?>							
 							  <a href="#" 
 								 onclick="event.preventDefault(); event.stopPropagation(); window.open(document.getElementById('url_ibisec').value, '_blank')">
 								 Obrir enllaç
 							  </a>
 							</td>
+							<?php endif; ?>
 						</tr>						
 						<tr>
 							<td colspan="5">

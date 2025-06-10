@@ -7,6 +7,7 @@
 	$idActuacio = isset($_GET['id_actuacio']) ? intval($_GET['id_actuacio']) : null;
 	$nom = '';
 	$url = '';
+	$data = '';
 
 	// Si es rep un `codi`, consultar la taula `document_actuacio` per obtenir les dades
 	if ($idDocument) {
@@ -92,7 +93,7 @@
 						<label for="data" class="campoFicha_Blanca">Data:</label>
 						<input type="date" id="data" name="data" class="formularioFicha" size="50" value="<?php echo $data; ?>"><br>
 						<label for="url" class="campoFicha_Blanca">URL:</label>
-						<input type="text" id="url" name="url" class="formularioFicha" size="10" value="<?php echo $url; ?>"><br>
+						<input type="text" id="url" name="url" class="formularioFicha" size="100" value="<?php echo $url; ?>"><br>
 					</div>
 				</div>
 			</div>				
