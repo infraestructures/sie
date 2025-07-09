@@ -3,7 +3,7 @@
 	include '../connectarBD.php';
 	
 	// Inicialitzar variables per als camps del formulari
-	$idDocument = isset($_GET['id']) ? intval($_GET['id']) : null;
+	$idDocument = isset($_GET['id_document']) ? intval($_GET['id_document']) : null;
 	$idActuacio = isset($_GET['id_actuacio']) ? intval($_GET['id_actuacio']) : null;
 	$nom = '';
 	$url = '';
@@ -81,7 +81,7 @@
 						<label for="nom" class="campoFicha_Blanca">Nom del document:</label>
 						<input type="text" id="nom" name="nom" class="formularioFicha" size="50" value="<?php echo $nom; ?>"><br>	
 						<label class="campoFicha_Blanca">Tipus d'actuació:</label>
-						<select id="tipus_actuacio_conveni" name="tipus_actuacio_conveni" class="campoFicha_Blanca" required>
+						<select id="tipus_id" name="tipus_id" class="campoFicha_Blanca" required>
 							<option value="">Selecciona un tipus</option>
 							<?php foreach ($tipus_document_actuacio_conveni as $tipus): ?>
 								<option value="<?= $tipus['id'] ?>" <?= $tipus['id'] == $row['tipus_id'] ? 'selected' : '' ?>>

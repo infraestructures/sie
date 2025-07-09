@@ -35,19 +35,18 @@
                     actuacio_id) 
                 VALUES 
                     (?, ?, ?, ?, ?)";
-    echo "actuacio: $idActuacio";
         $stmt = $connexio->prepare($sql);
         if (!$stmt) {
             die("Error en la preparació de la consulta: " . $connexio->error);
         }
-        if (!$stmt->bind_param("ssisi", $nom, $data, $tipus_id, $url, $idDocument)) {
+        if (!$stmt->bind_param("ssisi", $nom, $data, $tipus_id, $url, $idActuacio)) {
             die("Bind failed: (" . $stmt->errno . ") " . $stmt->error);
         }
     }
 
     if ($stmt->execute()) {
         // Redirigir després de l'operació
-        header("Location: documentActuacioConveniForm.php?id=". $idActuacio);
+        header("Location: actuacioConveniForm.php?id=". $idActuacio);
         exit();
     } else {
         echo "Error: " . $stmt->error;

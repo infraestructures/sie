@@ -11,14 +11,15 @@
     $estat_id = isset($_POST['estat']) ? intval($_POST['estat']) : null;
     $subtipus_id = isset($_POST['subtipus_actuacio']) ? intval($_POST['subtipus_actuacio']) : null;
     $prioritat_id = isset($_POST['prioritat']) ? intval($_POST['prioritat']) : null;
-    $centre_id = isset($_POST['centre']) ? intval($_POST['centre']) : null;
+    $centre_id = isset($_POST['centre_id']) ? intval($_POST['centre_id']) : null;
     $pressupost = isset($_POST['pressupost']) ? floatval($_POST['pressupost']) : null;
     $assumitServei = isset($_POST['assumit_servei']) ? 'S' : 'N';
     $tecnic_id = isset($_POST['tecnic']) ? intval($_POST['tecnic']) : null;
-    $origen_id = isset($_POST['origen']) ? intval($_POST['origen']) : null;
+    $origen_id = isset($_POST['origen_id']) ? intval($_POST['origen_id']) : null;
     $desti_id = isset($_POST['desti']) ? intval($_POST['desti']) : null;
     $mode_enviament_id = isset($_POST['mode']) ? intval($_POST['mode']) : null;
     $url_ibisec = isset($_POST['url_ibisec']) ? trim($_POST['url_ibisec']) : null;
+    $origen = isset($_POST['origen']) ? trim($_POST['origen']) : '';
 
     if ($subtipus_id == 0) $subtipus_id = null;
     if ($tecnic_id == 0) $tecnic_id = null;
@@ -26,7 +27,12 @@
     if ($desti_id == 0) $desti_id = null;
     if ($mode_enviament_id == 0) $mode_enviament_id = null;
 
-    if ($id) {
+    if ($origen != null)
+        $tornar = "../centre/centreForm.php?id=$centre_id";
+    else
+        $tornar = "actuacioListFiltro.php";
+echo $tornar;
+if ($id) {
         // UPDATE si s'ha rebut un ID
         $sql = "UPDATE actuacions 
                 SET codi_extern=?,
@@ -78,12 +84,12 @@
 
     if ($stmt->execute()) {
         // Redirigir després de l'operació
-        header("Location: actuacioListFiltro.php");
+        header("Location: $tornar");
         exit();
     } else {
         echo "Error: " . $stmt->error;
     }
-
+    
     $stmt->close();
     $connexio->close();
 ?>

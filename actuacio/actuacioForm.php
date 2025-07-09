@@ -1,9 +1,19 @@
 <!DOCTYPE html>
+
+<?php
+$centreFixat = false;
+if (isset($_GET['centre_id']) && !isset($_GET['id'])) {
+    $centre_id = intval($_GET['centre_id']);
+    $centreFixat = true;
+}
+?>
+
 <?php
 	include '../connectarBD.php';
 
 	// Recupera el id de la solicitud GET
 	$id = $_GET['id'] ?? null;
+	$origen = $_GET['origen'] ?? null;
 
 	$id_illa = isset($_GET['illa']) ? $_GET['illa'] : '';
 	$id_municipi = isset($_GET['municipi']) ? $_GET['municipi'] : '';
@@ -168,6 +178,11 @@
 	$nomCentre = $actuacio['nom_centre']."-".$actuacio['Localitat'];
 	$assumitServei = $actuacio['assumit_servei'];
 	$centreId = $actuacio['centre_id'];
+	if ($origen != null)
+		$tornar = "../centre/centreForm.php?id=$centreId";
+
+	else
+		$tornar = "actuacioListFiltro.php";		
 
 ?>
 
@@ -290,6 +305,8 @@
 						<p class="textoTituloSeccion">Dades generals</p>
 					</div>
 					<input type="hidden" name="id" value="<?php echo $id ?>">
+					<input type="hidden" name="origen" value="<?php echo $origen ?>">
+					<input type="hidden" name="centre_id" value="<?php echo $centreId ?>">
 					<table>
 						<tr>
 							<td>
@@ -299,8 +316,8 @@
 							</td>						
 							<td>
 								<!-- Origen actuació -->
-								<label for="origen" class="campoFicha_Blanca">Origen:</label>
-								<select id="origen" name="origen" class="campoFicha_Blanca">
+								<label for="origen_id" class="campoFicha_Blanca">Origen:</label>
+								<select id="origen_id" name="origen_id" class="campoFicha_Blanca">
 									<option value="">Selecciona un origen</option>
 									<?php while ($row = $result_origen->fetch_assoc()): ?>
 										<option value="<?= $row['id'] ?>" <?= $row['id'] == $actuacio['origen_id'] ? 'selected' : '' ?>>
@@ -658,7 +675,7 @@
 	</form>
 
 	<li class="volverFicha">
-		<input type="button" class="boton" value="Tornar al llistat" onclick="window.location.href='actuacioListFiltro.php'">
+		<input type="button" class="boton" value="Tornar al llistat" onclick="window.location.href='<?php echo $tornar ?>'">
 	</li>
 	<script>
 		document.addEventListener('DOMContentLoaded', function() {

@@ -297,9 +297,9 @@
 		</div>	
 	</form>
 	<!-- Formulario para eliminar -->
-	<form method="post" action="actuacioConveniDelete.php">
+	<form method="get" action="actuacioConveniDelete.php">
 		<li class="fondoBotoneraFicha">
-			<input type="hidden" name="id" value="<?php echo $id ?>">
+			<input type="hidden" name="id_actuacio" value="<?php echo $id ?>">
 			<button type="submit" class="boton" onclick="return confirm('Estàs segur de borrar aquesta actuació?');">Eliminar</button>
 		</li>
 	</form>

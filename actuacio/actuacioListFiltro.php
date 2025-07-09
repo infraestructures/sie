@@ -152,7 +152,7 @@ if ($order_by == 'codi') {
 $result_actuacions = $connexio->query($sql);
 
 if (!$result_actuacions) {
-    die("Query failed: " . $connexio->error);
+    die("S'ha produit un error al consultar les actuacions" . $connexio->error);
 }
 
 ?>

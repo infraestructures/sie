@@ -38,6 +38,49 @@
 			$fax = $row['Fax'];
 			$email = $row['email'];
 		}
+		$sql_actuacions = "SELECT
+					a.id,
+					a.codi,
+					a.descripcio,
+					a.pressupost,
+					a.observacions,
+					a.estat_id, 
+					a.prioritat_id,
+					a.subtipus_id,
+					a.data_entrada,
+					a.tecnic_id,
+					c.id_illa,
+					c.id_municipi,
+					a.centre_id,
+					s.tipus_id,
+					e.color,
+					i.nom AS nom_illa,
+					m.nom AS nom_municipi,
+					c.Centre AS nom_centre,
+					e.nom AS nom_estat,
+					p.nom AS nom_prioritat,
+					s.nom AS nom_subtipus,
+					t.nom AS nom_tipus,
+					tc.nom AS nom_tecnic
+
+				FROM actuacions a
+					JOIN subtipus_actuacio s ON a.subtipus_id = s.id
+					JOIN tipus_actuacio t ON s.tipus_id = t.id
+					JOIN centres c ON a.centre_id = c.id
+					JOIN illa i ON c.id_illa = i.id
+					JOIN municipi m ON c.id_municipi = m.id
+					JOIN estat_actuacio e ON a.estat_id = e.id
+					JOIN prioritat_actuacio p ON a.prioritat_id = p.id
+					LEFT JOIN tecnic tc ON a.tecnic_id = tc.id
+				WHERE a.centre_id = $id     
+				ORDER BY CAST(SUBSTRING_INDEX(a.codi, '-', -1) AS UNSIGNED)
+				";
+
+		$result_actuacions = $connexio->query($sql_actuacions);
+
+		if (!$result_actuacions) {
+			die("S'ha produit un error al consultar les actuacions: " . $connexio->error);
+		}
 	}
 
 	// Consulta per obtenir la llista d'illes, municipis i localitats
@@ -59,6 +102,8 @@
             $siglas_lista[] = $row;
         }
     }
+
+	
 ?>	
 
 
@@ -87,6 +132,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	</head>
 	<body class="contenido" onload="ocultarFondoPrincipal();">
+
 		<!-- Formulario para insertar o actualizar -->		
 		<div class="contenedorFiltro"></div>
 		<ul class="botoneraFicha">
@@ -166,10 +212,63 @@
 
 							<label for="email" class="campoFicha_Blanca">Email:</label>
 							<input type="email" id="email" name="email" class="formularioFicha" size="30" value="<?php echo $email; ?>" required><br><br>
+							<div class="espacioMarronClaro"></div>
 					</div>
 				</div>
 			</div>				
 		</div>
+	<?php if ($id) { ?>
+    <ul class="botoneraListado">
+        <li class="tituloListado">LLISTAT D'ACTUACIONS</li>
+        <!--<li class="fondoBotoneraListado">
+            <input type="button" class="boton" value="Nova actuació" onclick="location.href='../actuacio/actuacioForm.php?origen=centre';">
+        </li>-->
+    </ul>
+    <div id="cuerpo" class="scroll_total">
+        <table class="listado" cellpadding="0" cellspacing="0" width="100%">
+            <thead>
+                <tr>
+                    <th class="campoCabeceraListadoInicial">Codi Actuació</th>
+                    <th class="campoCabeceraListado">Centre</th>
+                    <th class="campoCabeceraListado">Data entrada</th>
+                    <th class="campoCabeceraListado">Prioritat</th>
+                    <th class="campoCabeceraListado">Estat</th>
+                    <th class="campoCabeceraListado">Tipus</th>
+                    <th class="campoCabeceraListado">Subtipus</th>
+                    <th class="campoCabeceraListado">Descripció</th>
+                    <th class="campoCabeceraListado">Tècnic</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                // Recorre els resultats i mostra cada centre en una fila
+                $total = 0;
+                if ($result_actuacions->num_rows > 0) {
+                    while ($row = $result_actuacions->fetch_assoc()) {
+                        $color = $row["color"];
+                        echo "<tr style='background-color: " . $color . "' onclick=\"window.location.href='../actuacio/actuacioForm.php?origen=centre&id=" . $row["id"] . "'\">";
+                        echo "<td class='campoListadoInicial'>" . $row["codi"] . "</td>";
+                        echo "<td class='campoListado'>" . $row["nom_centre"] . "</td>";
+                        echo "<td class='campoListado'>" . $row["data_entrada"] . "</td>";
+                        echo "<td class='campoListado'>" . $row["nom_prioritat"] . "</td>";
+                        echo "<td class='campoListado'>" . $row["nom_estat"] . "</td>";
+                        echo "<td class='campoListado'>" . $row["nom_tipus"] . "</td>";
+                        echo "<td class='campoListado'>" . $row["nom_subtipus"] . "</td>";
+                        echo "<td class='campoListado'>" . $row["descripcio"] . "</td>";
+                        echo "<td class='campoListado'>" . $row["nom_tecnic"] . "</td>";
+                        echo "</a></tr>";
+                        $total++;
+                    }
+                } else {
+                    // Si no hi ha resultats, mostra un missatge
+                    echo "<tr><td colspan='6' class='campoListado'>No s'han trobat resultats.</td></tr>";
+                }
+                echo "<tr><td colspan='6' class='campoListado'>Total actuacions: " . $total;
+                ?>
+            </tbody>
+        </table>
+    </div>
+		<?php } ?>
 		<li class="fondoBotoneraFicha">
 			<input type="submit" class="boton" value="Desar canvis">
 		</li>		
@@ -194,7 +293,12 @@
 			</button>	
 		</li>		-->
 		<li class="volverFicha">
-			<input type="button" class="boton" value="Tornar al llistat" onclick="window.history.back();">
+			<input type="button" class="boton" value="Tornar al llistat" onclick="window.location.href='centreListFiltro.php?id=<?php echo $id ?>';">
 		</li>			
-	</body>
+	</div>
+	<br />
+	
+</body>
+
+
 </html>
