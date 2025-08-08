@@ -224,7 +224,7 @@
 			<button type="submit" class="boton" onclick="return confirm('Estàs segur de borrar aquest centre?');">Eliminar</button>
 		</li>
 		<li class="fondoBotoneraFicha">
-			<input type="button" class="boton" value="Tornar al conveni" onclick="window.location.href='conveniForm.php?id=$id_conveni'">
+			<input type="button" class="boton" value="Tornar al conveni" onclick="window.location.href='conveniForm.php?id=<?php echo $id_conveni ?>'">
 		</li>
 	</ul>
 	</form>

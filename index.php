@@ -7,6 +7,7 @@
 
 	<script src="js/utiles.js" type="" language="JavaScript"></script>
 	<script src="js/especificas.js" type="" language="JavaScript"></script>
+	<link rel="icon" type="image/x-icon" href="imagenes/favicon.ico">
 </head>
 
 <body class="principal" onload="inicio();" id="ventanaPrincipal">

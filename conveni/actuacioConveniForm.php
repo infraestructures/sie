@@ -62,7 +62,7 @@
 		$stmt->execute();
 		$result_documents = $stmt->get_result();
 		// Pagaments
-		$stmt = $connexio->prepare("SELECT id, concepte, data_pagament, import FROM pagament_conveni WHERE actuacio_id = ?");
+		$stmt = $connexio->prepare("SELECT id, concepte, data, import FROM pagament_conveni WHERE id_actuacio = ?");	
 		$stmt->bind_param("i", $id);
 		$stmt->execute();
 		$result_pagaments = $stmt->get_result();
@@ -249,7 +249,7 @@
 					<ul class="botoneraListado">
 						<li class="tituloListado">LLISTAT DE PAGAMENTS</li>
 						<li class="fondoBotoneraListado">
-							<input type="button" class="boton" value="Nou informe" onclick="location.href='pagamentActuacioConveniForm.php?id_conveni=<?php echo $id ?>';">
+							<input type="button" class="boton" value="Nou pagament" onclick="location.href='pagamentActuacioConveniForm.php?id_actuacio=<?php echo $id ?>';">
 						</li>
 					</ul>
 
@@ -260,8 +260,8 @@
 							<thead>
 								<tr>
 									<th class="campoCabeceraListadoInicial">Data</th>
-									<th class="campoCabeceraListado">Nom</th>
-									<th class="campoCabeceraListado">URL</th>
+									<th class="campoCabeceraListado">Concepte</th>
+									<th class="campoCabeceraListado">Import</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -269,13 +269,11 @@
 								// Recorre els resultats i mostra cada document en una fila
 								if ($result_pagaments && $result_pagaments->num_rows > 0) {
 									while ($row = $result_pagaments->fetch_assoc()) {
-										echo "<tr onclick=\"window.location.href='informeConveniForm.php?id_informe=". $row["id"]. "&id_conveni=". $id."'\">";
+										echo "<tr onclick=\"window.location.href='pagamentActuacioConveniForm.php?id_pagament=". $row["id"]. "&id_actuacio=". $id."'\">";
 										echo "<td class='campoListadoInicial'>". date('Y-m-d', strtotime($row["data"])). "</td>";
-										echo "<td class='campoListado'>". $row["nom"]. "</td>";
+										echo "<td class='campoListado'>". $row["concepte"]. "</td>";
+                                        echo "<td class='campoListado'>" . $row["import"] . "</td>";
 										echo "<td class='campoListado'>";
-										if (!empty($row['url'])) {
-											echo "<a href='" . htmlspecialchars($row['url']) . "' onclick=\"event.preventDefault(); event.stopPropagation(); window.open(this.href, '_blank');\">Veure Document</a>";
-										}
 										echo "</td>";										
 										echo "</a></tr>";
 									}
