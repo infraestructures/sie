@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<?php
+	include '../connectarBD.php';
+	
+	// Inicialitzar variables per als camps del formulari
+	$idDocument = isset($_GET['id_document']) ? intval($_GET['id_document']) : null;
+	$idConveni = isset($_GET['id_conveni']) ? intval($_GET['id_conveni']) : null;
+	$nom = 'Carpeta dels documents';
+	$url = '';
+	$data = '';
+
+	// Si es rep un `codi`, consultar la taula `document_conveni` per obtenir les dades
+	if ($idDocument) {
+		$sql = "
+			SELECT id, nom, url, data, conveni_id
+			FROM document_conveni 
+			WHERE id = ?
+		";
+		$stmt = $connexio->prepare($sql);
+		$stmt->bind_param("i", $idDocument);
+		$stmt->execute();
+		$resultat = $stmt->get_result();
+
+		// Si es troben resultats, assignar els valors a les variables
+		if ($resultat->num_rows > 0) {
+			$row = $resultat->fetch_assoc();
+			$nom = $row['nom'];
+			$data = $row['data'];
+			$url = $row['url'];
+		}
+
+		$stmt->close();
+	}
+?>	
+
+
+<html>
+	<head>
+
+		<title>Fitxa de document de conveni</title>
+
+		<link rel="stylesheet" href="../css/estilos.css" type="text/css" />
+		<link rel="stylesheet" href="../css/estilos_ficha_2.css" type="text/css" />
+
+		<script src="../js/utiles.js" language="javascript"></script>
+		<script src="../js/especificas.js" language="javascript"></script>
+
+		
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	</head>
+	<body class="contenido" onload="ocultarFondoPrincipal();">
+		<!-- Formulario para insertar o actualizar -->		
+		<div class="contenedorFiltro"></div>
+		<ul class="botoneraFicha">
+			<li class="tituloFicha"><p class="posicionTituloFicha">FITXA DE DOCUMENT DE CONVENI</p></li>
+		</ul>
+		<div class="espacioMarron">&nbsp;</div>
+		<div id="fichaEditable" style="background-color:#ffffff;">
+		<div class="cabeceraFicha"></div>
+		<form name="entidad" method="post" action="documentConveniInsertUpdate.php">
+			<input type="hidden" name="id_conveni" value="<?php echo $idConveni ?>">
+			<input type="hidden" name="id_document" value="<?php echo $idDocument ?>">
+			<div class="contenedorFicha">
+				<div class="contenidoSeccion">
+					<div class="fila">						
+						<label for="data" class="campoFicha_Blanca">Data:</label>
+						<input type="date" id="data" name="data" class="formularioFicha" size="50" value="<?php echo $data; ?>"><br>						
+						<label for="nom" class="campoFicha_Blanca">Nom del document:</label>
+						<input type="text" id="nom" name="nom" class="formularioFicha" size="50" value="<?php echo $nom; ?>"><br>						
+						<label for="url" class="campoFicha_Blanca">URL:</label>
+						<input type="text" id="url" name="url" class="formularioFicha" size="150" value="<?php echo $url; ?>"><br>
+					</div>
+				</div>
+			</div>				
+		</div>
+		<li class="fondoBotoneraFicha">
+			<button type="submit" class="boton">Desar canvis</button>
+		</li>
+		<li class="volverFicha">
+			<button type="button" class="boton"onclick="window.history.back();">Tornar al llistat</button>
+		</li>		
+		</form>
+		<!-- Formulario para eliminar -->
+		<form method="get" action="documentConveniDelete.php">
+			<input type="hidden" name="id_document" value="<?php echo $idDocument ?>">
+			<input type="hidden" name="id_conveni" value="<?php echo $idConveni ?>">
+			<button type="submit" class="boton" onclick="return confirm('¿Estàs segur de borrar aquest document?');">Eliminar</button>
+		</form>		
+	</body>
+</html>
