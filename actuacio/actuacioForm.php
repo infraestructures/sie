@@ -130,7 +130,7 @@ if (isset($_GET['centre_id']) && !isset($_GET['id'])) {
 	$result_subtipus = $connexio->query($sql_subtipus);
 
 	// Consulta per obtenir la llista d'estats
-	$sql_estats = "SELECT id, nom FROM estat_actuacio order by id";
+	$sql_estats = "SELECT id, nom FROM estat_actuacio order by ordre";
 	$result_estats = $connexio->query($sql_estats);
 
 	// Consulta per obtenir la llista de prioritats

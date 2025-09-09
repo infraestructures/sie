@@ -15,7 +15,7 @@
 		'descripcio' => '',
 		'pressupost_inicial' => '',
 		'pressupost_definitiu' => '',
-		'aprovacio_inicial' => null,
+		'aprovacio_inicial' => '',
 		'aprovacio_definitiva' => '',
 		'previsio_inici' => '',
 		'previsio_final' => '',
@@ -120,6 +120,7 @@
 					</div>
 					<input type="hidden" name="id" value="<?php echo $id ?>">
 					<input type="hidden" name="id_conveni" value="<?php echo $id_conveni ?>">
+					<input type="hidden" name="id_centre" value="<?php echo $id_centre ?>">
 					<table>
 						<tr>
 							<td>
@@ -175,7 +176,7 @@
 							</td>
 							<td>
 								<!-- Data previsió final -->
-								<label for="previsio_final" class="campoFicha_Blanca">Data d'aprovació final:</label>
+								<label for="previsio_final" class="campoFicha_Blanca">Data de previsió final:</label>
 								<input type="date" id="previsio_final" name="previsio_final" class="formularioFicha" value="<?= date('Y-m-d', strtotime($actuacio['previsio_final'])) ?>"><br><br>
 							</td>
 						</tr>
@@ -269,7 +270,7 @@
 								// Recorre els resultats i mostra cada document en una fila
 								if ($result_pagaments && $result_pagaments->num_rows > 0) {
 									while ($row = $result_pagaments->fetch_assoc()) {
-										echo "<tr onclick=\"window.location.href='pagamentActuacioConveniForm.php?id_pagament=". $row["id"]. "&id_actuacio=". $id."'\">";
+										echo "<tr onclick=\"window.location.href='pagamentActuacioConveniForm.php?id_pagament=". $row["id"]. "&id_actuacio=". $id. "&id_conveni=" . $id_conveni . "&id_centre=$id_centre'\">";
 										echo "<td class='campoListadoInicial'>". date('Y-m-d', strtotime($row["data"])). "</td>";
 										echo "<td class='campoListado'>". $row["concepte"]. "</td>";
                                         echo "<td class='campoListado'>" . $row["import"] . "</td>";
@@ -303,7 +304,8 @@
 	</form>
 
 	<li class="volverFicha">
-		<input type="button" class="boton" value="Tornar al llistat" onclick="window.location.href='conveniListFiltro.php'">
+		<input type="button" class="boton" value="Tornar al llistat" onclick="window.location.href='centreConveniForm.php?id_centre=<?php echo $id_centre ?>&id_conveni=<?php echo $id_conveni ?>'">
+
 	</li>
 	<script>
 		document.addEventListener('DOMContentLoaded', function() {
