@@ -2,14 +2,17 @@
 	include '../connectarBD.php';
 
 	$idPagament = isset($_POST['id_pagament']) ? intval($_POST['id_pagament']) : null;
-	$idActuacio = isset($_POST['id_actuacio']) ? intval($_POST['id_actuacio']) : null;
+	
+	// Recuperar dades de la fitxa del centre
+	$id_centre = $_GET['id_centre'] ?? '';
+	$id_conveni = $_GET['id_conveni'] ?? '';
 
-	$sql = "DELETE FROM document_actuacio_conveni WHERE id = ?";
+	$sql = "DELETE FROM pagament_conveni WHERE id = ?";
 	$stmt = $connexio->prepare($sql);
 	$stmt->bind_param('i', $idPagament);
 
 	if ($stmt->execute()) {
-		header("Location: actuacioConveniForm.php?id=". $idActuacio);
+		header("Location: conveniForm.php?id=" . $idActuacio . "&id_conveni=" . $id_conveni . "");
 	} else {
 		echo "Error: " . $connexio->error;
 	}

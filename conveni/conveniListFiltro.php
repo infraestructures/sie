@@ -55,15 +55,21 @@
     }
     if (!empty($dataFiFiltro)) {
         $sql.= " AND conv.data_inici <= '". $dataFiFiltro . "'";
-    }  
-    $sql.= " ORDER BY conv.codi DESC;";
+    }
+    if (!empty($dataFiFiltro)) {
+        $sql .= " AND conv.data_inici <= '" . $dataFiFiltro . "'";
+    }
+$sql.= " ORDER BY conv.codi DESC;";
 
     $result_convenis = $connexio->query($sql);
 
     if (!$result_convenis) {
         die("Query failed: " . $connexio->error);
-    }   
-    
+    }
+
+    // Consulta per obtenir la llista d'estats
+    $sql_estats = "SELECT id, nom FROM estat_conveni order by id";
+    $result_estats = $connexio->query($sql_estats);
 ?>
 
 <html>
@@ -122,7 +128,7 @@
                                 <?php endwhile;?>
                             </select>
 
-                            <label for="municipi_filtro" class="formularioFiltro">Municipi:</label>
+                            <label for="municipi_filtro" class="formularioFiltro">Ajuntament:</label>
                             <select id="municipi_filtro" name="municipi_filtro" class="campoFicha_Blanca">
                                 <option value="">Seleccioni un municipi</option>
                                 <?php while ($row = $municipisResult->fetch_assoc()):?>

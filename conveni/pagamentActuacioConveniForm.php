@@ -1,14 +1,17 @@
 <!DOCTYPE html>
 <?php
 	include '../connectarBD.php';
-	
+
+	// Recuperar dades de la fitxa del centre
+	$id_centre = $_GET['id_centre'] ?? '';
+	$id_conveni = $_GET['id_conveni'] ?? '';
+
 	// Inicialitzar variables per als camps del formulari
 	$idPagament = isset($_GET['id_pagament']) ? intval($_GET['id_pagament']) : null;
-	$idActuacio = isset($_GET['id_actuacio']) ? intval($_GET['id_actuacio']) : null;
 	$concepte = '';
 	$import = '';
 	$data = '';
-
+echo "idp: $idPagament" ;
 	// Si es rep un `codi`, consultar la taula `pagament_conveni` per obtenir les dades
 	if ($idPagament) {
 		$sql = "
@@ -16,7 +19,7 @@
 					data, 
 					concepte,
 					import,
-					id_actuacio
+					conveni_id
 			FROM pagament_conveni
 			WHERE id = ?
 		";
@@ -24,7 +27,7 @@
 		$stmt->bind_param("i", $idPagament);
 		$stmt->execute();
 		$resultat = $stmt->get_result();
-
+    echo "res: $resultat->num_rows";
 		// Si es troben resultats, assignar els valors a les variables
 		if ($resultat->num_rows > 0) {
 			$row = $resultat->fetch_assoc();
@@ -64,8 +67,9 @@
 		<div id="fichaEditable" style="background-color:#ffffff;">
 		<div class="cabeceraFicha"></div>
 		<form name="entidad" method="post" action="pagamentActuacioConveniInsertUpdate.php">
-			<input type="hidden" name="id_actuacio" value="<?php echo $idActuacio ?>">
 			<input type="hidden" name="id_pagament" value="<?php echo $idPagament ?>">
+			<input type="hidden" name="id_centre" value="<?php echo $id_centre ?>">
+			<input type="hidden" name="id_conveni" value="<?php echo $id_conveni ?>">
 			<div class="contenedorFicha">
 				<div class="contenidoSeccion">
 					<div class="fila">	
@@ -80,7 +84,7 @@
 			</div>				
 		</div>
 		<li class="fondoBotoneraFicha">
-			<button type="submit" class="boton">Desar canvis</button>
+			<button type="submit" class="boton" onclick="return confirm('Estàs segur de desar els canvis?');">Desar canvis</button>
 		</li>
 		<li class="volverFicha">
 			<button type="button" class="boton"onclick="window.history.back();">Tornar al llistat</button>
@@ -88,8 +92,8 @@
 		</form>
 		<!-- Formulario para eliminar -->
 		<form method="get" action="pagamentActuacioConveniDelete.php">
-			<input type="hidden" name="id_pagament" value="<?php echo $idDocument ?>">
-			<input type="hidden" name="id_actuacio" value="<?php echo $idActuacio ?>">
+			<input type="hidden" name="id_pagament" value="<?php echo $idPagament ?>">
+			<input type="hidden" name="id_conveni" value="<?php echo $id_conveni ?>">
 			<button type="submit" class="boton" onclick="return confirm('¿Estàs segur de borrar aquest pagament?');">Eliminar</button>
 		</form>		
 	</body>

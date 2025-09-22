@@ -54,9 +54,21 @@
 		$stmt->execute();
 		$result = $stmt->get_result();
 		$conveni = $result->fetch_assoc();
+
+		// Documents
+		$stmt = $connexio->prepare("SELECT id, nom, data, url FROM document_conveni WHERE conveni_id = ? order by data");
+		$stmt->bind_param("i", $id);
+		$stmt->execute();
+		$result_documents = $stmt->get_result();
+
+		// Pagaments
+		$stmt = $connexio->prepare("SELECT id, concepte, data, import FROM pagament_conveni WHERE conveni_id = ?");
+		$stmt->bind_param("i", $id);
+		$stmt->execute();
+		$result_pagaments = $stmt->get_result();
 	}
 
-	// Consulta per obtenir la llista d'illes i municipis
+	// Consulta per obtenir la llista d'illes i municipis #dc143c #fb1304
 	$sql_illes = "SELECT id, nom FROM Illa";
 	$result_illes = $connexio->query($sql_illes);
 
@@ -235,19 +247,22 @@
 						</td>
 					</tr>
 					<tr>
-						<td colspan="2">
+						<td colspan="3">
 							<!-- Descripció -->
 							<label for="descripcio" class="campoFicha_Blanca">Descripció:</label>
-							<input type="text" id="descripcio" name="descripcio" class="formularioFicha" SIZE="50" value="<?= $conveni['descripcio'] ?>"><br><br>
+							<input type="text" id="descripcio" name="descripcio" class="formularioFicha" size="100" value="<?= $conveni['descripcio'] ?>"><br><br>
 						</td>
+					</tr>
+					<tr>
 						<td>
 							<!-- Pressupost -->
 							<label for="pressupost" class="campoFicha_Blanca">Pressupost en euros (IVA inclòs):</label>
 							<input type="text" id="pressupost" name="pressupost" class="formularioFicha" value="<?= $conveni['pressupost'] ?>"><br><br>
 						</td>	
-					</tr>
+					</tr>					
 					<tr>
 						<td colspan="3">
+							<!-- Observacions -->
 							<label for="observacions" class="campoFicha_Blanca" style="align-self:start; display:grid">Observacions:</label>
 							<textarea name="observacions" id="observacions" class="contenedorFicha_Blanca" rows="6" cols="100"><?= $conveni['observacions'] ?></textarea>
 						</td>
@@ -255,6 +270,94 @@
 				</table>
 			</div>
 			<br><br>
+			<?php if ($id): ?>
+				<div class="contenedorFicha">
+					<ul class="botoneraListado">
+						<li class="tituloListado">LLISTAT DE DOCUMENTS</li>
+						<li class="fondoBotoneraListado">
+							<input type="button" class="boton" value="Nou document" onclick="location.href='documentConveniForm.php?id_conveni=<?php echo $id ?>';">
+						</li>
+					</ul>
+
+					<div class="espacioMarronClaro"></div>
+
+					<div id="cuerpo" class="scroll_total">
+						<table class="listado" cellpadding="0" cellspacing="0" width="100%">
+							<thead>
+								<tr>
+									<th class="campoCabeceraListadoInicial">Data</th>
+									<th class="campoCabeceraListado">Nom</th>
+									<th class="campoCabeceraListado">URL</th>
+								</tr>
+							</thead>
+							<tbody>
+								<?php
+                                // Recorre els resultats i mostra cada document en una fila
+                                if ($result_documents && $result_documents->num_rows > 0) {
+                                    while ($row = $result_documents->fetch_assoc()) {
+                                        echo "<tr onclick=\"window.location.href='documentConveniForm.php?id_document=" . $row["id"] . "&id_conveni=" . $id . "'\">";
+                                        echo "<td class='campoListadoInicial'>" . date('Y-m-d', strtotime($row["data"])) . "</td>";
+                                        echo "<td class='campoListado'>" . $row["nom"] . "</td>";
+                                        echo "<td class='campoListado'>";
+                                        if (!empty($row['url'])) {
+                                            echo "<a href='" . htmlspecialchars($row['url']) . "' onclick=\"event.preventDefault(); event.stopPropagation(); window.open(this.href, '_blank');\">Veure Document</a>";
+                                        }
+                                        echo "</td>";
+                                        echo "</a></tr>";
+                                    }
+                                } else {
+                                    // Si no hi ha resultats, mostra un missatge
+                                    echo "<tr class='campoListado'><td colspan='3'>No s'han trobat resultats.</td></tr>";
+                                }
+                                ?>
+							</tbody>
+						</table>
+					</div>			
+				</div>
+				<br><br>
+				<div class="contenedorFicha">
+					<ul class="botoneraListado">
+						<li class="tituloListado">LLISTAT DE PAGAMENTS</li>
+						<li class="fondoBotoneraListado">
+							<input type="button" class="boton" value="Nou pagament" onclick="location.href='pagamentActuacioConveniForm.php?id_conveni=<?php echo $id ?>';">
+						</li>
+					</ul>
+
+					<div class="espacioMarronClaro"></div>
+
+					<div id="cuerpo" class="scroll_total">
+						<table class="listado" cellpadding="0" cellspacing="0" width="100%">
+							<thead>
+								<tr>
+									<th class="campoCabeceraListadoInicial">Data</th>
+									<th class="campoCabeceraListado">Concepte</th>
+									<th class="campoCabeceraListado">Import</th>
+								</tr>
+							</thead>
+							<tbody>
+								<?php
+                                // Recorre els resultats i mostra cada document en una fila
+                                if ($result_pagaments && $result_pagaments->num_rows > 0) {
+                                    while ($row = $result_pagaments->fetch_assoc()) {
+                                        echo "<tr onclick=\"window.location.href='pagamentActuacioConveniForm.php?id_pagament=" . $row["id"] . "&id_conveni=" . $id . "'\">";
+                                        echo "<td class='campoListadoInicial'>" . date('Y-m-d', strtotime($row["data"])) . "</td>";
+                                        echo "<td class='campoListado'>" . $row["concepte"] . "</td>";
+                                        echo "<td class='campoListado'>" . $row["import"] . "</td>";
+                                        echo "<td class='campoListado'>";
+                                        echo "</td>";
+                                        echo "</a></tr>";
+                                    }
+                                } else {
+                                    // Si no hi ha resultats, mostra un missatge
+                                    echo "<tr><td colspan='3'>No s'han trobat resultats.</td></tr>";
+                                }
+                                ?>
+							</tbody>
+						</table>
+					</div>			
+				</div>
+				<?php endif; ?>	
+
 			<?php if ($id): ?>
 			<div class="contenedorFicha">
 				<ul class="botoneraListado">

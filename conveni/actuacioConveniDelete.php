@@ -1,7 +1,9 @@
 <?php
 	include '../connectarBD.php';
 
-	$id = $_POST['id'];
+	$id = $_GET['id'];
+	$id_centre = isset($_GET['id_centre']) ? intval($_GET['id_centre']) : null;
+	$id_conveni = isset($_GET['id_conveni']) ? intval($_GET['id_conveni']) : null;
 
 	$sql = "DELETE FROM actuacio_conveni WHERE id = ?";
 	$stmt = $connexio->prepare($sql);

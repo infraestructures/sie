@@ -8,8 +8,6 @@
     $id             = isset($_POST['id'])           ? intval($_POST['id'])           : null;
     $ajuntament_id  = isset($_POST['municipi'])     ? intval($_POST['municipi'])     : null;
     $descripcio     = isset($_POST['descripcio'])   ? trim($_POST['descripcio'])     : '';
-    $url_esborrany  = isset($_POST['url_esborrany']) ? trim($_POST['url_esborrany'])   : '';
-    $url_definitiu  = isset($_POST['url_definitiu']) ? trim($_POST['url_definitiu'])   : '';
     $observacions   = isset($_POST['observacions']) ? trim($_POST['observacions'])   : '';
     $observacions   = isset($_POST['observacions']) ? trim($_POST['observacions'])   : '';
     $estat_id       = isset($_POST['estat'])        ? intval($_POST['estat'])        : null;
@@ -25,16 +23,14 @@
                     observacions=?,
                     estat_conveni_id=?,
                     pressupost=?,
-                    ajuntament_id=?,
-                    url_esborrany=?,
-                    url_definitiu=?
+                    ajuntament_id=?
                 WHERE id=?
                 ";
         $stmt = $connexio->prepare($sql);
         if (!$stmt) {
             die("Error en la preparació de la consulta: " . $connexio->error);
         }
-        if (!$stmt->bind_param("sssssidissi", $descripcio, 
+        if (!$stmt->bind_param("sssssidii", $descripcio, 
                                             $data_inici,
                                             $data_signatura,
                                             $data_pagament, 
@@ -42,8 +38,7 @@
                                             $estat_id, 
                                             $pressupost,
                                             $ajuntament_id, 
-                                            $url_esborrany,
-                                            $url_definitiu,
+
                                             $id)) {
             die("Bind failed: (" . $stmt->errno . ") " . $stmt->error);
         }    
@@ -57,11 +52,9 @@
                     observacions, 
                     estat_conveni_id, 
                     pressupost,
-                    ajuntament_id,
-                    url_esborrany,
-                    url_definitiu) 
+                    ajuntament_id,) 
                 VALUES 
-                    (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                    (?, ?, ?, ?, ?, ?, ?, ?)";
 
         $stmt = $connexio->prepare($sql);
         if (!$stmt) {
@@ -74,9 +67,7 @@
                $observacions, 
                $estat_id, 
                $pressupost,
-               $ajuntament_id,
-               $url_esborrany,
-               $url_definitiu)) {
+               $ajuntament_id)) {
             die("Bind failed: (" . $stmt->errno . ") " . $stmt->error);
         }
     }

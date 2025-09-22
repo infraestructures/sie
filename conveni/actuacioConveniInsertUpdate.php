@@ -2,8 +2,8 @@
 	include '../connectarBD.php';
 
     // Recollir els valors del formulari
-    $id = isset($_POST['id']) ? intval($_POST['id']) : null;
-    $id_centre = isset($_POST['centre_id']) ? intval($_POST['centre_id']) : null;
+    $id_actuacio = isset($_POST['id_actuacio']) ? intval($_POST['id_actuacio']) : null;
+    $id_centre = isset($_POST['id_centre']) ? intval($_POST['id_centre']) : null;
     $id_conveni = isset($_POST['id_conveni']) ? intval($_POST['id_conveni']) : null;
     $descripcio = trim($_POST['descripcio'] ?? null);
     $observacions = trim($_POST['observacions'] ?? '');
@@ -18,7 +18,7 @@
     $comissio_seguiment_enllac = trim($_POST['comissio_seguiment_enllac'] ?? null);
 
 
-    if ($id) {
+    if ($id_actuacio) {
         // UPDATE si s'ha rebut un ID
         $sql = "UPDATE actuacio_conveni SET
                 descripcio=?,
@@ -51,7 +51,7 @@
                 $previsio_final,
                 $comissio_seguiment_data,
                 $comissio_seguiment_enllac,
-                $id
+                $id_actuacio
             )
         ) {
             die("Bind failed: (" . $stmt->errno . ") " . $stmt->error);

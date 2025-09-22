@@ -4,6 +4,8 @@
     // Recollir els valors del formulari
     $idDocument = isset($_POST['id_document']) ? intval($_POST['id_document']) : null;
     $idActuacio = isset($_POST['id_actuacio']) ? intval($_POST['id_actuacio']) : null;
+    $idConveni = isset($_POST['id_conveni']) ? intval($_POST['id_conveni']) : null;
+    $idCentre = isset($_POST['id_centre']) ? intval($_POST['id_centre']) : null;
     $nom = isset($_POST['nom']) ? trim($_POST['nom']) : '';
     $tipus_id = isset($_POST['tipus_id']) ? trim($_POST['tipus_id']) : '';
     $data = isset($_POST['data']) ? trim($_POST['data']) : '';
@@ -46,7 +48,7 @@
 
     if ($stmt->execute()) {
         // Redirigir després de l'operació
-        header("Location: actuacioConveniForm.php?id=". $idActuacio);
+        header("Location: actuacioConveniForm.php?id=$idActuacio&id_conveni=$idConveni&id_centre=$idCentre");
         exit();
     } else {
         echo "Error: " . $stmt->error;

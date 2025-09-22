@@ -1,9 +1,12 @@
 <?php
 	include '../connectarBD.php';
 
+    // Recuperar dades de la fitxa del centre
+    $id_centre = $_POST['id_centre'] ?? '';
+    $id_conveni = $_POST['id_conveni'] ?? '';
+    
     // Recollir els valors del formulari
     $idPagament = isset($_POST['id_pagament']) ? intval($_POST['id_pagament']) : null;
-    $idActuacio = isset($_POST['id_actuacio']) ? intval($_POST['id_actuacio']) : null;
     $concepte = isset($_POST['concepte']) ? trim($_POST['concepte']) : '';
     $data = isset($_POST['data']) ? trim($_POST['data']) : '';
     $import = isset($_POST['import']) ? doubleval($_POST['import']) : '';
@@ -29,21 +32,21 @@
                     (concepte, 
                     data,
                     import,
-                    id_actuacio) 
+                    conveni_id) 
                 VALUES 
                     (?, ?, ?, ?)";
         $stmt = $connexio->prepare($sql);
         if (!$stmt) {
             die("Error en la preparació de la consulta: " . $connexio->error);
         }
-        if (!$stmt->bind_param("ssdi", $concepte, $data, $import, $idActuacio)) {
+        if (!$stmt->bind_param("ssdi", $concepte, $data, $import, $id_conveni)) {
             die("Bind failed: (" . $stmt->errno . ") " . $stmt->error);
         }
     }
 
     if ($stmt->execute()) {
         // Redirigir després de l'operació
-        header("Location: actuacioConveniForm.php?id=". $idActuacio);
+        header("Location: conveniForm.php?id=". $id_conveni);
         exit();
     } else {
         echo "Error: " . $stmt->error;

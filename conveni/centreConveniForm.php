@@ -167,7 +167,7 @@
 				<ul class="botoneraListado">
 					<li class="tituloListado">LLISTAT D'ACTUACIONS</li>
 					<li class="fondoBotoneraListado">
-						<input type="button" class="boton" value="Nova actuació" onclick="location.href='actuacioConveniForm.php?id_conveni=<?php echo $id_conveni ?>&id_centre=<?php echo $id_centre ?>&nom_centre=<?php echo $nom_centre ?>';">
+						<input type="button" class="boton" value="Nova actuació" onclick="location.href='actuacioConveniForm.php?id_conveni=<?php echo $id_conveni ?>&id_centre=<?php echo $id_centre ?>';">
 					</li>
 				</ul>
 
@@ -189,7 +189,7 @@
 							// Recorre els resultats i mostra cada actuacio en una fila
 							if ($result_actuacions_centres && $result_actuacions_centres->num_rows > 0) {
 								while ($row = $result_actuacions_centres->fetch_assoc()) {
-									echo "<tr onclick=\"window.location.href='actuacioConveniForm.php?id=". $row["id"]."&id_conveni=" . $row["conveni_id"] . "&id_centre= ". $row["centre_id"]."&nom_centre=" . $row["Centre"] . "'\">";
+									echo "<tr onclick=\"window.location.href='actuacioConveniForm.php?id=". $row["id"]."&id_conveni=" . $row["conveni_id"] . "&id_centre= ". $row["centre_id"]. "'\">";
 									echo "<td class='campoListadoInicial'>". $row["id"]. "</td>";
 									echo "<td class='campoListado'>". $row["descripcio"]. "</td>";
 									echo "<td class='campoListado'>". $row["previsio_inici"]. "</td>";

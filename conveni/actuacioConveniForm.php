@@ -6,12 +6,14 @@
 	$id = $_GET['id'] ?? null;
 	$id_centre = $_GET['id_centre'] ?? '';
 	$id_conveni = $_GET['id_conveni'] ?? '';
-	$nom_centre = $_GET['nom_centre'] ?? '';
 
+echo "idce: $id_centre";
+echo "idco: $id_conveni";
 	$fechaActual = date('Y-m-d');
 	$actuacio = [
 		'id' => '',
 		'centre_id' => '',
+		'nom_centre' => '',
 		'descripcio' => '',
 		'pressupost_inicial' => '',
 		'pressupost_definitiu' => '',
@@ -37,9 +39,11 @@
 			act.previsio_final,
 			act.observacions,
 			act.comissio_seguiment_data,
-			act.comissio_seguiment_enllac
-		FROM actuacio_conveni act
-		WHERE act.id = ?;";
+			act.comissio_seguiment_enllac,
+			cen.Centre
+		FROM actuacio_conveni act, centres cen
+		WHERE cen.id = act.centre_id
+			AND act.id = ?;";
 		$stmt = $connexio->prepare($sql);
 
 		if (!$stmt) {
@@ -61,11 +65,6 @@
 		$stmt->bind_param("i", $id);
 		$stmt->execute();
 		$result_documents = $stmt->get_result();
-		// Pagaments
-		$stmt = $connexio->prepare("SELECT id, concepte, data, import FROM pagament_conveni WHERE id_actuacio = ?");	
-		$stmt->bind_param("i", $id);
-		$stmt->execute();
-		$result_pagaments = $stmt->get_result();
 	}
 ?>
 
@@ -118,7 +117,7 @@
 					<div class="tituloSeccion">
 						<p class="textoTituloSeccion">Dades generals</p>
 					</div>
-					<input type="hidden" name="id" value="<?php echo $id ?>">
+					<input type="hidden" name="id_actuacio" value="<?php echo $id ?>">
 					<input type="hidden" name="id_conveni" value="<?php echo $id_conveni ?>">
 					<input type="hidden" name="id_centre" value="<?php echo $id_centre ?>">
 					<table>
@@ -131,7 +130,7 @@
 							<td>
 								<!-- Centre -->
 								<label class="campoFicha_Blanca">Centre:</label>
-								<input type="text" name="centre" value="<?= $nom_centre ?>" readonly>
+								<input type="text" name="centre" value="<?= $actuacio['Centre'] ?>" readonly>
 								<input type="hidden" id="centre_id" name="centre_id" value="<?= $id_centre ?>">
 								<button type="button" onclick="obrirCentre()">Veure centre</button>
 							</td>							
@@ -204,7 +203,7 @@
 					<ul class="botoneraListado">
 						<li class="tituloListado">LLISTAT DE DOCUMENTS</li>
 						<li class="fondoBotoneraListado">
-							<input type="button" class="boton" value="Nou document" onclick="location.href='documentActuacioConveniForm.php?id_actuacio=<?php echo $id ?>';">
+							<input type="button" class="boton" value="Nou document" onclick="location.href='documentActuacioConveniForm.php?id_actuacio=<?php echo $id ?>&id_centre=<?php echo $id_centre ?>&id_conveni=<?php echo $id_conveni ?>';">
 						</li>
 					</ul>
 
@@ -224,57 +223,14 @@
 								// Recorre els resultats i mostra cada document en una fila
 								if ($result_documents && $result_documents->num_rows > 0) {
 									while ($row = $result_documents->fetch_assoc()) {
-										echo "<tr onclick=\"window.location.href='documentActuacioConveniForm.php?id_document=". $row["id"]. "&id_actuacio=". $id."'\">";
+                                        $idDoc = $row["id"];
+										echo "<tr onclick=\"window.location.href='documentActuacioConveniForm.php?id_document=$idDoc&id_actuacio=$id&id_centre=$id_centre&id_conveni=$id_conveni'\">";
 										echo "<td class='campoListadoInicial'>". date('Y-m-d', strtotime($row["data"])). "</td>";
 										echo "<td class='campoListadoInicial'>". $row["nom"]. "</td>";
 										echo "<td class='campoListado'>";
 										if (!empty($row['url'])) {
 											echo "<a href='" . htmlspecialchars($row['url']) . "' onclick=\"event.preventDefault(); event.stopPropagation(); window.open(this.href, '_blank');\">Veure Document</a>";
 										}
-										echo "</td>";										
-										echo "</a></tr>";
-									}
-								} else {
-									// Si no hi ha resultats, mostra un missatge
-									echo "<tr><td colspan='3'>No s'han trobat resultats.</td></tr>";
-								}
-							?>
-							</tbody>
-						</table>
-					</div>			
-				</div>
-				<?php endif; ?>	
-				<?php if ($id): ?>
-				<br><br>
-				<div class="contenedorFicha">
-					<ul class="botoneraListado">
-						<li class="tituloListado">LLISTAT DE PAGAMENTS</li>
-						<li class="fondoBotoneraListado">
-							<input type="button" class="boton" value="Nou pagament" onclick="location.href='pagamentActuacioConveniForm.php?id_actuacio=<?php echo $id ?>';">
-						</li>
-					</ul>
-
-					<div class="espacioMarronClaro"></div>
-
-					<div id="cuerpo" class="scroll_total">
-						<table class="listado" cellpadding="0" cellspacing="0" width="100%">
-							<thead>
-								<tr>
-									<th class="campoCabeceraListadoInicial">Data</th>
-									<th class="campoCabeceraListado">Concepte</th>
-									<th class="campoCabeceraListado">Import</th>
-								</tr>
-							</thead>
-							<tbody>
-								<?php
-								// Recorre els resultats i mostra cada document en una fila
-								if ($result_pagaments && $result_pagaments->num_rows > 0) {
-									while ($row = $result_pagaments->fetch_assoc()) {
-										echo "<tr onclick=\"window.location.href='pagamentActuacioConveniForm.php?id_pagament=". $row["id"]. "&id_actuacio=". $id. "&id_conveni=" . $id_conveni . "&id_centre=$id_centre'\">";
-										echo "<td class='campoListadoInicial'>". date('Y-m-d', strtotime($row["data"])). "</td>";
-										echo "<td class='campoListado'>". $row["concepte"]. "</td>";
-                                        echo "<td class='campoListado'>" . $row["import"] . "</td>";
-										echo "<td class='campoListado'>";
 										echo "</td>";										
 										echo "</a></tr>";
 									}
@@ -298,13 +254,15 @@
 	<!-- Formulario para eliminar -->
 	<form method="get" action="actuacioConveniDelete.php">
 		<li class="fondoBotoneraFicha">
-			<input type="hidden" name="id_actuacio" value="<?php echo $id ?>">
+			<input type="hidden" name="id" value="<?php echo $id ?>">
+			<input type="hidden" name="id_conveni" value="<?php echo $id_conveni ?>">
+			<input type="hidden" name="id_centre" value="<?php echo $id_centre ?>">
 			<button type="submit" class="boton" onclick="return confirm('Estàs segur de borrar aquesta actuació?');">Eliminar</button>
 		</li>
 	</form>
-
+	
 	<li class="volverFicha">
-		<input type="button" class="boton" value="Tornar al llistat" onclick="window.location.href='centreConveniForm.php?id_centre=<?php echo $id_centre ?>&id_conveni=<?php echo $id_conveni ?>'">
+		<input type="button" class="boton" value="Tornar al centre" onclick="window.location.href='centreConveniForm.php?id_centre=<?php echo $id_centre ?>&id_conveni=<?php echo $id_conveni ?>'">
 
 	</li>
 	<script>

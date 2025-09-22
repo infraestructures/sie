@@ -5,11 +5,14 @@
 	// Inicialitzar variables per als camps del formulari
 	$idDocument = isset($_GET['id_document']) ? intval($_GET['id_document']) : null;
 	$idActuacio = isset($_GET['id_actuacio']) ? intval($_GET['id_actuacio']) : null;
+	$idConveni = isset($_GET['id_conveni']) ? intval($_GET['id_conveni']) : null;
+	$idCentre = isset($_GET['id_centre']) ? intval($_GET['id_centre']) : null;
 	$nom = '';
 	$url = '';
 	$data = '';
+	$tipus_id = '';
 
-	// Si es rep un `codi`, consultar la taula `document_actuacio` per obtenir les dades
+	// Si es rep un `codi`, consultar la taula `document_actuacio_conveni` per obtenir les dades
 	if ($idDocument) {
 		$sql = "
 			SELECT	id, 
@@ -17,8 +20,8 @@
 					nom, 
 					url, 
 					data, 
-					id_actuacio
-			FROM document_conveni
+					actuacio_id
+			FROM document_actuacio_conveni
 			WHERE id = ?
 		";
 		$stmt = $connexio->prepare($sql);
@@ -75,6 +78,8 @@
 		<form name="entidad" method="post" action="documentActuacioConveniInsertUpdate.php">
 			<input type="hidden" name="id_actuacio" value="<?php echo $idActuacio ?>">
 			<input type="hidden" name="id_document" value="<?php echo $idDocument ?>">
+			<input type="hidden" name="id_centre" value="<?php echo $idCentre ?>">
+			<input type="hidden" name="id_conveni" value="<?php echo $idConveni ?>">
 			<div class="contenedorFicha">
 				<div class="contenidoSeccion">
 					<div class="fila">												
@@ -84,7 +89,7 @@
 						<select id="tipus_id" name="tipus_id" class="campoFicha_Blanca" required>
 							<option value="">Selecciona un tipus</option>
 							<?php foreach ($tipus_document_actuacio_conveni as $tipus): ?>
-								<option value="<?= $tipus['id'] ?>" <?= $tipus['id'] == $row['tipus_id'] ? 'selected' : '' ?>>
+								<option value="<?= $tipus['id'] ?>" <?= $tipus['id'] == $tipus_id ? 'selected' : '' ?>>
 									<?= htmlspecialchars($tipus['descripcio']) ?></option>
 							<?php endforeach; ?>
 						</select>						
@@ -99,16 +104,18 @@
 			</div>				
 		</div>
 		<li class="fondoBotoneraFicha">
-			<button type="submit" class="boton">Desar canvis</button>
+			<input type="submit" class="boton" onclick="return confirm('Estàs segur de desar els canvis?');" value="Desar canvis">
 		</li>
 		<li class="volverFicha">
-			<button type="button" class="boton"onclick="window.history.back();">Tornar al llistat</button>
+			<input type="button" class="boton" value="Tornar a la fitxa de l'actuació" onclick="window.location.href='actuacioConveniForm.php?id_centre=<?php echo $idCentre ?>&id_conveni=<?php echo $idConveni ?>&id=<?php echo $idActuacio ?>'">
 		</li>		
 		</form>
 		<!-- Formulario para eliminar -->
-		<form method="get" action="documentActuacioDelete.php">
+		<form method="post" action="documentActuacioConveniDelete.php">
 			<input type="hidden" name="id_document" value="<?php echo $idDocument ?>">
 			<input type="hidden" name="id_actuacio" value="<?php echo $idActuacio ?>">
+			<input type="hidden" name="id_centre" value="<?php echo $idCentre ?>">
+			<input type="hidden" name="id_conveni" value="<?php echo $idConveni ?>">
 			<button type="submit" class="boton" onclick="return confirm('¿Estàs segur de borrar aquest document?');">Eliminar</button>
 		</form>		
 	</body>
