@@ -23,11 +23,13 @@ class MYPDF extends TCPDF
     }
 }
 
+$illaID = isset($_POST['illa_filtre']) ? intval($_POST['illa_filtre']) : 0;
 $municipiID = isset($_POST['municipi_filtre']) ? intval($_POST['municipi_filtre']) : 0;
 $centreID = isset($_POST['centre_filtre']) ? intval($_POST['centre_filtre']) : 0;
 
 $filtreMunicipi = $municipiID ? "AND c.id_municipi = $municipiID" : "";
 $filtreCentre = $centreID ? "AND c.id = $centreID" : "";
+$filtreIlla = $illaID ? "AND c.id_illa = $illaID" : "";
 
 $query = "
     SELECT 
@@ -42,7 +44,7 @@ $query = "
     INNER JOIN actuacions a ON c.id = a.centre_id
     LEFT JOIN estat_actuacio e ON e.id = a.estat_id
     LEFT JOIN tecnic t ON t.id = a.tecnic_id
-    WHERE 1=1 $filtreMunicipi $filtreCentre
+    WHERE 1=1 $filtreMunicipi $filtreCentre $filtreIlla
     ORDER BY c.Centre, a.data_entrada
 ";
 

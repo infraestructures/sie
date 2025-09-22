@@ -404,6 +404,7 @@ if (!$result_actuacions) {
       </td>
       <td colspan="3" class="contenedorCamposFiltro" style="vertical-align: bottom;">
         <input type="submit" class="btnBuscar" name="btnConsultar" value="Cercar">
+          <button type="button" class="boton" onclick="location.href='PDFListFiltro.php'">Informes PDF</button>
       </td>
     </tr>
   </form>
