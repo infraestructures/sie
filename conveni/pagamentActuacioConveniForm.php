@@ -11,7 +11,7 @@
 	$concepte = '';
 	$import = '';
 	$data = '';
-echo "idp: $idPagament" ;
+
 	// Si es rep un `codi`, consultar la taula `pagament_conveni` per obtenir les dades
 	if ($idPagament) {
 		$sql = "

@@ -52,7 +52,7 @@
                     observacions, 
                     estat_conveni_id, 
                     pressupost,
-                    ajuntament_id,) 
+                    ajuntament_id) 
                 VALUES 
                     (?, ?, ?, ?, ?, ?, ?, ?)";
 
@@ -60,7 +60,7 @@
         if (!$stmt) {
             die("Error en la preparació de la consulta: " . $connexio->error);
         }        
-        if (!$stmt->bind_param("sssssidiss", $descripcio, 
+        if (!$stmt->bind_param("sssssidi", $descripcio, 
         $data_inici,
                $data_signatura,
                $data_pagament, 

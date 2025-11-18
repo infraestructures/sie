@@ -14,8 +14,6 @@
     $aprovacio_definitiva = trim($_POST['aprovacio_definitiva'] ?? null);
     $previsio_inici = trim($_POST['previsio_inici'] ?? null);
     $previsio_final = trim($_POST['previsio_final'] ?? null);
-    $comissio_seguiment_data = trim($_POST['comissio_seguiment_data'] ?? null);
-    $comissio_seguiment_enllac = trim($_POST['comissio_seguiment_enllac'] ?? null);
 
 
     if ($id_actuacio) {
@@ -28,9 +26,7 @@
                 aprovacio_inicial=?,
                 aprovacio_definitiva=?,
                 previsio_inici=?,
-                previsio_final=?,
-                comissio_seguiment_data=?,
-                comissio_seguiment_enllac=?
+                previsio_final=?
             WHERE id=?";
 
         $stmt = $connexio->prepare($sql);
@@ -40,7 +36,7 @@
 
         if (
             !$stmt->bind_param(
-                "ssddssssssi",
+                "ssddssssi",
                 $descripcio,
                 $observacions,
                 $pressupost_inicial,
@@ -49,8 +45,6 @@
                 $aprovacio_definitiva,
                 $previsio_inici,
                 $previsio_final,
-                $comissio_seguiment_data,
-                $comissio_seguiment_enllac,
                 $id_actuacio
             )
         ) {
@@ -69,10 +63,8 @@
                 aprovacio_inicial,
                 aprovacio_definitiva,
                 previsio_inici,
-                previsio_final,
-                comissio_seguiment_data,
-                comissio_seguiment_enllac
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                previsio_final
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         $stmt = $connexio->prepare($sql);
         if (!$stmt) {
@@ -81,7 +73,7 @@
 
         if (
             !$stmt->bind_param(
-                "iissddssssss",
+                "iissddssss",
                 $id_centre,
                 $id_conveni,
                 $descripcio,
@@ -91,9 +83,7 @@
                 $aprovacio_inicial,
                 $aprovacio_definitiva,
                 $previsio_inici,
-                $previsio_final,
-                $comissio_seguiment_data,
-                $comissio_seguiment_enllac
+                $previsio_final
             )
         ) {
             die("Bind failed: (" . $stmt->errno . ") " . $stmt->error);

@@ -130,7 +130,7 @@
 							<!-- Centre -->
 							<label class="campoFicha_Blanca">Centre:</label>
 							<?php if ($id_centre): ?>
-								<input type="text" name="centre" value="<?= $nom_centre ?>" readonly>
+								<input type="text" name="centre" size="40" value="<?= $nom_centre ?>" readonly>
 							<?php else: ?>
 								<select id="centre" name="centre" class="campoFicha_Blanca" onchange="actualitzaCentreId()" required>
 									<option value="">Selecciona un centre</option>
@@ -167,7 +167,7 @@
 				<ul class="botoneraListado">
 					<li class="tituloListado">LLISTAT D'ACTUACIONS</li>
 					<li class="fondoBotoneraListado">
-						<input type="button" class="boton" value="Nova actuació" onclick="location.href='actuacioConveniForm.php?id_conveni=<?php echo $id_conveni ?>&id_centre=<?php echo $id_centre ?>';">
+						<input type="button" class="boton" value="Nova actuació" onclick="location.href='actuacioConveniForm.php?id_conveni=<?php echo $id_conveni ?>&id_centre=<?php echo $id_centre ?>&nom_centre=<?php echo $nom_centre ?>';">
 					</li>
 				</ul>
 

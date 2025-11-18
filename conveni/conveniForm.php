@@ -208,13 +208,17 @@
 						<td>
 							<!-- Data de signatura -->
 							<label for="data_signatura" class="campoFicha_Blanca">Data de signatura:</label>
-							<input type="date" id="data_signatura" name="data_signatura" class="formularioFicha" value="<?= date('Y-m-d', strtotime($conveni['data_signatura'])) ?>"><br><br>
-						</td>	
+							<input type="date" id="data_signatura" name="data_signatura" class="formularioFicha"
+								   value="<?= !empty($conveni['data_signatura']) ? date('Y-m-d', strtotime($conveni['data_signatura'])) : '' ?>">
+							<br><br>
+						</td>
 						<td>
 							<!-- Data de pagament -->
 							<label for="data_pagament" class="campoFicha_Blanca">Data de pagament:</label>
-							<input type="date" id="data_pagament" name="data_pagament" class="formularioFicha" value="<?= date('Y-m-d', strtotime($conveni['data_pagament'])) ?>"><br><br>
-						</td>								
+							<input type="date" id="data_pagament" name="data_pagament" class="formularioFicha"
+								   value="<?= !empty($conveni['data_pagament']) ? date('Y-m-d', strtotime($conveni['data_pagament'])) : '' ?>">
+							<br><br>
+						</td>							
 					</tr>
 					<tr>
 						<td>

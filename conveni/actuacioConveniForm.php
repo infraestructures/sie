@@ -5,15 +5,14 @@
 	// Recupera el id de la solicitud GET
 	$id = $_GET['id'] ?? null;
 	$id_centre = $_GET['id_centre'] ?? '';
+	$nom_centre = $_GET['nom_centre'] ?? '';
 	$id_conveni = $_GET['id_conveni'] ?? '';
-
-echo "idce: $id_centre";
-echo "idco: $id_conveni";
+	
 	$fechaActual = date('Y-m-d');
 	$actuacio = [
 		'id' => '',
 		'centre_id' => '',
-		'nom_centre' => '',
+		'Centre' => '',
 		'descripcio' => '',
 		'pressupost_inicial' => '',
 		'pressupost_definitiu' => '',
@@ -21,9 +20,7 @@ echo "idco: $id_conveni";
 		'aprovacio_definitiva' => '',
 		'previsio_inici' => '',
 		'previsio_final' => '',
-		'observacions' => '',
-		'comissio_seguiment_data' => '',
-		'comissio_seguiment_enllac' => ''
+		'observacions' => ''
 	];
 
 	if ($id) {
@@ -38,8 +35,6 @@ echo "idco: $id_conveni";
 			act.previsio_inici,
 			act.previsio_final,
 			act.observacions,
-			act.comissio_seguiment_data,
-			act.comissio_seguiment_enllac,
 			cen.Centre
 		FROM actuacio_conveni act, centres cen
 		WHERE cen.id = act.centre_id
@@ -125,12 +120,12 @@ echo "idco: $id_conveni";
 							<td>
 								<!-- Codi d'actuació -->
 								<label for="codi" class="campoFicha_Blanca">Codi d'actuació:</label>
-								<input type="text" id="codi" name="codi" class="formularioFicha" value="<?= $actuacio['id'] ?>" disabled ><br><br>
+								<input type="text" id="codi" name="codi" class="formularioFicha" size="50" value="<?= $actuacio['id'] ?>" disabled ><br><br>
 							</td>	
 							<td>
 								<!-- Centre -->
 								<label class="campoFicha_Blanca">Centre:</label>
-								<input type="text" name="centre" value="<?= $actuacio['Centre'] ?>" readonly>
+								<input type="text" name="centre" size="50" value="<?= $nom_centre ?>" readonly>
 								<input type="hidden" id="centre_id" name="centre_id" value="<?= $id_centre ?>">
 								<button type="button" onclick="obrirCentre()">Veure centre</button>
 							</td>							
@@ -139,18 +134,18 @@ echo "idco: $id_conveni";
 							<td colspan="3">
 								<!-- Descripció -->
 								<label for="descripcio" class="campoFicha_Blanca">Descripció:</label>
-								<input type="text" id="descripcio" name="descripcio" class="formularioFicha" SIZE="50" value="<?= $actuacio['descripcio'] ?>"><br><br>
+								<input type="text" id="descripcio" name="descripcio" class="formularioFicha" size="70" value="<?= $actuacio['descripcio'] ?>"><br><br>
 							</td>
 						</tr>
 						<tr>
-							<td colspan="2">
+							<td>
 								<!-- Pressupost inicial -->
 								<label for="pressupost_inicial" class="campoFicha_Blanca">Pressupost inicial en euros (IVA inclòs):</label>
 								<input type="text" id="pressupost_inicial" name="pressupost_inicial" class="formularioFicha" value="<?= $actuacio['pressupost_inicial'] ?>"><br><br>
 							</td>
 							<td>
 								<!-- Pressupost definitiu -->
-								<label for="pressupost_definitiu" class="campoFicha_Blanca">Pressupost definitiuen euros (IVA inclòs):</label>
+								<label for="pressupost_definitiu" class="campoFicha_Blanca">Pressupost definitiu en euros (IVA inclòs):</label>
 								<input type="text" id="pressupost_definitiu" name="pressupost_definitiu" class="formularioFicha" value="<?= $actuacio['pressupost_definitiu'] ?>"><br><br>
 							</td>
 						</tr>	
@@ -171,28 +166,18 @@ echo "idco: $id_conveni";
 							<td>
 								<!-- Data previsió inici -->
 								<label for="previsio_inici" class="campoFicha_Blanca">Data de previsió d'inicial:</label>
-								<input type="date" id="previsio_inici" name="previsio_inici" class="formularioFicha" value="<?= date('Y-m-d', strtotime($actuacio['previsio_inici'])) ?>"><br><br>
+								<input type="date" id="previsio_inici" name="previsio_inici" class="formularioFicha" value="<?= !empty($actuacio['previsio_inici']) ? date('Y-m-d', strtotime($actuacio['previsio_inici'])) : '' ?>"><br><br>
 							</td>
 							<td>
 								<!-- Data previsió final -->
 								<label for="previsio_final" class="campoFicha_Blanca">Data de previsió final:</label>
-								<input type="date" id="previsio_final" name="previsio_final" class="formularioFicha" value="<?= date('Y-m-d', strtotime($actuacio['previsio_final'])) ?>"><br><br>
+								<input type="date" id="previsio_final" name="previsio_final" class="formularioFicha" value="<?= !empty($actuacio['previsio_final']) ? date('Y-m-d', strtotime($actuacio['previsio_final'])) : '' ?>"><br><br>
 							</td>
 						</tr>
 						<tr>
 							<td colspan="3">
 								<label for="observacions" class="campoFicha_Blanca" style="align-self:start; display:grid">Observacions:</label>
 								<textarea name="observacions" id="observacions" class="contenedorFicha_Blanca" rows="6" cols="100"><?= $actuacio['observacions'] ?></textarea>
-							</td>
-						</tr>
-						<tr>
-							<td>
-								<label for="comissio_seguiment_data" class="campoFicha_Blanca" style="align-self:start; display:grid">Data de comissió de seguiment:</label>
-								<input type="date" id="comissio_seguiment_data" name="comissio_seguiment_data" class="formularioFicha" value="<?= date('Y-m-d', strtotime($actuacio['comissio_seguiment_data'])) ?>"><br><br>
-							</td>
-							<td>
-								<label for="comissio_seguiment_enllac" class="campoFicha_Blanca" style="align-self:start; display:grid">Enllaç de comissió de seguiment:</label>
-								<input type="text" id="comissio_seguiment_enllac" name="comissio_seguiment_enllac" class="formularioFicha" value="<?= $actuacio['comissio_seguiment_enllac'] ?>"><br><br>
 							</td>
 						</tr>
 					</table>

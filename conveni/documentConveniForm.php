@@ -75,7 +75,7 @@
 			</div>				
 		</div>
 		<li class="fondoBotoneraFicha">
-			<button type="submit" class="boton">Desar canvis</button>
+			<input type="submit" class="boton" onclick="return confirm('Estàs segur de desar els canvis?');" value="Desar canvis">
 		</li>
 		<li class="volverFicha">
 			<button type="button" class="boton"onclick="window.history.back();">Tornar al llistat</button>
