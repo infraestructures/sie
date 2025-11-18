@@ -42,9 +42,7 @@ if (isset($_GET['centre_id']) && !isset($_GET['id'])) {
 		'tecnic_id' => '',
 		'origen_id' => '',
 		'desti_id' => '',
-		'mode_enviament_id' => '',
-		'color' => '',
-		'url_ibisec' => ''
+		'color' => ''
 	];
 
 	if ($id) {
@@ -63,9 +61,7 @@ if (isset($_GET['centre_id']) && !isset($_GET['id'])) {
 					a.tecnic_id,
 					a.origen_id,
 					a.desti_id,
-					a.mode_enviament_id,
 					a.assumit_servei,
-					a.url_ibisec,
 					c.id_illa,
 					c.id_municipi,
 					a.centre_id,
@@ -453,19 +449,7 @@ if (isset($_GET['centre_id']) && !isset($_GET['id'])) {
 										</option>
 									<?php endwhile; ?>
 								</select>
-							</td>
-							<td>
-								<!-- Mode d'enviament -->
-								<label for="mode" class="campoFicha_Blanca">Mode d'enviament:</label>
-								<select id="mode" name="mode" class="campoFicha_Blanca">
-									<option value="">Selecciona un mode</option>
-									<?php while ($row = $result_mode->fetch_assoc()): ?>
-										<option value="<?= $row['id'] ?>" <?= $row['id'] == $actuacio['mode_enviament_id'] ? 'selected' : '' ?>>
-											<?= htmlspecialchars($row['nom']) ?>
-										</option>
-									<?php endwhile; ?>
-								</select>
-							</td>							
+							</td>						
 							<td>
 								<!-- Data d'enviament -->
 								<label for="data_enviament" class="campoFicha_Blanca">Data d'enviament:</label>
@@ -496,21 +480,7 @@ if (isset($_GET['centre_id']) && !isset($_GET['id'])) {
 									<?php endwhile;?>
 								</select> 
 							</td>
-						</tr>	
-						<tr>
-							<td>
-								<label for="url_ibisec" class="campoFicha_Blanca">URL IBISEC:</label>
-								<input type="text" id="url_ibisec" name="url_ibisec" class="formularioFicha" value="<?= $actuacio['url_ibisec'] ?>"><br><br>
-							</td>
-							<td>
-							<?php if ($actuacio['url_ibisec']): ?>							
-							  <a href="#" 
-								 onclick="event.preventDefault(); event.stopPropagation(); window.open(document.getElementById('url_ibisec').value, '_blank')">
-								 Obrir enllaç
-							  </a>
-							</td>
-							<?php endif; ?>
-						</tr>						
+						</tr>				
 						<tr>
 							<td colspan="5">
 								<label for="observacions" class="campoFicha_Blanca" style="align-self:start; display:grid">Observacions:</label>

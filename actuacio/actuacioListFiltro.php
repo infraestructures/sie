@@ -431,7 +431,7 @@ if (!$result_actuacions) {
                             Centre
                         </a>
                     </th>
-                    <th class="campoCabeceraListado">
+                    <th class="campoCabeceraListado" style="min-width:90px; white-space:nowrap;">
                         <a href="?order_by=data_entrada&order_direction=<?= getOrderDirection('data_entrada', $order_by, $order_direction) ?>">
                             Data Entrada
                         </a>

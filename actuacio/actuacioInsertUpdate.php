@@ -17,21 +17,17 @@
     $tecnic_id = isset($_POST['tecnic']) ? intval($_POST['tecnic']) : null;
     $origen_id = isset($_POST['origen_id']) ? intval($_POST['origen_id']) : null;
     $desti_id = isset($_POST['desti']) ? intval($_POST['desti']) : null;
-    $mode_enviament_id = isset($_POST['mode']) ? intval($_POST['mode']) : null;
-    $url_ibisec = isset($_POST['url_ibisec']) ? trim($_POST['url_ibisec']) : null;
     $origen = isset($_POST['origen']) ? trim($_POST['origen']) : '';
 
     if ($subtipus_id == 0) $subtipus_id = null;
     if ($tecnic_id == 0) $tecnic_id = null;
     if ($origen_id == 0) $origen_id = null;
     if ($desti_id == 0) $desti_id = null;
-    if ($mode_enviament_id == 0) $mode_enviament_id = null;
 
     if ($origen != null)
         $tornar = "../centre/centreForm.php?id=$centre_id";
     else
         $tornar = "actuacioListFiltro.php";
-echo $tornar;
 if ($id) {
         // UPDATE si s'ha rebut un ID
         $sql = "UPDATE actuacions 
@@ -47,13 +43,11 @@ if ($id) {
                     tecnic_id=?,
                     origen_id=?,
                     desti_id=?,
-                    mode_enviament_id=?,
-                    data_enviament=?,
-                    url_ibisec=?
+                    data_enviament=?
                 WHERE id=?
                 ";
         $stmt = $connexio->prepare($sql);
-        if (!$stmt->bind_param("ssssiiidsiiiissi", $codi_extern, $descripcio, $data_entrada, $observacions, $estat_id, $subtipus_id, $prioritat_id,$pressupost, $assumitServei, $tecnic_id, $origen_id, $desti_id,$mode_enviament_id,$data_enviament,$url_ibisec,$id)) {
+        if (!$stmt->bind_param("ssssiiidsiiisi", $codi_extern, $descripcio, $data_entrada, $observacions, $estat_id, $subtipus_id, $prioritat_id,$pressupost, $assumitServei, $tecnic_id, $origen_id, $desti_id,$data_enviament,$id)) {
             die("Bind failed: (" . $stmt->errno . ") " . $stmt->error);
         }    
     } else {
@@ -72,14 +66,13 @@ if ($id) {
                     tecnic_id,
                     origen_id,
                     desti_id,
-                    mode_enviament_id,
-                    data_enviament,
-                    url_ibisec)     
+                    data_enviament
+                )     
                 VALUES 
-                    (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                    (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         $stmt = $connexio->prepare($sql);
-        $stmt->bind_param("ssssiiiidsiiiiss", $codi_extern, $descripcio, $data_entrada, $observacions, $estat_id, $subtipus_id, $prioritat_id, $centre_id, $pressupost, $assumitServei, $tecnic_id,$origen_id, $desti_id,$mode_enviament_id,$data_enviament,$url_ibisec);
+        $stmt->bind_param("ssssiiiidsiiis", $codi_extern, $descripcio, $data_entrada, $observacions, $estat_id, $subtipus_id, $prioritat_id, $centre_id, $pressupost, $assumitServei, $tecnic_id,$origen_id, $desti_id,$data_enviament);
     }
 
     if ($stmt->execute()) {
