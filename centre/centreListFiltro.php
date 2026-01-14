@@ -6,6 +6,7 @@ include '../connectarBD.php';
 $nombreFiltro = isset($_GET['nombre'])? $_GET['nombre']: '';
 $illaFiltro = isset($_GET['illa'])? $_GET['illa']: '';
 $municipiFiltro = isset($_GET['municipi'])? $_GET['municipi']: '';
+$tipusCentreFiltro = isset($_GET['tipus_centre_filtro']) ? $_GET['tipus_centre_filtro'] : '';
 
 // Consultar datos para los desplegables
 $illasQuery = "SELECT id, nom FROM Illa ORDER BY nom";
@@ -15,6 +16,10 @@ $municipisQuery = $illaFiltro
   ? "SELECT id, nom FROM Municipi WHERE illa_id = $illaFiltro ORDER BY nom"
   : "SELECT id, nom FROM Municipi ORDER BY nom";
 $municipisResult = $connexio->query($municipisQuery);
+
+// Consulta per obtenir la llista de tipus de centre educatiu
+$sql_tipus_centre = "SELECT Sigla, nom FROM tipus_centre_educatiu ORDER BY nom";
+$result_tipus_centre = $connexio->query($sql_tipus_centre);
 
 // Consultar los datos de los centros utilizando códigos
 $sql = "SELECT 
@@ -38,6 +43,12 @@ if (!empty($illaFiltro)) {
 }
 if (!empty($municipiFiltro)) {
     $sql.= " AND CENTRES.id_municipi = ". intval($municipiFiltro);
+}
+
+if (!empty($tipusCentreFiltro)) {
+    $sigla = trim($tipusCentreFiltro);
+    $regex = "^[[:space:]]*" . preg_quote($sigla, '/') . "([[:space:]]|[-–\\/,(]|$)";
+    $sql .= " AND CENTRES.Sigla REGEXP '" . $connexio->real_escape_string($regex) . "'";
 }
 
 $sql.= " ORDER BY CENTRES.Centre";
@@ -67,7 +78,15 @@ $result = $connexio->query($sql);?>
                         <form method="GET">
                             <label for="nombre" class="formularioFiltro">Nom del Centre:</label>
                             <input type="text" id="nombre" name="nombre" value="<?= htmlspecialchars($nombreFiltro)?>">
-
+                            <label for="tipus_centre_filtro" class="formularioFiltro">Tipus de centre:</label>
+                            <select name="tipus_centre_filtro" id="tipus_centre_filtro" class="campoFicha_Blanca">
+                              <option value="">Tots</option>
+                              <?php while ($row = $result_tipus_centre->fetch_assoc()): ?>
+                                <option value="<?= htmlspecialchars($row['Sigla']) ?>" <?= $row['Sigla'] == $tipusCentreFiltro ? 'selected' : '' ?>>
+                                  <?= htmlspecialchars($row['nom']) ?> (<?= htmlspecialchars($row['Sigla']) ?>)
+                                </option>
+                              <?php endwhile; ?>
+                            </select>
                             <label for="illa" class="formularioFiltro">Illa:</label>
                             <select id="illa" name="illa" onchange="this.form.submit()">
                                 <option value="">Seleccioni una illa</option>
