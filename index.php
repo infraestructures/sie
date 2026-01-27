@@ -19,6 +19,7 @@
 		<li class="opcionMenuSuperior" id="liCentre" onclick="setURL('centre/centreListFiltro.php','contenidoPrincipal');" class="opcionMenu" id="aCentres">GESTIÓ DE CENTRES</li>
 		<li class="opcionMenuSuperior" id="liConveni" onclick="setURL('conveni/conveniListFiltro.php','contenidoPrincipal');" class="opcionMenu" id="aConvenis">GESTIÓ DE CONVENIS</li>
 		<!--<li class="opcionMenuSuperior" id="liEspai" onclick="setURL('espai/espaiList.php','contenidoPrincipal');" class="opcionMenu" id="aEspais">GESTIÓ DE ESPAIS</li>-->
+		<li class="opcionMenuSuperior" id="liConveni" onclick="setURL('contracte_menor/contracteMenorListFiltro.php','contenidoPrincipal');" class="opcionMenu" id="aConvenis">GESTIÓ DE CONTRACTES MENORS</li>
 		<li class="opcionMenuSuperior" id="liActuacio" onclick="setURL('actuacio/actuacioListFiltro.php','contenidoPrincipal');" class="opcionMenu" id="aEspais">GESTIÓ D'ACTUACIONS</li>
 	</ul>
 	<iframe src="paginaBlanco.php" name="contenidoPrincipal" frameborder="0" id="contenidoPrincipal" allowtransparency="true"></iframe>
