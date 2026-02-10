@@ -112,6 +112,7 @@ $illes = $connexio->query("SELECT id, nom FROM illa ORDER BY nom")->fetch_all(MY
   <title>Gestió de solars</title>
 
   <link rel="stylesheet" href="../css/estilos.css" type="text/css" />
+  <link rel="stylesheet" href="../css/estilos_ficha_2.css" type="text/css" />
   <script src="../js/utiles.js" language="JavaScript"></script>
   <script src="../js/especificas.js" language="JavaScript"></script>
 
@@ -235,8 +236,12 @@ $illes = $connexio->query("SELECT id, nom FROM illa ORDER BY nom")->fetch_all(MY
 
 <body class="contenido" onload="ocultarFondoPrincipal();">
   <div class="contenedorFiltro">
-    <h2>Gestió de solars</h2>
-
+    <ul class="botoneraFicha">
+      <li class="tituloFicha">
+        <p class="posicionTituloFicha">GESTIÓ DE SOLARS</p>
+      </li>
+    </ul>
+  <div class="espacioMarron">&nbsp;</div>
     <form method="POST" action="solarListFiltro.php">
       <table cellpadding="0" cellspacing="0" class="cajaFiltro">
         <tr>

@@ -99,6 +99,7 @@ $result = $connexio->query($sql); ?>
     <title>Llistat de Centres</title>
 
     <link rel="stylesheet" href="../css/estilos.css" type="text/css" />
+    <link rel="stylesheet" href="../css/estilos_ficha_2.css" type="text/css" />
 
     <script src="../js/utiles.js" type="" language="JavaScript"></script>
     <script src="../js/especificas.js" type="" language="JavaScript"></script>
@@ -149,6 +150,12 @@ $result = $connexio->query($sql); ?>
 
 <body class="contenido" onload="ocultarFondoPrincipal();">
     <div class="contenedorFiltro">
+        <ul class="botoneraFicha">
+          <li class="tituloFicha">
+            <p class="posicionTituloFicha">GESTIÓ DE CENTRES</p>
+          </li>
+        </ul>
+        <div class="espacioMarron">&nbsp;</div>
         <table cellpadding="0" cellspacing="0" class="cajaFiltro">
             <tr>
                 <td class="contenedorCamposFiltro">

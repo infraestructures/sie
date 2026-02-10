@@ -78,9 +78,10 @@ $sql.= " ORDER BY conv.codi DESC;";
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestió d'actuacions</title>
+    <title>Gestió de convenis</title>
 
     <link rel="stylesheet" href="../css/estilos.css" type="text/css" />
+    <link rel="stylesheet" href="../css/estilos_ficha_2.css" type="text/css" />
     <script src="../js/utiles.js" type="" language="JavaScript"></script>
     <script src="../js/especificas.js" type="" language="JavaScript"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -110,7 +111,12 @@ $sql.= " ORDER BY conv.codi DESC;";
 
 <body class="contenido" onload="ocultarFondoPrincipal();">
     <div class="contenedorFiltro">
-	    <h2>Gestió de convenis</h2>
+        <ul class="botoneraFicha">
+          <li class="tituloFicha">
+            <p class="posicionTituloFicha">GESTIÓ DE CONVENIS</p>
+          </li>
+        </ul>        
+        <div class="espacioMarron">&nbsp;</div>
         <form method="POST" action="conveniListFiltro.php">
             <table cellpadding="0" cellspacing="0" class="cajaFiltro">
                 <tr>		

@@ -70,9 +70,10 @@ if (!$result) die("Error consulta contractes menors: ".$connexio->error);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GestiÃ³ de contractes menors</title>
+    <title>Gestió de contractes menors</title>
 
     <link rel="stylesheet" href="../css/estilos.css" type="text/css" />
+    <link rel="stylesheet" href="../css/estilos_ficha_2.css" type="text/css" />
     <script src="../js/utiles.js" language="JavaScript"></script>
     <script src="../js/especificas.js" language="JavaScript"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -97,7 +98,12 @@ if (!$result) die("Error consulta contractes menors: ".$connexio->error);
 <body class="contenido" onload="ocultarFondoPrincipal();">
 
 <div class="contenedorFiltro">
-    <h2>Gestió de contractes menors</h2>
+    <ul class="botoneraFicha">
+          <li class="tituloFicha">
+            <p class="posicionTituloFicha">GESTIÓ DE CONTRACTES MENORS</p>
+          </li>
+    </ul>
+    <div class="espacioMarron">&nbsp;</div>
 
     <table cellpadding="0" cellspacing="0" border="0" width="100%" class="formularioFiltro">
         <form id="formularioFiltroBusqueda" name="formularioFiltroBusqueda" action="contracteMenorListFiltro.php" method="post">

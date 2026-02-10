@@ -182,6 +182,7 @@ if (!$result_actuacions) {
     <title>Gestió d'actuacions</title>
 
     <link rel="stylesheet" href="../css/estilos.css" type="text/css" />
+    <link rel="stylesheet" href="../css/estilos_ficha_2.css" type="text/css" />
     <script src="../js/utiles.js" type="" language="JavaScript"></script>
     <script src="../js/especificas.js" type="" language="JavaScript"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -287,8 +288,13 @@ if (!$result_actuacions) {
 
 <body class="contenido" onload="ocultarFondoPrincipal();">
     <div class="contenedorFiltro">
-  <h2>Gestió d'actuacions</h2>
-        <table cellpadding="0" cellspacing="0" border="0" width="100%" class="formularioFiltro">
+    <ul class="botoneraFicha">
+      <li class="tituloFicha">
+        <p class="posicionTituloFicha">GESTIÓ D'ACTUACIONS</p>
+      </li>
+    </ul>
+  <div class="espacioMarron">&nbsp;</div>
+  <table cellpadding="0" cellspacing="0" border="0" width="100%" class="formularioFiltro">
   <form id="formularioFiltroBusqueda" name="formularioFiltroBusqueda" action="actuacioListFiltro.php" method="post">
     <!-- Fila 1 -->
     <tr>
