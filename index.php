@@ -17,6 +17,7 @@
 	<div class="barraMarron"></div>
 	<ul class="menuSuperior">
 		<li class="opcionMenuSuperior" id="liCentre" onclick="setURL('centre/centreListFiltro.php','contenidoPrincipal');" class="opcionMenu" id="aCentres">GESTIÓ DE CENTRES</li>
+		<li class="opcionMenuSuperior" id="liSolar" onclick="setURL('solar/solarListFiltro.php','contenidoPrincipal');" class="opcionMenu" id="aCentres">GESTIÓ DE SOLARS</li>
 		<li class="opcionMenuSuperior" id="liConveni" onclick="setURL('conveni/conveniListFiltro.php','contenidoPrincipal');" class="opcionMenu" id="aConvenis">GESTIÓ DE CONVENIS</li>
 		<!--<li class="opcionMenuSuperior" id="liEspai" onclick="setURL('espai/espaiList.php','contenidoPrincipal');" class="opcionMenu" id="aEspais">GESTIÓ DE ESPAIS</li>-->
 		<li class="opcionMenuSuperior" id="liConveni" onclick="setURL('contracte_menor/contracteMenorListFiltro.php','contenidoPrincipal');" class="opcionMenu" id="aConvenis">GESTIÓ DE CONTRACTES MENORS</li>

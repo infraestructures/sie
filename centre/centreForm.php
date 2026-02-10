@@ -18,9 +18,23 @@
 	$fax = "";
 	$email = "";
 
+
+	// Informació cadastral
+	$ref_cadastral = "";
+	$cadastre_localitzacio = "";
+	$cadastre_classe = "";
+	$cadastre_us_principal = "";
+	$cadastre_sup_construida_m2 = "";
+	$cadastre_any_construccio = "";
+	$cadastre_parcela_tipus = "";
+	$cadastre_parcela_localitzacio = "";
+	$cadastre_sup_grafica_m2 = "";
+	$cadastre_data_consulta = "";
+	$cadastre_font = "";
+
 	// Si s'ha proporcionat un id, recupera les dades del centre
 	if ($id) {
-		$sql = "SELECT * FROM centres WHERE id = $id";
+		$sql = "SELECT id, Codi, Sigla, Centre, Adreca, CP, Localitat, id_municipi, id_illa, Telefon, Fax, email, ref_cadastral, cadastre_localitzacio, cadastre_classe, cadastre_us_principal, cadastre_sup_construida_m2, cadastre_any_construccio, cadastre_parcela_tipus, cadastre_parcela_localitzacio, cadastre_sup_grafica_m2, cadastre_data_consulta, cadastre_font FROM centres WHERE id = $id";
 		$result = $connexio->query($sql);
 
 		if ($result->num_rows > 0) {
@@ -37,6 +51,19 @@
 			$telefon = $row['Telefon'];
 			$fax = $row['Fax'];
 			$email = $row['email'];
+
+			// Informació cadastral
+			$ref_cadastral = $row['ref_cadastral'] ?? "";
+			$cadastre_localitzacio = $row['cadastre_localitzacio'] ?? "";
+			$cadastre_classe = $row['cadastre_classe'] ?? "";
+			$cadastre_us_principal = $row['cadastre_us_principal'] ?? "";
+			$cadastre_sup_construida_m2 = $row['cadastre_sup_construida_m2'] ?? "";
+			$cadastre_any_construccio = $row['cadastre_any_construccio'] ?? "";
+			$cadastre_parcela_tipus = $row['cadastre_parcela_tipus'] ?? "";
+			$cadastre_parcela_localitzacio = $row['cadastre_parcela_localitzacio'] ?? "";
+			$cadastre_sup_grafica_m2 = $row['cadastre_sup_grafica_m2'] ?? "";
+			$cadastre_data_consulta = $row['cadastre_data_consulta'] ?? "";
+			$cadastre_font = $row['cadastre_font'] ?? "";
 		}
 		$sql_actuacions = "SELECT
 					a.id,
@@ -104,6 +131,16 @@
     }
 
 	
+
+	// Formata el timestamp per a l'input datetime-local (YYYY-MM-DDTHH:MM)
+	$cadastre_data_consulta_html = "";
+	if (!empty($cadastre_data_consulta)) {
+		$ts = strtotime($cadastre_data_consulta);
+		if ($ts !== false) {
+			$cadastre_data_consulta_html = date('Y-m-d\TH:i', $ts);
+		}
+	}
+
 ?>	
 
 
@@ -162,7 +199,7 @@
 								</option>
                             <?php endforeach; ?>
 							</select>
-							<span id="nombreSigla" class="formularioFicha"><?php 
+							<span id="nombreSigla" class="formularioFicha" size="50"><?php 
 								if ($sigla) {
 									foreach ($siglas_lista as $sigla_item) {
 										if ($sigla_item['Sigla'] == $sigla) {
@@ -177,7 +214,7 @@
 							<input type="text" id="centre" name="centre" class="formularioFicha" size="30" value="<?php echo $centre; ?>" required><br><br>
 							
 							<label for="adreca" class="campoFicha_Blanca">Adreça:</label>
-							<input type="text" id="adreca" name="adreca" class="formularioFicha" size="30" value="<?php echo $adreca; ?>" required><br><br>
+							<input type="text" id="adreca" name="adreca" class="formularioFicha" size="80" value="<?php echo $adreca; ?>" required><br><br>
 
 							<label for="cp" class="campoFicha_Blanca">Codi Postal:</label>
 							<input type="text" id="cp" name="cp" class="formularioFicha" value="<?php echo $cp; ?>" required><br><br>
@@ -217,7 +254,50 @@
 				</div>
 			</div>				
 		</div>
-	<?php if ($id) { ?>
+	
+			<div class="contenedorFicha">
+				<div class="tituloSeccion"><p class="textoTituloSeccion">Informació cadastral</p></div>
+				<div class="contenidoSeccion">
+					<div class="fila">
+						<label for="ref_cadastral" class="campoFicha_Blanca">Ref. cadastral:</label>
+						<input type="text" id="ref_cadastral" name="ref_cadastral" class="formularioFicha" value="<?php echo htmlspecialchars($ref_cadastral); ?>" maxlength="20"><br><br>
+
+						<label for="cadastre_localitzacio" class="campoFicha_Blanca">Localització:</label>
+						<input type="text" id="cadastre_localitzacio" name="cadastre_localitzacio" class="formularioFicha" size="120" value="<?php echo htmlspecialchars($cadastre_localitzacio); ?>" maxlength="255"><br><br>
+
+						<label for="cadastre_classe" class="campoFicha_Blanca">Classe:</label>
+						<input type="text" id="cadastre_classe" name="cadastre_classe" class="formularioFicha" value="<?php echo htmlspecialchars($cadastre_classe); ?>" maxlength="20"><br><br>
+
+						<label for="cadastre_us_principal" class="campoFicha_Blanca">Ús principal:</label>
+						<input type="text" id="cadastre_us_principal" name="cadastre_us_principal" class="formularioFicha" value="<?php echo htmlspecialchars($cadastre_us_principal); ?>" maxlength="50"><br><br>
+
+						<label for="cadastre_sup_construida_m2" class="campoFicha_Blanca">Sup. construïda (m²):</label>
+						<input type="number" step="0.01" id="cadastre_sup_construida_m2" name="cadastre_sup_construida_m2" class="formularioFicha" value="<?php echo htmlspecialchars($cadastre_sup_construida_m2); ?>"><br><br>
+
+						<label for="cadastre_any_construccio" class="campoFicha_Blanca">Any construcció:</label>
+						<input type="number" id="cadastre_any_construccio" name="cadastre_any_construccio" class="formularioFicha" value="<?php echo htmlspecialchars($cadastre_any_construccio); ?>"><br><br>
+						<!--
+						<label for="cadastre_parcela_tipus" class="campoFicha_Blanca">Tipus parcel·la:</label>
+						<input type="text" id="cadastre_parcela_tipus" name="cadastre_parcela_tipus" class="formularioFicha" value="<?php echo htmlspecialchars($cadastre_parcela_tipus); ?>" maxlength="100"><br><br>
+						
+						<label for="cadastre_parcela_localitzacio" class="campoFicha_Blanca">Localització parcel·la:</label>
+						<input type="text" id="cadastre_parcela_localitzacio" name="cadastre_parcela_localitzacio" class="formularioFicha" size="30" value="<?php echo htmlspecialchars($cadastre_parcela_localitzacio); ?>" maxlength="255"><br><br>
+
+						<label for="cadastre_sup_grafica_m2" class="campoFicha_Blanca">Sup. gràfica (m²):</label>
+						<input type="number" step="0.01" id="cadastre_sup_grafica_m2" name="cadastre_sup_grafica_m2" class="formularioFicha" value="<?php echo htmlspecialchars($cadastre_sup_grafica_m2); ?>"><br><br>
+							-->
+						<label for="cadastre_data_consulta" class="campoFicha_Blanca">Data consulta:</label>
+						<input type="datetime-local" id="cadastre_data_consulta" name="cadastre_data_consulta" class="formularioFicha" value="<?php echo htmlspecialchars($cadastre_data_consulta_html); ?>"><br><br>
+
+						<label for="cadastre_font" class="campoFicha_Blanca">Font:</label>
+						<input type="text" id="cadastre_font" name="cadastre_font" class="formularioFicha" value="<?php echo htmlspecialchars($cadastre_font); ?>" maxlength="30"><br><br>
+
+						<div class="espacioMarronClaro"></div>
+					</div>
+				</div>
+			</div>
+
+<?php if ($id) { ?>
     <ul class="botoneraListado">
         <li class="tituloListado">LLISTAT D'ACTUACIONS</li>
         <!--<li class="fondoBotoneraListado">
