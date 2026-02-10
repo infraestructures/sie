@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gestió de solars</title>
+
+  <link rel="stylesheet" href="../css/estilos.css" type="text/css" />
+  <script src="../js/utiles.js" language="JavaScript"></script>
+  <script src="../js/especificas.js" language="JavaScript"></script>
+
+  <!-- Prototip estàtic: sense AJAX -->
+  <script>
+    // Simula el comportament de canviar municipis per illa (només prototip)
+    function onIllaChange() {
+      const illa = document.getElementById('illa_filtro').value;
+      const municipi = document.getElementById('municipi_filtro');
+
+      municipi.innerHTML = '<option value="">Seleccioni un municipi</option>';
+
+      const data = {
+        "1": ["Palma", "Calvià", "Marratxí"],
+        "2": ["Maó", "Ciutadella"],
+        "3": ["Eivissa", "Sant Antoni"],
+        "4": ["Sant Francesc", "Es Pujols"]
+      };
+
+      if (!data[illa]) return;
+
+      data[illa].forEach((m) => {
+        const opt = document.createElement('option');
+        opt.value = m;
+        opt.textContent = m;
+        municipi.appendChild(opt);
+      });
+    }
+  </script>
+</head>
+
+<body class="contenido" onload="ocultarFondoPrincipal();">
+  <div class="contenedorFiltro">
+    <h2>Gestió de solars</h2>
+    <form method="POST" action="solarListFiltro.php">
+      <table cellpadding="0" cellspacing="0" class="cajaFiltro">
+        <tr>
+          <td class="contenedorCamposFiltro">
+            <div class="filtro">
+              <label for="centre_filtro" class="formularioFiltro">Centre:</label>
+              <input type="text" id="centre_filtro" name="centre_filtro" value="" placeholder="Nom del centre...">
+
+              <label for="illa_filtro" class="formularioFiltro">Illa:</label>
+              <select id="illa_filtro" name="illa_filtro" class="campoFicha_Blanca" onchange="onIllaChange()">
+                <option value="">Seleccioni una illa</option>
+                <option value="1">Mallorca</option>
+                <option value="2">Menorca</option>
+                <option value="3">Eivissa</option>
+                <option value="4">Formentera</option>
+              </select>
+
+              <label for="municipi_filtro" class="formularioFiltro">Municipi:</label>
+              <select id="municipi_filtro" name="municipi_filtro" class="campoFicha_Blanca">
+                <option value="">Seleccioni un municipi</option>
+              </select>
+
+              <label for="estat_filtro" class="formularioFiltro">Estat:</label>
+              <select id="estat_filtro" name="estat_filtro" class="campoFicha_Blanca">
+                <option value="">Tots</option>
+                <option value="pendent">Pendent</option>
+                <option value="en_tramit">En tràmit</option>
+                <option value="tancat">Tancat</option>
+              </select>
+            </div>
+          </td>
+        </tr>
+
+        <tr>
+          <td class="contenedorCamposFiltro">
+            <div class="filtro">
+              <label for="data_inici_filtro" class="formularioFiltro">Data sol·licitud (des de):</label>
+              <input type="date" id="data_inici_filtro" name="data_inici_filtro" value="">
+
+              <label for="data_fi_filtro" class="formularioFiltro">Fins a:</label>
+              <input type="date" id="data_fi_filtro" name="data_fi_filtro" value="">
+
+              <button type="submit" class="boton">Cercar</button>
+            </div>
+          </td>
+        </tr>
+      </table>
+    </form>
+  </div>
+
+  <ul class="botoneraListado">
+    <li class="tituloListado">LLISTAT D’EXPEDIENTS DE SOLARS</li>
+    <li class="fondoBotoneraListado">
+      <input type="button" class="boton" value="Nou expedient" onclick="location.href='solarForm.html';">
+    </li>
+  </ul>
+
+  <div class="espacioMarronClaro"></div>
+
+  <div id="cuerpo" class="scroll_total">
+    <table class="listado" cellpadding="0" cellspacing="0" width="100%">
+      <thead>
+        <tr>
+          <th class="campoCabeceraListadoInicial">Centre</th>
+          <th class="campoCabeceraListado">Municipi</th>
+          <th class="campoCabeceraListado">Illa</th>
+          <th class="campoCabeceraListado">Tipus actuació</th>
+          <th class="campoCabeceraListado">Sol·licitud</th>
+          <th class="campoCabeceraListado">Topogràfic</th>
+          <th class="campoCabeceraListado">Acord de ple</th>
+          <th class="campoCabeceraListado">Estat</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <!-- Prototip estàtic: files d’exemple -->
+        <tr onclick="window.location.href='solarForm.html?id=1'">
+          <td class="campoListadoInicial">IES Son Ferrer</td>
+          <td class="campoListado">Calvià</td>
+          <td class="campoListado">Mallorca</td>
+          <td class="campoListado">Ampliació</td>
+          <td class="campoListado">2025-10-12</td>
+          <td class="campoListado">2025-11-05</td>
+          <td class="campoListado"></td>
+          <td class="campoListado">En tràmit</td>
+        </tr>
+
+        <tr onclick="window.location.href='solarForm.html?id=2'">
+          <td class="campoListadoInicial">CEIP Pintor Torrent</td>
+          <td class="campoListado">Palma</td>
+          <td class="campoListado">Mallorca</td>
+          <td class="campoListado">Obra nova</td>
+          <td class="campoListado">2025-09-01</td>
+          <td class="campoListado"></td>
+          <td class="campoListado"></td>
+          <td class="campoListado">Pendent</td>
+        </tr>
+
+        <tr onclick="window.location.href='solarForm.html?id=3'">
+          <td class="campoListadoInicial">CIFP Maó</td>
+          <td class="campoListado">Maó</td>
+          <td class="campoListado">Menorca</td>
+          <td class="campoListado">Reforma integral</td>
+          <td class="campoListado">2024-12-15</td>
+          <td class="campoListado">2025-01-20</td>
+          <td class="campoListado">2025-03-10</td>
+          <td class="campoListado">Tancat</td>
+        </tr>
+
+        <tr>
+          <td class="campoListado" colspan="8"></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</body>
+</html>

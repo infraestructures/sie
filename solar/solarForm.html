@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fitxa d’expedient de solar</title>
+
+  <link rel="stylesheet" href="../css/estilos.css" type="text/css" />
+  <link rel="stylesheet" href="../css/estilos_ficha_2.css" type="text/css" />
+
+  <script src="../js/utiles.js" language="javascript"></script>
+  <script src="../js/especificas.js" language="javascript"></script>
+
+  <script>
+    function onIllaChange() {
+      const illa = document.getElementById('illa').value;
+      const municipi = document.getElementById('municipi');
+
+      municipi.innerHTML = '<option value="">Selecciona un municipi</option>';
+
+      const data = {
+        "1": ["Palma", "Calvià", "Marratxí"],
+        "2": ["Maó", "Ciutadella"],
+        "3": ["Eivissa", "Sant Antoni"],
+        "4": ["Sant Francesc", "Es Pujols"]
+      };
+
+      if (!data[illa]) return;
+      data[illa].forEach((m) => {
+        const opt = document.createElement('option');
+        opt.value = m;
+        opt.textContent = m;
+        municipi.appendChild(opt);
+      });
+    }
+  </script>
+</head>
+
+<body class="contenido" onload="ocultarFondoPrincipal();">
+  <div class="contenedorFiltro"></div>
+
+  <ul class="botoneraFicha">
+    <li class="tituloFicha">
+      <p class="posicionTituloFicha">FITXA D’EXPEDIENT DE SOLAR</p>
+    </li>
+  </ul>
+
+  <div class="espacioMarron">&nbsp;</div>
+
+  <form name="entidad" method="post" action="#">
+    <div id="fichaEditable" style="background-color:#ffffff;">
+      <div class="cabeceraFicha"></div>
+
+      <div class="contenedorFicha">
+
+        <!-- ===================== -->
+        <!-- DADES GENERALS -->
+        <!-- ===================== -->
+        <div class="tituloSeccion">
+          <p class="textoTituloSeccion">Dades generals</p>
+        </div>
+
+        <input type="hidden" name="expedient_id" value="1">
+
+        <table>
+          <tr>
+            <td>
+              <label class="campoFicha_Blanca">Estat:</label>
+              <select id="estat" name="estat" class="campoFicha_Blanca">
+                <option value="pendent">Pendent</option>
+                <option value="en_tramit" selected>En tràmit</option>
+                <option value="tancat">Tancat</option>
+              </select>
+            </td>
+
+            <td>
+              <label class="campoFicha_Blanca">Centre:</label>
+              <input type="text" id="centre" name="centre" class="formularioFicha" value="IES Son Ferrer" size="40">
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              <label class="campoFicha_Blanca">Illa:</label>
+              <select name="illa" id="illa" class="campoFicha_Blanca" onchange="onIllaChange()">
+                <option value="">Selecciona una illa</option>
+                <option value="1" selected>Mallorca</option>
+                <option value="2">Menorca</option>
+                <option value="3">Eivissa</option>
+                <option value="4">Formentera</option>
+              </select>
+            </td>
+
+            <td>
+              <label class="campoFicha_Blanca">Municipi:</label>
+              <select id="municipi" name="municipi" class="campoFicha_Blanca">
+                <option value="">Selecciona un municipi</option>
+                <option value="Calvià" selected>Calvià</option>
+                <option value="Palma">Palma</option>
+                <option value="Marratxí">Marratxí</option>
+              </select>
+            </td>
+          </tr>
+        </table>
+
+        <!-- ===================== -->
+        <!-- TIPUS D’ACTUACIÓ -->
+        <!-- ===================== -->
+        <div class="tituloSeccion" style="margin-top: 15px;">
+          <p class="textoTituloSeccion">Tipus d’actuació</p>
+        </div>
+
+        <table>
+          <tr>
+            <td>
+              <label class="campoFicha_Blanca" style="display:inline-block; margin-right:10px;">
+                <input type="checkbox" name="obra_nova" value="1"> Obra nova
+              </label>
+
+              <label class="campoFicha_Blanca" style="display:inline-block; margin-right:10px;">
+                <input type="checkbox" name="reforma_integral" value="1"> Reforma integral
+              </label>
+
+              <label class="campoFicha_Blanca" style="display:inline-block; margin-right:10px;">
+                <input type="checkbox" name="ampliacio" value="1" checked> Ampliació
+              </label>
+            </td>
+          </tr>
+        </table>
+
+        <!-- ===================== -->
+        <!-- FITES / TRÀMITS -->
+        <!-- ===================== -->
+        <div class="tituloSeccion" style="margin-top: 15px;">
+          <p class="textoTituloSeccion">Tràmits</p>
+        </div>
+
+        <table>
+          <tr>
+            <td>
+              <label class="campoFicha_Blanca">Data sol·licitud:</label>
+              <input type="date" name="data_sollicitud" class="formularioFicha" value="2025-10-12">
+            </td>
+            <td colspan="2">
+              <label class="campoFicha_Blanca" style="align-self:start; display:grid">Obs. sol·licitud:</label>
+              <textarea name="obs_sollicitud" class="contenedorFicha_Blanca" rows="3" cols="70">Documentació pendent de registre.</textarea>
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              <label class="campoFicha_Blanca">Data topogràfic:</label>
+              <input type="date" name="data_topografic" class="formularioFicha" value="2025-11-05">
+            </td>
+            <td colspan="2">
+              <label class="campoFicha_Blanca" style="align-self:start; display:grid">Obs. topogràfic:</label>
+              <textarea name="obs_topografic" class="contenedorFicha_Blanca" rows="3" cols="70">Topogràfic rebut. Revisió tècnica en curs.</textarea>
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              <label class="campoFicha_Blanca">Data acord de ple:</label>
+              <input type="date" name="data_acord_ple" class="formularioFicha" value="">
+            </td>
+            <td colspan="2">
+              <label class="campoFicha_Blanca" style="align-self:start; display:grid">Obs. acord de ple:</label>
+              <textarea name="obs_acord_ple" class="contenedorFicha_Blanca" rows="3" cols="70"></textarea>
+            </td>
+          </tr>
+        </table>
+
+        <!-- ========================================================= -->
+        <!-- NOU: IDENTIFICACIÓ JURÍDICA DEL SOLAR -->
+        <!-- ========================================================= -->
+        <div class="tituloSeccion" style="margin-top: 15px;">
+          <p class="textoTituloSeccion">Identificació jurídica del solar</p>
+        </div>
+
+        <table>
+          <tr>
+            <td>
+              <label class="campoFicha_Blanca">Ref. cadastral:</label>
+              <input type="text" name="ref_cadastral" class="formularioFicha" value="07011A00100012" size="30">
+            </td>
+            <td>
+              <label class="campoFicha_Blanca">Ref. registral:</label>
+              <input type="text" name="ref_registral" class="formularioFicha" value="Finca 12345, Tom 9, Llibre 200, Full 10" size="45">
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              <label class="campoFicha_Blanca">Superfície (m²):</label>
+              <input type="number" step="0.01" name="superficie_m2" class="formularioFicha" value="8500.00">
+            </td>
+
+            <td>
+              <label class="campoFicha_Blanca">Núm. parcel·les:</label>
+              <input type="number" name="num_parcelles" class="formularioFicha" value="1">
+              &nbsp;&nbsp;
+              <label class="campoFicha_Blanca" style="display:inline-block; margin-right:10px;">
+                <input type="checkbox" name="requereix_agrupacio" value="1"> Requereix agrupació
+              </label>
+              <label class="campoFicha_Blanca" style="display:inline-block;">
+                <input type="checkbox" name="requereix_segregacio" value="1"> Requereix segregació
+              </label>
+            </td>
+          </tr>
+
+          <tr>
+            <td colspan="2">
+              <label class="campoFicha_Blanca" style="align-self:start; display:grid">Límits:</label>
+              <textarea name="limits" class="contenedorFicha_Blanca" rows="3" cols="100">Nord: carrer X; Sud: parcel·la Y; Est: camí Z; Oest: zona verda.</textarea>
+            </td>
+          </tr>
+
+          <tr>
+            <td colspan="2">
+              <label class="campoFicha_Blanca" style="align-self:start; display:grid">Observacions parcel·les:</label>
+              <textarea name="observacions_parcelles" class="contenedorFicha_Blanca" rows="2" cols="100"></textarea>
+            </td>
+          </tr>
+        </table>
+
+        <!-- ========================================================= -->
+        <!-- NOU: ESTAT LEGAL / CÀRREGUES / SERVITUDS -->
+        <!-- ========================================================= -->
+        <div class="tituloSeccion" style="margin-top: 15px;">
+          <p class="textoTituloSeccion">Estat legal (propietat, càrregues i servituds)</p>
+        </div>
+
+        <table>
+          <tr>
+            <td>
+              <label class="campoFicha_Blanca" style="display:inline-block; margin-right:10px;">
+                <input type="checkbox" name="titularitat_municipal_acreditada" value="1" checked> Titularitat municipal acreditada
+              </label>
+              <label class="campoFicha_Blanca" style="display:inline-block; margin-right:10px;">
+                <input type="checkbox" name="lliure_carregues" value="1" checked> Lliure de càrregues
+              </label>
+              <label class="campoFicha_Blanca" style="display:inline-block;">
+                <input type="checkbox" name="lliure_gravamens" value="1"> Lliure de gravàmens
+              </label>
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              <label class="campoFicha_Blanca" style="display:inline-block; margin-right:10px;">
+                <input type="checkbox" name="inventari_municipal_inclos" value="1"> Inclòs a inventari municipal
+              </label>
+              <label class="campoFicha_Blanca" style="display:inline-block; margin-right:10px;">
+                <input type="checkbox" name="servituds_detectades" value="1"> Hi ha servituds
+              </label>
+
+              <label class="campoFicha_Blanca" style="display:inline-block;">
+                Servituds compatibles?
+                <select name="servituds_compatibles" class="campoFicha_Blanca">
+                  <option value="">Selecciona</option>
+                  <option value="1">Sí</option>
+                  <option value="0">No</option>
+                </select>
+              </label>
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              <label class="campoFicha_Blanca" style="align-self:start; display:grid">Detall servituds / notes jurídiques:</label>
+              <textarea name="servituds_detall" class="contenedorFicha_Blanca" rows="3" cols="100"></textarea>
+            </td>
+          </tr>
+        </table>
+
+        <!-- ========================================================= -->
+        <!-- NOU: RÈGIM DE CESSIÓ (CEIP vs IES) -->
+        <!-- ========================================================= -->
+        <div class="tituloSeccion" style="margin-top: 15px;">
+          <p class="textoTituloSeccion">Règim de cessió i condicions</p>
+        </div>
+
+        <table>
+          <tr>
+            <td>
+              <label class="campoFicha_Blanca">Règim:</label>
+              <select name="regim_cessio" class="campoFicha_Blanca">
+                <option value="">(selecciona)</option>
+                <option value="posada_disposicio">Posada a disposició (CEIP)</option>
+                <option value="cessio_titularitat" selected>Cessió de titularitat (IES)</option>
+              </select>
+            </td>
+
+            <td>
+              <label class="campoFicha_Blanca" style="display:inline-block;">
+                <input type="checkbox" name="finalitat_educativa_condicionada" value="1" checked> Finalitat educativa condicionada
+              </label>
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              <label class="campoFicha_Blanca">Límit temporal (text):</label>
+              <input type="text" name="limit_temporal_text" class="formularioFicha" value="" size="35">
+            </td>
+            <td>
+              <label class="campoFicha_Blanca">Reversió (text):</label>
+              <input type="text" name="reversio_text" class="formularioFicha" value="" size="45">
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              <label class="campoFicha_Blanca" style="display:inline-block; margin-right:10px;">
+                <input type="checkbox" name="info_publica_rbel" value="1"> Informació pública (RBEL)
+              </label>
+              <label class="campoFicha_Blanca">Data:</label>
+              <input type="date" name="data_info_publica" class="formularioFicha" value="">
+            </td>
+
+            <td>
+              <label class="campoFicha_Blanca" style="display:inline-block; margin-right:10px;">
+                <input type="checkbox" name="assabentat_consell_insular" value="1"> Assabentat Consell Insular
+              </label>
+              <label class="campoFicha_Blanca">Data:</label>
+              <input type="date" name="data_assabentat" class="formularioFicha" value="">
+            </td>
+          </tr>
+        </table>
+
+        <!-- ========================================================= -->
+        <!-- NOU: URBANISME I RISCOS -->
+        <!-- ========================================================= -->
+        <div class="tituloSeccion" style="margin-top: 15px;">
+          <p class="textoTituloSeccion">Urbanisme i riscos</p>
+        </div>
+
+        <table>
+          <tr>
+            <td colspan="2">
+              <label class="campoFicha_Blanca" style="align-self:start; display:grid">Qualificació urbanística:</label>
+              <textarea name="qualificacio_urbanistica" class="contenedorFicha_Blanca" rows="2" cols="100"></textarea>
+            </td>
+          </tr>
+
+          <tr>
+            <td colspan="2">
+              <label class="campoFicha_Blanca" style="align-self:start; display:grid">Paràmetres edificatoris:</label>
+              <textarea name="parametres_edificatoris" class="contenedorFicha_Blanca" rows="2" cols="100"></textarea>
+            </td>
+          </tr>
+
+          <tr>
+            <td colspan="2">
+              <label class="campoFicha_Blanca" style="align-self:start; display:grid">Usos permesos:</label>
+              <textarea name="usos_permesos" class="contenedorFicha_Blanca" rows="2" cols="100"></textarea>
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              <label class="campoFicha_Blanca" style="display:inline-block; margin-right:10px;">
+                <input type="checkbox" name="afectacio_apr" value="1"> Afectació APR (riscos)
+              </label>
+            </td>
+            <td>
+              <label class="campoFicha_Blanca">Cert. higienicosanitàries OK?</label>
+              <select name="condicions_higienicosanitaries_ok" class="campoFicha_Blanca">
+                <option value="">(pendent)</option>
+                <option value="1">Sí</option>
+                <option value="0">No</option>
+              </select>
+              &nbsp;&nbsp;
+              <label class="campoFicha_Blanca">Data:</label>
+              <input type="date" name="data_cert_higienico" class="formularioFicha" value="">
+            </td>
+          </tr>
+
+          <tr>
+            <td colspan="2">
+              <label class="campoFicha_Blanca" style="align-self:start; display:grid">Detall APR / geologia / notes:</label>
+              <textarea name="detall_apr_geologia" class="contenedorFicha_Blanca" rows="3" cols="100"></textarea>
+            </td>
+          </tr>
+        </table>
+
+        <!-- ========================================================= -->
+        <!-- NOU: SERVEIS I ACCESSOS -->
+        <!-- ========================================================= -->
+        <div class="tituloSeccion" style="margin-top: 15px;">
+          <p class="textoTituloSeccion">Serveis i accessos</p>
+        </div>
+
+        <table>
+          <tr>
+            <td>
+              <label class="campoFicha_Blanca" style="display:inline-block;">
+                <input type="checkbox" name="aigua_disponible" value="1" checked> Aigua disponible
+              </label><br>
+              <label class="campoFicha_Blanca">Cabal (m³/h):</label>
+              <input type="number" step="0.01" name="aigua_cabal_m3h" class="formularioFicha" value="5.00"><br>
+              <label class="campoFicha_Blanca">Pressió (kg/cm²):</label>
+              <input type="number" step="0.01" name="aigua_pressio_kgcm2" class="formularioFicha" value="3.00"><br>
+              <label class="campoFicha_Blanca" style="display:inline-block;">
+                <input type="checkbox" name="aigua_grup_pressio_necessari" value="1"> Requereix grup de pressió
+              </label>
+            </td>
+
+            <td>
+              <label class="campoFicha_Blanca" style="display:inline-block;">
+                <input type="checkbox" name="electricitat_disponible" value="1" checked> Electricitat disponible
+              </label><br>
+              <label class="campoFicha_Blanca">kW obres:</label>
+              <input type="number" step="0.01" name="electricitat_kw_obra" class="formularioFicha" value="45.00"><br>
+              <label class="campoFicha_Blanca">kW funcionament:</label>
+              <input type="number" step="0.01" name="electricitat_kw_funcionament" class="formularioFicha" value="95.00"><br>
+              <label class="campoFicha_Blanca" style="display:inline-block;">
+                <input type="checkbox" name="requereix_ct" value="1"> Requereix CT
+              </label>
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              <label class="campoFicha_Blanca" style="display:inline-block;">
+                <input type="checkbox" name="telefonia_disponible" value="1"> Telefonia disponible
+              </label>
+            </td>
+
+            <td>
+              <label class="campoFicha_Blanca" style="display:inline-block;">
+                <input type="checkbox" name="clavegueram_disponible" value="1" checked> Clavegueram disponible
+              </label>
+              &nbsp;&nbsp;
+              <label class="campoFicha_Blanca">Cota:</label>
+              <input type="text" name="clavegueram_cota" class="formularioFicha" value="">
+              &nbsp;&nbsp;
+              <label class="campoFicha_Blanca">Diàmetre:</label>
+              <input type="text" name="clavegueram_diametre" class="formularioFicha" value="">
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              <label class="campoFicha_Blanca" style="display:inline-block;">
+                <input type="checkbox" name="pluvials_disponible" value="1"> Xarxa pluvials disponible
+              </label>
+            </td>
+            <td>
+              <label class="campoFicha_Blanca">Solució pluvials (si no hi ha xarxa):</label>
+              <input type="text" name="solucio_pluvials" class="formularioFicha" value="" size="45">
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              <label class="campoFicha_Blanca" style="display:inline-block;">
+                <input type="checkbox" name="accessos_ok" value="1" checked> Accessos OK
+              </label>
+              &nbsp;&nbsp;
+              <label class="campoFicha_Blanca" style="display:inline-block;">
+                <input type="checkbox" name="estudi_mobilitat_aportat" value="1"> Estudi mobilitat aportat
+              </label>
+              &nbsp;&nbsp;
+              <label class="campoFicha_Blanca" style="display:inline-block;">
+                <input type="checkbox" name="accessibilitat_universal_ok" value="1"> Accessibilitat universal OK
+              </label>
+            </td>
+            <td>
+              <label class="campoFicha_Blanca">Detall accessos / mobilitat:</label>
+              <input type="text" name="detall_accessos" class="formularioFicha" value="" size="45">
+            </td>
+          </tr>
+        </table>
+
+        <!-- ========================================================= -->
+        <!-- NOU: DOCUMENTACIÓ -->
+        <!-- ========================================================= -->
+        <div class="tituloSeccion" style="margin-top: 15px;">
+          <p class="textoTituloSeccion">Documentació requerida</p>
+        </div>
+
+        <table class="listado" cellpadding="0" cellspacing="0" width="100%">
+          <thead>
+            <tr>
+              <th class="campoCabeceraListadoInicial">Document</th>
+              <th class="campoCabeceraListado">Aportat</th>
+              <th class="campoCabeceraListado">Data</th>
+              <th class="campoCabeceraListado">Observacions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="campoListadoInicial">Acord de ple</td>
+              <td class="campoListado"><input type="checkbox" checked></td>
+              <td class="campoListado"><input type="date" value="2025-10-25"></td>
+              <td class="campoListado"><input type="text" value="" size="40"></td>
+            </tr>
+            <tr>
+              <td class="campoListadoInicial">Certificat Registre Propietat (lliure càrregues)</td>
+              <td class="campoListado"><input type="checkbox"></td>
+              <td class="campoListado"><input type="date" value=""></td>
+              <td class="campoListado"><input type="text" value="" size="40"></td>
+            </tr>
+            <tr>
+              <td class="campoListadoInicial">Certificat cadastral</td>
+              <td class="campoListado"><input type="checkbox" checked></td>
+              <td class="campoListado"><input type="date" value="2025-10-18"></td>
+              <td class="campoListado"><input type="text" value="" size="40"></td>
+            </tr>
+            <tr>
+              <td class="campoListadoInicial">Topogràfic georeferenciat</td>
+              <td class="campoListado"><input type="checkbox" checked></td>
+              <td class="campoListado"><input type="date" value="2025-11-05"></td>
+              <td class="campoListado"><input type="text" value="Inclou GML" size="40"></td>
+            </tr>
+            <tr>
+              <td class="campoListadoInicial">Geotècnic</td>
+              <td class="campoListado"><input type="checkbox"></td>
+              <td class="campoListado"><input type="date" value=""></td>
+              <td class="campoListado"><input type="text" value="" size="40"></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- ========================================================= -->
+        <!-- NOU: INFORMES SECTORIALS -->
+        <!-- ========================================================= -->
+        <div class="tituloSeccion" style="margin-top: 15px;">
+          <p class="textoTituloSeccion">Informes sectorials</p>
+        </div>
+
+        <table class="listado" cellpadding="0" cellspacing="0" width="100%">
+          <thead>
+            <tr>
+              <th class="campoCabeceraListadoInicial">Tipus</th>
+              <th class="campoCabeceraListado">Afectació</th>
+              <th class="campoCabeceraListado">Viabilitat</th>
+              <th class="campoCabeceraListado">Data</th>
+              <th class="campoCabeceraListado">Condicionants</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="campoListadoInicial">AESA (servituds aeronàutiques)</td>
+              <td class="campoListado">
+                <select class="campoFicha_Blanca">
+                  <option selected>pendent</option>
+                  <option>Sí</option>
+                  <option>No</option>
+                </select>
+              </td>
+              <td class="campoListado">
+                <select class="campoFicha_Blanca">
+                  <option value="pendent" selected>Pendent</option>
+                  <option value="viable">Viable</option>
+                  <option value="viable_condicionat">Viable condicionat</option>
+                  <option value="no_viable">No viable</option>
+                </select>
+              </td>
+              <td class="campoListado"><input type="date" value=""></td>
+              <td class="campoListado"><input type="text" value="" size="40"></td>
+            </tr>
+
+            <tr>
+              <td class="campoListadoInicial">Recursos hídrics / inundabilitat</td>
+              <td class="campoListado">
+                <select class="campoFicha_Blanca">
+                  <option selected>pendent</option>
+                  <option>Sí</option>
+                  <option>No</option>
+                </select>
+              </td>
+              <td class="campoListado">
+                <select class="campoFicha_Blanca">
+                  <option value="pendent" selected>Pendent</option>
+                  <option value="viable">Viable</option>
+                  <option value="viable_condicionat">Viable condicionat</option>
+                  <option value="no_viable">No viable</option>
+                </select>
+              </td>
+              <td class="campoListado"><input type="date" value=""></td>
+              <td class="campoListado"><input type="text" value="" size="40"></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- ========================================================= -->
+        <!-- NOU: PREPARACIÓ PER LICITAR + POSTOBRA -->
+        <!-- ========================================================= -->
+        <div class="tituloSeccion" style="margin-top: 15px;">
+          <p class="textoTituloSeccion">Preparació del solar i post-obra</p>
+        </div>
+
+        <table>
+          <tr>
+            <td>
+              <label class="campoFicha_Blanca" style="display:inline-block; margin-right:10px;">
+                <input type="checkbox" name="delimitat_fisicament" value="1" checked> Delimitat físicament
+              </label>
+              <label class="campoFicha_Blanca">Data:</label>
+              <input type="date" name="data_delimitacio" class="formularioFicha" value="">
+            </td>
+
+            <td>
+              <label class="campoFicha_Blanca" style="display:inline-block; margin-right:10px;">
+                <input type="checkbox" name="sense_obstacles" value="1"> Sense obstacles
+              </label>
+              <label class="campoFicha_Blanca">Serveis bàsics OK?</label>
+              <select name="serveis_basics_ok" class="campoFicha_Blanca">
+                <option value="0" selected>No</option>
+                <option value="1">Sí</option>
+              </select>
+            </td>
+          </tr>
+
+          <tr>
+            <td colspan="2">
+              <label class="campoFicha_Blanca" style="align-self:start; display:grid">Observacions obstacles / estat físic:</label>
+              <textarea name="observacions_obstacles" class="contenedorFicha_Blanca" rows="2" cols="100"></textarea>
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              <label class="campoFicha_Blanca" style="display:inline-block; margin-right:10px;">
+                <input type="checkbox" name="postobra_obra_nova_notari_feta" value="1"> Obra nova notari feta
+              </label>
+              <label class="campoFicha_Blanca">Data:</label>
+              <input type="date" name="data_obra_nova" class="formularioFicha" value="">
+            </td>
+
+            <td>
+              <label class="campoFicha_Blanca" style="display:inline-block; margin-right:10px;">
+                <input type="checkbox" name="postobra_inscripcio_registre_feta" value="1"> Inscripció registre feta
+              </label>
+              <label class="campoFicha_Blanca">Data:</label>
+              <input type="date" name="data_inscripcio" class="formularioFicha" value="">
+              &nbsp;&nbsp;
+              <label class="campoFicha_Blanca" style="display:inline-block;">
+                <input type="checkbox" name="postobra_cessio_us_feta" value="1"> Cessió d’ús feta (CEIP)
+              </label>
+            </td>
+          </tr>
+        </table>
+
+        <!-- ===================== -->
+        <!-- NOTES / PRIORITATS -->
+        <!-- ===================== -->
+        <div class="tituloSeccion" style="margin-top: 15px;">
+          <p class="textoTituloSeccion">Notes / prioritats</p>
+        </div>
+
+        <textarea name="notes" class="contenedorFicha_Blanca" rows="5" cols="100">Prioritat alta. Coordinar amb urbanisme municipal.</textarea>
+
+      </div>
+
+      <br><br>
+
+      <ul class="botoneraFicha">
+        <li class="fondoBotoneraFicha">
+          <input type="submit" class="boton" onclick="return confirm('Prototip: desar canvis (sense BD).');" value="Desar canvis">
+        </li>
+      </ul>
+    </div>
+  </form>
+
+  <form method="post" action="#">
+    <ul class="botoneraFicha" style="display: flex; justify-content: flex-end;">
+      <li class="fondoBotoneraFicha">
+        <button type="submit" class="boton" onclick="return confirm('Prototip: eliminar (sense BD).');">Eliminar</button>
+      </li>
+      <li class="fondoBotoneraFicha">
+        <input type="button" class="boton" value="Tornar al llistat" onclick="window.location.href='solarListFiltro.php'">
+      </li>
+    </ul>
+  </form>
+
+</body>
+</html>
