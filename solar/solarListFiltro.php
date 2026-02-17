@@ -9,6 +9,16 @@ function h($v): string {
   return htmlspecialchars((string)$v, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
 }
 
+function formatTipusActuacio(?string $tipus): string
+{
+    return match ($tipus) {
+        'obra_nova' => 'Obra nova',
+        'ampliacio' => 'Ampliació',
+        'reforma_integral' => 'Reforma integral',
+        default => $tipus ?? '',
+    };
+}
+
 $centre_id = isset($_POST['centre_id']) ? (int)$_POST['centre_id'] : 0;
 $centre_txt = trim($_POST['centre_txt'] ?? '');
 
@@ -341,7 +351,7 @@ $illes = $connexio->query("SELECT id, nom FROM illa ORDER BY nom")->fetch_all(MY
             <td class="campoListadoInicial"><?= h($r['centre_nom']) ?></td>
             <td class="campoListado"><?= h($r['municipi_nom']) ?></td>
             <td class="campoListado"><?= h($r['illa_nom']) ?></td>
-            <td class="campoListado"><?= h($r['tipus_actuacio']) ?></td>
+            <td class="campoListado"><?= h(formatTipusActuacio($r['tipus_actuacio'])) ?></td>
             <td class="campoListado"><?= h($r['data_sollicitud']) ?></td>
             <td class="campoListado"><?= h($r['data_topografic']) ?></td>
             <td class="campoListado"><?= h($r['data_acord_ple']) ?></td>

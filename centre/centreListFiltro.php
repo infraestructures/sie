@@ -8,6 +8,9 @@ $illaFiltro = isset($_GET['illa']) ? $_GET['illa'] : '';
 $municipiFiltro = isset($_GET['municipi']) ? $_GET['municipi'] : '';
 $tipusCentreFiltro = isset($_GET['tipus_centre_filtro']) ? $_GET['tipus_centre_filtro'] : '';
 
+// Filtre per centre (autocomplete)
+$centreIdFiltro = isset($_GET['centre_id']) ? $_GET['centre_id'] : '';
+
 // Filtre per ús principal
 $usPrincipalFiltro = isset($_GET['cadastre_us_principal']) ? $_GET['cadastre_us_principal'] : 'tots';
 
@@ -47,7 +50,10 @@ $sql = "SELECT
         JOIN Illa ON CENTRES.id_illa = Illa.id
         WHERE 1=1";
 
-if (!empty($nombreFiltro)) {
+// Filtre per centre (autocomplete): si hi ha ID seleccionat, filtra per ID; si no, aplica LIKE pel nom
+if (!empty($centreIdFiltro) && is_numeric($centreIdFiltro)) {
+    $sql .= " AND CENTRES.id = " . intval($centreIdFiltro);
+} elseif (!empty($nombreFiltro)) {
     $sql .= " AND CENTRES.Centre LIKE '%" . $connexio->real_escape_string($nombreFiltro) . "%'";
 }
 if (!empty($illaFiltro)) {
@@ -107,44 +113,243 @@ $result = $connexio->query($sql); ?>
     <!-- Maquetació específica pels filtres (sense tocar el CSS global) -->
     
     <style>
-        /* Ajustos locals només pel bloc de filtres */
+        /* Ajustos locals només pel bloc de filtres (sense tocar el CSS global) */
         .contenedorFiltro, .cajaFiltro { width: 100% !important; }
         .contenedorCamposFiltro { width: 100%; }
-
         .filtroForm { width: 100%; }
+
+        /* Maquetació: grid per evitar espais buits a la dreta i fer 2-3 línies */
         .filtroFlex{
-            display:flex;
-            flex-wrap:wrap;
+            display:grid;
+            grid-template-columns: repeat(12, minmax(0, 1fr));
             gap:10px 14px;
-            align-items:flex-end;
+            align-items:end;
             width:100%;
         }
-        .filtroField{ display:flex; flex-direction:column; gap:6px; }
+        .filtroField{ display:flex; flex-direction:column; gap:6px; min-width:0; }
         .filtroField label{ margin:0; }
-
-        /* Amplades per controlar que quedi en 2-3 línies */
-        .w-name{ flex: 2 1 420px; min-width: 320px; }
-        .w-tipus{ flex: 2 1 420px; min-width: 320px; }
-        .w-illa{ flex: 1 1 240px; min-width: 220px; }
-        .w-muni{ flex: 1 1 260px; min-width: 220px; }
-        .w-any{  flex: 0 1 170px; min-width: 150px; }
-        .w-actions{ flex: 1 1 260px; min-width: 240px; display:flex; gap:12px; align-items:center; justify-content:flex-start; }
-
         .filtroField input[type="text"],
+        .filtroField input[type="number"],
         .filtroField select{ width:100%; box-sizing:border-box; }
 
-        /* Inputs d'any més compactes */
-        .yearInput{
-            width: 140px;
-            max-width: 100%;
+        /* Evitar desbordaments horitzontals */
+        .contenedorCamposFiltro, .filtroForm, .filtroFlex{ box-sizing:border-box; }
+        .filtroFlex{ overflow-x:hidden; }
+        .filtroField label{ white-space:normal; }
+
+        /* Columnes */
+        .c-2{ grid-column: span 2; }
+        .c-3{ grid-column: span 3; }
+        .c-4{ grid-column: span 4; }
+        .c-6{ grid-column: span 6; }
+
+        /* Anys: més compactes */
+        .yearInput{ max-width: 160px; }
+
+        /* Botó alineat com a camp */
+        .filtroBtn{
+            grid-column: span 2;
+            display:flex;
+            align-items:flex-end;
         }
 
-        @media (max-width: 720px){
-            .w-any{ flex: 1 1 200px; }
-            .w-actions{ flex: 1 1 100%; }
+        /* Responsive */
+        @media (max-width: 980px){
+            .c-4{ grid-column: span 6; }
+            .c-3{ grid-column: span 6; }
+            .c-2{ grid-column: span 6; }
+            .filtroBtn{ grid-column: span 6; }
+        }
+        @media (max-width: 620px){
+            .c-6,.c-4,.c-3,.c-2,.filtroBtn{ grid-column: span 12; }
+            .yearInput{ max-width: 100%; }
+        }
+        .filtro-centres {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+        .filtro-centres .form-group {
+            display: flex;
+            flex-direction: column;
+            min-width: 180px;
+            flex: 1 1 220px;
+        }
+        .form-group.ref-cat {
+            flex: 0 0 220px;
+        }
+
+        .form-group.ref-cat label {
+            white-space: nowrap; /* una sola línia */
+        }
+
+        .form-group.ref-cat select {
+            width: 140px;
+        }
+        .filtro-centres input[type="submit"] {
+            align-self: flex-end;
+            margin-left: 8px;
+        }
+        .form-group.ref-cat button,
+        .form-group.ref-cat input[type="submit"] {
+            margin-left: 8px;
+        }
+        /* Layout flexible del filtre */
+        .filtroFlex {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px 16px;
+            align-items: flex-end;
+            width: 100%;
+            box-sizing: border-box;
+            overflow-x: hidden;
+        }
+
+        /* Cada camp */
+        .filtroFlex .filtroField {
+            box-sizing: border-box;
+            min-width: 180px;
+            flex: 1 1 260px; /* base en pantalles grans */
+        }
+
+        /* Mides “per columnes” (si ja tens c-4, c-3, etc. les forcem aquí) */
+        /* Columnes: NO creixen, així no s'estiren ocupant tot l'espai */
+        .filtroFlex .c-4 {
+            flex: 0 0 360px;
+        }
+
+        .filtroFlex .c-3 {
+            flex: 0 0 260px;
+        }
+
+        .filtroFlex .c-2 {
+            flex: 0 0 200px;
+        }
+
+        .filtroFlex .c-1 {
+            flex: 0 0 120px;
+        }
+
+
+
+        /* Camp “Amb referència cadastral”: label 1 línia + select més petit */
+        .filtroFlex .ref-cat label {
+            white-space: nowrap;
+        }
+
+        .filtroFlex .ref-cat select {
+            width: 140px;
+            min-width: 120px;
+        }
+
+        /* Separació botó Cercar si està al mateix bloc */
+        .filtroFlex .ref-cat input[type="submit"],
+        .filtroFlex .ref-cat button {
+            margin-left: 8px;
+        }
+
+        /* Breakpoint: a 1280 (i similars) fem bases més petites perquè encaixi igual */
+        @media (max-width: 1366px) {
+            .filtroFlex .c-4 {
+                flex-basis: 320px;
             }
+
+            .filtroFlex .c-3 {
+                flex-basis: 240px;
+            }
+
+            .filtroFlex .c-2 {
+                flex-basis: 180px;
+            }
+
+            .filtroFlex .c-1 {
+                flex-basis: 110px;
+            }
+        }
+
     </style>
 
+    <script>
+        function initCentreAutocompleteFiltro() {
+            const input = document.getElementById('nombre_txt');
+            const hidden = document.getElementById('centre_id');
+            const box = document.getElementById('nombre_suggest');
+            if (!input || !hidden || !box) return;
+
+            let lastFetch = 0;
+            let timer = null;
+            let lastQuery = '';
+
+            function hideBox() { box.style.display = 'none'; box.innerHTML = ''; }
+            function showBox() { box.style.display = 'block'; }
+            function clearSelection() { hidden.value = ''; }
+
+            function render(items) {
+                box.innerHTML = '';
+                if (!items.length) {
+                    const div = document.createElement('div');
+                    div.style.padding = '8px';
+                    div.style.color = '#666';
+                    div.textContent = 'Sense resultats';
+                    box.appendChild(div);
+                    showBox();
+                    return;
+                }
+                items.forEach(it => {
+                    const row = document.createElement('div');
+                    row.style.padding = '8px';
+                    row.style.cursor = 'pointer';
+                    row.style.borderBottom = '1px solid #eee';
+                    row.textContent = it.nom;
+                    row.addEventListener('mousedown', e => {
+                        e.preventDefault();
+                        input.value = it.nom;
+                        hidden.value = it.id;
+                        hideBox();
+                    });
+                    box.appendChild(row);
+                });
+                showBox();
+            }
+
+            async function fetchCentres(q) {
+                const now = Date.now();
+                lastFetch = now;
+                try {
+                    const r = await fetch('ajax_centres.php?q=' + encodeURIComponent(q));
+                    if (!r.ok) return;
+                    const data = await r.json();
+                    if (lastFetch !== now) return;
+                    render(data);
+                } catch (e) { /* ignore */ }
+            }
+
+            input.addEventListener('input', () => {
+                const q = input.value.trim();
+                clearSelection();
+                if (timer) clearTimeout(timer);
+                if (q.length < 2) { hideBox(); return; }
+                timer = setTimeout(() => {
+                    if (q === lastQuery) return;
+                    lastQuery = q;
+                    fetchCentres(q);
+                }, 200);
+            });
+
+            input.addEventListener('focus', () => {
+                const q = input.value.trim();
+                if (q.length >= 2) fetchCentres(q);
+            });
+
+            document.addEventListener('click', (e) => {
+                if (!box.contains(e.target) && e.target !== input) hideBox();
+            });
+
+            input.addEventListener('blur', () => setTimeout(hideBox, 150));
+        }
+
+        document.addEventListener('DOMContentLoaded', initCentreAutocompleteFiltro);
+    </script>
 
 </head>
 
@@ -162,12 +367,16 @@ $result = $connexio->query($sql); ?>
                     <div class="filtro">
                         <form method="GET" class="filtroForm">
                             <div class="filtroFlex">
-                                <div class="filtroField w-name">
-                                    <label for="nombre" class="formularioFiltro">Nom del Centre</label>
-                                    <input type="text" id="nombre" name="nombre" value="<?= htmlspecialchars($nombreFiltro) ?>">
+                                <div class="filtroField c-4">
+                                    <label for="nombre_txt" class="formularioFiltro">Nom del Centre</label>
+                                    <div style="position:relative;">
+                                        <input type="text" id="nombre_txt" name="nombre" value="<?= htmlspecialchars($nombreFiltro) ?>" autocomplete="off">
+                                        <input type="hidden" id="centre_id" name="centre_id" value="<?= htmlspecialchars($centreIdFiltro) ?>">
+                                        <div id="nombre_suggest" style="display:none; position:absolute; left:0; right:0; top:100%; z-index:9999; background:#fff; border:1px solid #ddd; border-top:none; max-height:260px; overflow:auto; box-shadow:0 6px 18px rgba(0,0,0,.08);"></div>
+                                    </div>
                                 </div>
 
-                                <div class="filtroField w-tipus">
+                                <div class="filtroField c-4">
                                     <label for="tipus_centre_filtro" class="formularioFiltro">Tipus de centre</label>
                                     <select name="tipus_centre_filtro" id="tipus_centre_filtro" class="campoFicha_Blanca">
                                         <option value="">Tots</option>
@@ -179,7 +388,7 @@ $result = $connexio->query($sql); ?>
                                     </select>
                                 </div>
 
-                                <div class="filtroField w-illa">
+                                <div class="filtroField c-2">
                                     <label for="illa" class="formularioFiltro">Illa</label>
                                     <select id="illa" name="illa" onchange="this.form.submit()">
                                         <option value="">Seleccioni una illa</option>
@@ -191,7 +400,7 @@ $result = $connexio->query($sql); ?>
                                     </select>
                                 </div>
 
-                                <div class="filtroField w-muni">
+                                <div class="filtroField c-2">
                                     <label for="municipi" class="formularioFiltro">Municipi</label>
                                     <select id="municipi" name="municipi" onchange="this.form.submit()">
                                         <option value="">Seleccioni un municipi</option>
@@ -203,40 +412,43 @@ $result = $connexio->query($sql); ?>
                                     </select>
                                 </div>
 
-                                <div class="filtroField w-any">
+                                <div class="filtroField c-2">
                                     <label for="any_construccio_desde" class="formularioFiltro">Any de construcció (des de)</label>
                                     <input type="number" id="any_construccio_desde" name="any_construccio_desde" value="<?= htmlspecialchars($anyConstruccioDesde) ?>" class="campoFicha_Blanca yearInput" min="0" step="1">
                                 </div>
 
-                                <div class="filtroField w-any">
+                                <div class="filtroField c-2">
                                     <label for="any_construccio_fins" class="formularioFiltro">Any de construcció (fins a)</label>
                                     <input type="number" id="any_construccio_fins" name="any_construccio_fins" value="<?= htmlspecialchars($anyConstruccioFins) ?>" class="campoFicha_Blanca yearInput" min="0" step="1">
                                 </div>
 
-                                <div class="w-actions">
-                                    <div class="filtroField" style="min-width:220px;">
-                                        <label for="cadastre_us_principal" class="formularioFiltro">Ús principal</label>
-                                        <select id="cadastre_us_principal" name="cadastre_us_principal" class="campoFicha_Blanca">
-                                            <option value="tots" <?= $usPrincipalFiltro === 'tots' ? 'selected' : '' ?>>Tots</option>
-                                            <?php if ($result_us_principal) {
-                                                while ($row = $result_us_principal->fetch_assoc()):
-                                                    $val = $row['cadastre_us_principal']; ?>
-                                                <option value="<?= htmlspecialchars($val) ?>" <?= $val === $usPrincipalFiltro ? 'selected' : '' ?>>
-                                                    <?= htmlspecialchars($val) ?>
-                                                </option>
-                                            <?php endwhile;
-                                            } ?>
-                                        </select>
-                                    </div>
-                                    <div class="filtroField" style="min-width:220px;">
-    <label for="amb_ref_cadastral" class="formularioFiltro">Amb referència cadastral</label>
-    <select id="amb_ref_cadastral" name="amb_ref_cadastral" class="campoFicha_Blanca">
-        <option value="tots" <?= $ambRefCadastral === 'tots' ? 'selected' : '' ?>>Tots</option>
-        <option value="si" <?= $ambRefCadastral === 'si' ? 'selected' : '' ?>>Sí</option>
-        <option value="no" <?= $ambRefCadastral === 'no' ? 'selected' : '' ?>>No</option>
-    </select>
-</div>
-<button type="submit" class="boton">Cercar</button>
+                                <div class="filtroField c-4">
+                                    <label for="cadastre_us_principal" class="formularioFiltro">Ús principal</label>
+                                    <select id="cadastre_us_principal" name="cadastre_us_principal" class="campoFicha_Blanca">
+                                        <option value="tots" <?= $usPrincipalFiltro === 'tots' ? 'selected' : '' ?>>Tots</option>
+                                        <?php if ($result_us_principal) {
+                                            while ($row = $result_us_principal->fetch_assoc()):
+                                                $val = $row['cadastre_us_principal']; ?>
+                                            <option value="<?= htmlspecialchars($val) ?>" <?= $val === $usPrincipalFiltro ? 'selected' : '' ?>>
+                                                <?= htmlspecialchars($val) ?>
+                                            </option>
+                                        <?php endwhile;
+                                        } ?>
+                                    </select>
+                                </div>
+
+                                <div class="form-group ref-cat">
+                                    <label for="ref_cadastral" class="formularioFiltro">Amb referència cadastral</label>
+                                    <select name="ref_cadastral" id="ref_cadastral" class="campoFicha_Blanca">
+                                        <option value="">Tots</option>
+                                        <option value="S">Sí</option>
+                                        <option value="N">No</option>
+                                    </select>
+                                </div>
+
+
+                                <div class="filtroBtn">
+                                    <button type="submit" class="boton">Cercar</button>
                                 </div>
                             </div>
                         </form>
