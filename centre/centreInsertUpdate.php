@@ -23,6 +23,7 @@
 	$cadastre_parcela_localitzacio = $_POST['cadastre_parcela_localitzacio'] ?? null;
 	$cadastre_sup_grafica_m2 = $_POST['cadastre_sup_grafica_m2'] ?? null;
 	$cadastre_font = $_POST['cadastre_font'] ?? 'SEC-OVC';
+	$usPrincipalFiltro = isset($_GET['cadastre_us_principal']) ? $_GET['cadastre_us_principal'] : null;
 	if ($id != null || $id != "") {
 		// Actualizar
 		$sql = "UPDATE CENTRES SET 
@@ -54,11 +55,13 @@
 		$stmt->bind_param(
 			'sssiissssssssssssssss',
 			$codi, $sigla, $centre, $id_illa, $id_municipi,
-			$telefon, $fax, $email, $cp, $localitat, $adreca
+			$telefon, $fax, $email, $cp, $localitat, $adreca, $ref_cadastral, $cadastre_localitzacio, $cadastre_classe,
+			$cadastre_us_principal, $cadastre_sup_construida_m2, $cadastre_any_construccio, $cadastre_parcela_tipus,
+			$cadastre_parcela_localitzacio, $cadastre_sup_grafica_m2, $cadastre_font
 		);
 	}
 	if ($stmt->execute()) {
-		header("Location: centreListFiltro.php");
+		header("Location: centreListFiltro.php?cadastre_us_principal=$usPrincipalFiltro");
 	} else {
 		echo "Error: " . $connexio->error;
 	}

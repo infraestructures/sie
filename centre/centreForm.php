@@ -5,6 +5,7 @@
 	// Recupera el id de la solicitud GET
 	$id = isset($_GET['id']) ? $_GET['id'] : null;
 	$id_illa = isset($_GET['id_illa']) ? $_GET['id_illa'] : null;
+	$usPrincipalFiltro = isset($_GET['cadastre_us_principal']) ? $_GET['cadastre_us_principal'] : null;
 
 	// Datos del centro (inicialmente en blanco)
 	$codi = "";
@@ -186,7 +187,7 @@
 							<input type="hidden" name="id" value="<?php echo $id ?>">
 
 							<label for="codi" class="campoFicha_Blanca">Codi:</label>
-							<input type="text" id="codi" name="codi" class="formularioFicha" value="<?php echo $codi; ?>" required><br><br>
+							<input type="text" id="codi" name="codi" class="formularioFicha" value="<?php echo $codi; ?>"><br><br>
 
 							<label for="sigla" class="campoFicha_Blanca">Sigla:</label>
 							<select id="sigla" name="sigla" class="formularioFicha" onchange="mostrarNombre(this)" required>
@@ -211,10 +212,10 @@
 							?></span><br><br>
 
 							<label for="centre" class="campoFicha_Blanca">Centre:</label>
-							<input type="text" id="centre" name="centre" class="formularioFicha" size="30" value="<?php echo $centre; ?>" required><br><br>
+							<input type="text" id="centre" name="centre" class="formularioFicha" size="50" value="<?php echo $centre; ?>" required><br><br>
 							
 							<label for="adreca" class="campoFicha_Blanca">Adreça:</label>
-							<input type="text" id="adreca" name="adreca" class="formularioFicha" size="80" value="<?php echo $adreca; ?>" required><br><br>
+							<input type="text" id="adreca" name="adreca" class="formularioFicha" size="80" value="<?php echo $adreca; ?>"><br><br>
 
 							<label for="cp" class="campoFicha_Blanca">Codi Postal:</label>
 							<input type="text" id="cp" name="cp" class="formularioFicha" value="<?php echo $cp; ?>" required><br><br>
@@ -242,13 +243,13 @@
 							<input type="text" id="localitat" name="localitat" class="formularioFicha" size="30" value="<?php echo $localitat; ?>" required><br><br>
 
 							<label for="telefon" class="campoFicha_Blanca">Telèfon:</label>
-							<input type="text" id="telefon" name="telefon" class="formularioFicha" value="<?php echo $telefon; ?>" required><br><br>
+							<input type="text" id="telefon" name="telefon" class="formularioFicha" value="<?php echo $telefon; ?>"><br><br>
 
 							<label for="fax" class="campoFicha_Blanca">Fax:</label>
 							<input type="text" id="fax" name="fax" class="formularioFicha" value="<?php echo $fax; ?>"><br><br>
 
 							<label for="email" class="campoFicha_Blanca">Email:</label>
-							<input type="email" id="email" name="email" class="formularioFicha" size="30" value="<?php echo $email; ?>" required><br><br>
+							<input type="email" id="email" name="email" class="formularioFicha" size="50" value="<?php echo $email; ?>"><br><br>
 							<div class="espacioMarronClaro"></div>
 					</div>
 				</div>
@@ -351,6 +352,7 @@
 		<?php } ?>
 		<li class="fondoBotoneraFicha">
 			<input type="submit" class="boton" value="Desar canvis">
+			<input type="hidden" name="us_principal" value="<?php echo $usPrincipalFiltro ?>">
 		</li>		
 		</form>
 		<!-- Formulario para eliminar -->
@@ -373,7 +375,7 @@
 			</button>	
 		</li>		-->
 		<li class="volverFicha">
-			<input type="button" class="boton" value="Tornar al llistat" onclick="window.location.href='centreListFiltro.php?id=<?php echo $id ?>';">
+			<input type="button" class="boton" value="Tornar al llistat" onclick="window.location.href='centreListFiltro.php?cadastre_us_principal=<?php echo $usPrincipalFiltro ?>';">
 		</li>			
 	</div>
 	<br />

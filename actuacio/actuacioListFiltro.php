@@ -104,7 +104,9 @@ $sql = "SELECT
 if (!empty($codiFiltro)) {
     $sql .= " AND a.codi LIKE '%" . $connexio->real_escape_string($codiFiltro) . "%'";
 }
-if (!empty($centreFiltro)) {
+if (!empty($idCentre)) {
+    $sql .= " AND a.centre_id = " . intval($idCentre);
+} elseif (!empty($centreFiltro)) {
     $sql .= " AND c.Centre LIKE '%" . $connexio->real_escape_string($centreFiltro) . "%'";
 }
 if (!empty($illaFiltro)) {
@@ -281,6 +283,89 @@ if (!$result_actuacions) {
                 cargarEstats($(this).val());
             });
        
+
+            // Autocompletar centre (via ajax_centres.php)
+            function initCentreAutocompleteFiltro() {
+                const input = document.getElementById('centre_filtro');
+                const hidden = document.getElementById('id_centre');
+                const box = document.getElementById('centre_suggest');
+                if (!input || !hidden || !box) return;
+
+                let lastFetch = 0;
+                let timer = null;
+                let lastQuery = '';
+
+                function hideBox() { box.style.display = 'none'; box.innerHTML = ''; }
+                function showBox() { box.style.display = 'block'; }
+                function clearSelection() { hidden.value = ''; }
+
+                function render(items) {
+                    box.innerHTML = '';
+                    if (!items.length) {
+                        const div = document.createElement('div');
+                        div.style.padding = '8px';
+                        div.style.color = '#666';
+                        div.textContent = 'Sense resultats';
+                        box.appendChild(div);
+                        showBox();
+                        return;
+                    }
+                    items.forEach(it => {
+                        const row = document.createElement('div');
+                        row.style.padding = '8px';
+                        row.style.cursor = 'pointer';
+                        row.style.borderBottom = '1px solid #eee';
+                        row.textContent = it.nom;
+                        row.addEventListener('mousedown', e => {
+                            e.preventDefault();
+                            input.value = it.nom;
+                            hidden.value = it.id;
+                            hideBox();
+                        });
+                        box.appendChild(row);
+                    });
+                    showBox();
+                }
+
+                async function fetchCentres(q) {
+                    const now = Date.now();
+                    lastFetch = now;
+                    try {
+                        const r = await fetch('ajax_centres.php?q=' + encodeURIComponent(q));
+                        if (!r.ok) return;
+                        const data = await r.json();
+                        if (lastFetch !== now) return;
+                        render(data);
+                    } catch (e) { /* ignore */ }
+                }
+
+                input.addEventListener('input', () => {
+                    const q = input.value.trim();
+                    clearSelection();
+                    if (timer) clearTimeout(timer);
+                    if (q.length < 2) { hideBox(); return; }
+                    timer = setTimeout(() => {
+                        if (q === lastQuery) return;
+                        lastQuery = q;
+                        fetchCentres(q);
+                    }, 250);
+                });
+
+                input.addEventListener('focus', () => {
+                    const q = input.value.trim();
+                    if (q.length >= 2) fetchCentres(q);
+                });
+
+                document.addEventListener('click', (e) => {
+                    if (!box.contains(e.target) && e.target !== input) hideBox();
+                });
+
+                input.addEventListener('keydown', (e) => {
+                    if (e.key === 'Escape') hideBox();
+                });
+            }
+
+            initCentreAutocompleteFiltro();
         });
 
     </script>  
@@ -304,7 +389,11 @@ if (!$result_actuacions) {
       </td>
       <td class="contenedorCamposFiltro">
         <label for="centre_filtro" class="formularioFiltro">Centre:</label>
-        <input type="text" name="centre_filtro" value="<?= htmlspecialchars($centreFiltro) ?>">
+        <div style="position:relative;">
+          <input type="text" id="centre_filtro" name="centre_filtro" value="<?= htmlspecialchars($centreFiltro) ?>" autocomplete="off">
+          <input type="hidden" id="id_centre" name="id_centre" value="<?= htmlspecialchars($idCentre) ?>">
+          <div id="centre_suggest" style="display:none; position:absolute; left:0; right:0; top:100%; z-index:9999; background:#fff; border:1px solid #ddd; border-top:none; max-height:260px; overflow:auto; box-shadow:0 6px 18px rgba(0,0,0,.08);"></div>
+        </div>
       </td>
       <td class="contenedorCamposFiltro">
         <label for="illa_filtro" class="formularioFiltro">Illa:</label>
