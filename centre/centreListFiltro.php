@@ -12,7 +12,14 @@ $tipusCentreFiltro = isset($_GET['tipus_centre_filtro']) ? $_GET['tipus_centre_f
 $centreIdFiltro = isset($_GET['centre_id']) ? $_GET['centre_id'] : '';
 
 // Filtre per ús principal
-$usPrincipalFiltro = isset($_GET['cadastre_us_principal']) ? $_GET['cadastre_us_principal'] : 'tots';
+$usPrincipalFiltro = isset($_GET['cadastre_us_principal_filtro']) ? $_GET['cadastre_us_principal_filtro'] : 'tots';
+
+$paramsReturn = $_GET;
+unset($paramsReturn['return_qs']);
+$return_qs = http_build_query($paramsReturn);
+$return_qs_param = $return_qs !== '' ? ('return_qs=' . urlencode($return_qs)) : '';
+$return_qs_prefix = $return_qs_param !== '' ? ('?' . $return_qs_param) : '';
+$return_qs_after_id = $return_qs_param !== '' ? ('&' . $return_qs_param) : '';
 
 // Filtres cadastrals
 $anyConstruccioDesde = isset($_GET['any_construccio_desde']) ? $_GET['any_construccio_desde'] : '';
@@ -423,8 +430,8 @@ $result = $connexio->query($sql); ?>
                                 </div>
 
                                 <div class="filtroField c-4">
-                                    <label for="cadastre_us_principal" class="formularioFiltro">Ús principal</label>
-                                    <select id="cadastre_us_principal" name="cadastre_us_principal" class="campoFicha_Blanca">
+                                    <label for="cadastre_us_principal_filtro" class="formularioFiltro">Ús principal</label>
+                                    <select id="cadastre_us_principal_filtro" name="cadastre_us_principal_filtro" class="campoFicha_Blanca">
                                         <option value="tots" <?= $usPrincipalFiltro === 'tots' ? 'selected' : '' ?>>Tots</option>
                                         <?php if ($result_us_principal) {
                                             while ($row = $result_us_principal->fetch_assoc()):
@@ -461,7 +468,7 @@ $result = $connexio->query($sql); ?>
     <ul class="botoneraListado">
         <li class="tituloListado">LLISTAT DE CENTRES</li>
         <li class="fondoBotoneraListado">
-            <input type="button" class="boton" value="Nou centre" onclick="location.href='centreForm.php';">
+            <input type="button" class="boton" value="Nou centre" onclick="location.href='centreForm.php<?php echo $return_qs_prefix; ?>';">
         </li>
     </ul>
 
@@ -485,7 +492,7 @@ $result = $connexio->query($sql); ?>
                 $total = 0;
                 if ($result->num_rows > 0) {
                     while ($row = $result->fetch_assoc()) {
-                        echo "<tr onclick=\"window.location.href='centreForm.php?id=" . $row["id"] . "'\">";
+                        echo "<tr onclick=\"window.location.href='centreForm.php?id=" . $row["id"] . $return_qs_after_id . "'\">";
                         echo "<td class='campoListadoInicial'>" . $row["Codi"] . "</td>";
                         echo "<td class='campoListado'>" . $row["Centre"] . "</td>";
                         echo "<td class='campoListado'>" . $row["Telefon"] . "</td>";

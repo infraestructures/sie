@@ -1,72 +1,74 @@
 <!DOCTYPE html>
 <?php
-	include '../connectarBD.php';
-	
-	// Recupera el id de la solicitud GET
-	$id = isset($_GET['id']) ? $_GET['id'] : null;
-	$id_illa = isset($_GET['id_illa']) ? $_GET['id_illa'] : null;
-	$usPrincipalFiltro = isset($_GET['cadastre_us_principal']) ? $_GET['cadastre_us_principal'] : null;
+include '../connectarBD.php';
 
-	// Datos del centro (inicialmente en blanco)
-	$codi = "";
-	$sigla = "";
-	$centre = "";
-	$adreca = "";
-	$cp = "";
-	$localitat = "";
-	$id_municipi = "";
-	$telefon = "";
-	$fax = "";
-	$email = "";
+// Recupera el id de la solicitud GET
+$id = isset($_GET['id']) ? $_GET['id'] : null;
+$id_illa = isset($_GET['id_illa']) ? $_GET['id_illa'] : null;
+$usPrincipalFiltro = isset($_GET['cadastre_us_principal_filtro']) ? $_GET['cadastre_us_principal_filtro'] : null;
+
+$return_qs = isset($_GET['return_qs']) ? $_GET['return_qs'] : '';
+
+// Datos del centro (inicialmente en blanco)
+$codi = "";
+$sigla = "";
+$centre = "";
+$adreca = "";
+$cp = "";
+$localitat = "";
+$id_municipi = "";
+$telefon = "";
+$fax = "";
+$email = "";
 
 
-	// Informació cadastral
-	$ref_cadastral = "";
-	$cadastre_localitzacio = "";
-	$cadastre_classe = "";
-	$cadastre_us_principal = "";
-	$cadastre_sup_construida_m2 = "";
-	$cadastre_any_construccio = "";
-	$cadastre_parcela_tipus = "";
-	$cadastre_parcela_localitzacio = "";
-	$cadastre_sup_grafica_m2 = "";
-	$cadastre_data_consulta = "";
-	$cadastre_font = "";
+// Informació cadastral
+$ref_cadastral = "";
+$cadastre_localitzacio = "";
+$cadastre_classe = "";
+$cadastre_us_principal = "";
+$cadastre_sup_construida_m2 = "";
+$cadastre_any_construccio = "";
+$cadastre_parcela_tipus = "";
+$cadastre_parcela_localitzacio = "";
+$cadastre_sup_grafica_m2 = "";
+$cadastre_data_consulta = "";
+$cadastre_font = "";
 
-	// Si s'ha proporcionat un id, recupera les dades del centre
-	if ($id) {
-		$sql = "SELECT id, Codi, Sigla, Centre, Adreca, CP, Localitat, id_municipi, id_illa, Telefon, Fax, email, ref_cadastral, cadastre_localitzacio, cadastre_classe, cadastre_us_principal, cadastre_sup_construida_m2, cadastre_any_construccio, cadastre_parcela_tipus, cadastre_parcela_localitzacio, cadastre_sup_grafica_m2, cadastre_data_consulta, cadastre_font FROM centres WHERE id = $id";
-		$result = $connexio->query($sql);
+// Si s'ha proporcionat un id, recupera les dades del centre
+if ($id) {
+    $sql = "SELECT id, Codi, Sigla, Centre, Adreca, CP, Localitat, id_municipi, id_illa, Telefon, Fax, email, ref_cadastral, cadastre_localitzacio, cadastre_classe, cadastre_us_principal, cadastre_sup_construida_m2, cadastre_any_construccio, cadastre_parcela_tipus, cadastre_parcela_localitzacio, cadastre_sup_grafica_m2, cadastre_data_consulta, cadastre_font FROM centres WHERE id = $id";
+    $result = $connexio->query($sql);
 
-		if ($result->num_rows > 0) {
-			$row = $result->fetch_assoc();
-			// Asigna los valores de la consulta a las variables
-			$codi = $row['Codi'];
-			$sigla = $row['Sigla'];
-			$centre = $row['Centre'];
-			$adreca = $row['Adreca'];
-			$cp = $row['CP'];
-			$localitat = $row['Localitat'];
-			$id_municipi = $row['id_municipi'];
-			$id_illa = $row['id_illa'];
-			$telefon = $row['Telefon'];
-			$fax = $row['Fax'];
-			$email = $row['email'];
+    if ($result->num_rows > 0) {
+        $row = $result->fetch_assoc();
+        // Asigna los valores de la consulta a las variables
+        $codi = $row['Codi'];
+        $sigla = $row['Sigla'];
+        $centre = $row['Centre'];
+        $adreca = $row['Adreca'];
+        $cp = $row['CP'];
+        $localitat = $row['Localitat'];
+        $id_municipi = $row['id_municipi'];
+        $id_illa = $row['id_illa'];
+        $telefon = $row['Telefon'];
+        $fax = $row['Fax'];
+        $email = $row['email'];
 
-			// Informació cadastral
-			$ref_cadastral = $row['ref_cadastral'] ?? "";
-			$cadastre_localitzacio = $row['cadastre_localitzacio'] ?? "";
-			$cadastre_classe = $row['cadastre_classe'] ?? "";
-			$cadastre_us_principal = $row['cadastre_us_principal'] ?? "";
-			$cadastre_sup_construida_m2 = $row['cadastre_sup_construida_m2'] ?? "";
-			$cadastre_any_construccio = $row['cadastre_any_construccio'] ?? "";
-			$cadastre_parcela_tipus = $row['cadastre_parcela_tipus'] ?? "";
-			$cadastre_parcela_localitzacio = $row['cadastre_parcela_localitzacio'] ?? "";
-			$cadastre_sup_grafica_m2 = $row['cadastre_sup_grafica_m2'] ?? "";
-			$cadastre_data_consulta = $row['cadastre_data_consulta'] ?? "";
-			$cadastre_font = $row['cadastre_font'] ?? "";
-		}
-		$sql_actuacions = "SELECT
+        // Informació cadastral
+        $ref_cadastral = $row['ref_cadastral'] ?? "";
+        $cadastre_localitzacio = $row['cadastre_localitzacio'] ?? "";
+        $cadastre_classe = $row['cadastre_classe'] ?? "";
+        $cadastre_us_principal = $row['cadastre_us_principal'] ?? "";
+        $cadastre_sup_construida_m2 = $row['cadastre_sup_construida_m2'] ?? "";
+        $cadastre_any_construccio = $row['cadastre_any_construccio'] ?? "";
+        $cadastre_parcela_tipus = $row['cadastre_parcela_tipus'] ?? "";
+        $cadastre_parcela_localitzacio = $row['cadastre_parcela_localitzacio'] ?? "";
+        $cadastre_sup_grafica_m2 = $row['cadastre_sup_grafica_m2'] ?? "";
+        $cadastre_data_consulta = $row['cadastre_data_consulta'] ?? "";
+        $cadastre_font = $row['cadastre_font'] ?? "";
+    }
+    $sql_actuacions = "SELECT
 					a.id,
 					a.codi,
 					a.descripcio,
@@ -104,43 +106,43 @@
 				ORDER BY CAST(SUBSTRING_INDEX(a.codi, '-', -1) AS UNSIGNED)
 				";
 
-		$result_actuacions = $connexio->query($sql_actuacions);
+    $result_actuacions = $connexio->query($sql_actuacions);
 
-		if (!$result_actuacions) {
-			die("S'ha produit un error al consultar les actuacions: " . $connexio->error);
-		}
-	}
-
-	// Consulta per obtenir la llista d'illes, municipis i localitats
-	$sql_illes = "SELECT id, nom FROM Illa";
-	$result_illes = $connexio->query($sql_illes);
-
-	$sql_municipis = $id_illa
-		? "SELECT id, nom FROM Municipi WHERE illa_id = $id_illa ORDER BY nom"
-		: "SELECT id, nom FROM Municipi ORDER BY nom";
-	$result_municipis = $connexio->query($sql_municipis);
-	
-    // Consulta para obtener las siglas y nombres de la tabla "tipus_centre_educatiu "
-    $sql_siglas = "SELECT Sigla, nom FROM tipus_centre_educatiu ";
-    $result_siglas = $connexio->query($sql_siglas);
-
-    $siglas_lista = [];
-    if ($result_siglas->num_rows > 0) {
-        while ($row = $result_siglas->fetch_assoc()) {
-            $siglas_lista[] = $row;
-        }
+    if (!$result_actuacions) {
+        die("S'ha produit un error al consultar les actuacions: " . $connexio->error);
     }
+}
 
-	
+// Consulta per obtenir la llista d'illes, municipis i localitats
+$sql_illes = "SELECT id, nom FROM Illa";
+$result_illes = $connexio->query($sql_illes);
 
-	// Formata el timestamp per a l'input datetime-local (YYYY-MM-DDTHH:MM)
-	$cadastre_data_consulta_html = "";
-	if (!empty($cadastre_data_consulta)) {
-		$ts = strtotime($cadastre_data_consulta);
-		if ($ts !== false) {
-			$cadastre_data_consulta_html = date('Y-m-d\TH:i', $ts);
-		}
-	}
+$sql_municipis = $id_illa
+    ? "SELECT id, nom FROM Municipi WHERE illa_id = $id_illa ORDER BY nom"
+    : "SELECT id, nom FROM Municipi ORDER BY nom";
+$result_municipis = $connexio->query($sql_municipis);
+
+// Consulta para obtener las siglas y nombres de la tabla "tipus_centre_educatiu "
+$sql_siglas = "SELECT Sigla, nom FROM tipus_centre_educatiu ";
+$result_siglas = $connexio->query($sql_siglas);
+
+$siglas_lista = [];
+if ($result_siglas->num_rows > 0) {
+    while ($row = $result_siglas->fetch_assoc()) {
+        $siglas_lista[] = $row;
+    }
+}
+
+
+
+// Formata el timestamp per a l'input datetime-local (YYYY-MM-DDTHH:MM)
+$cadastre_data_consulta_html = "";
+if (!empty($cadastre_data_consulta)) {
+    $ts = strtotime($cadastre_data_consulta);
+    if ($ts !== false) {
+        $cadastre_data_consulta_html = date('Y-m-d\TH:i', $ts);
+    }
+}
 
 ?>	
 
@@ -193,23 +195,23 @@
 							<select id="sigla" name="sigla" class="formularioFicha" onchange="mostrarNombre(this)" required>
                             <option value="">Seleccione una sigla</option>
                             <?php foreach ($siglas_lista as $sigla_item): ?>
-								<option value="<?php echo $sigla_item['Sigla'];?>" 
-										<?php echo ($sigla == $sigla_item['Sigla'])? 'selected': '';?>
-										data-nombre="<?php echo $sigla_item['nom'];?>"> 
-									<?php echo $sigla_item['Sigla'];?>
+								<option value="<?php echo $sigla_item['Sigla']; ?>" 
+										<?php echo ($sigla == $sigla_item['Sigla']) ? 'selected' : ''; ?>
+										data-nombre="<?php echo $sigla_item['nom']; ?>"> 
+									<?php echo $sigla_item['Sigla']; ?>
 								</option>
                             <?php endforeach; ?>
 							</select>
-							<span id="nombreSigla" class="formularioFicha" size="50"><?php 
-								if ($sigla) {
-									foreach ($siglas_lista as $sigla_item) {
-										if ($sigla_item['Sigla'] == $sigla) {
-											echo $sigla_item['nom'];
-											break;
-										}
-									}
-								}
-							?></span><br><br>
+							<span id="nombreSigla" class="formularioFicha" size="50"><?php
+                            if ($sigla) {
+                                foreach ($siglas_lista as $sigla_item) {
+                                    if ($sigla_item['Sigla'] == $sigla) {
+                                        echo $sigla_item['nom'];
+                                        break;
+                                    }
+                                }
+                            }
+                            ?></span><br><br>
 
 							<label for="centre" class="campoFicha_Blanca">Centre:</label>
 							<input type="text" id="centre" name="centre" class="formularioFicha" size="50" value="<?php echo $centre; ?>" required><br><br>
@@ -222,7 +224,7 @@
 								<label for="id_illa" class="campoFicha_Blanca">Illa:</label>
 								<select id="id_illa" name="id_illa" class="formularioFicha" required>
 									<option value="">Selecciona una illa</option>
-									<?php while ($row = $result_illes->fetch_assoc()) : ?>
+									<?php while ($row = $result_illes->fetch_assoc()): ?>
 										<option value="<?php echo $row['id']; ?>" <?php echo ($row['id'] == $id_illa) ? 'selected' : ''; ?>>
 											<?php echo $row['nom']; ?>
 										</option>
@@ -232,7 +234,7 @@
 								<label for="id_municipi" class="campoFicha_Blanca">Municipi:</label>
 								<select id="id_municipi" name="id_municipi" class="formularioFicha" required>
 									<option value="">Selecciona un municipi</option>
-									<?php while ($row = $result_municipis->fetch_assoc()) : ?>
+									<?php while ($row = $result_municipis->fetch_assoc()): ?>
 										<option value="<?php echo $row['id']; ?>" <?php echo ($row['id'] == $id_municipi) ? 'selected' : ''; ?>>
 											<?php echo $row['nom']; ?>
 										</option>
@@ -267,7 +269,7 @@
 						<input type="text" id="cadastre_localitzacio" name="cadastre_localitzacio" class="formularioFicha" size="120" value="<?php echo htmlspecialchars($cadastre_localitzacio); ?>" maxlength="255"><br><br>
 
 						<label for="cadastre_classe" class="campoFicha_Blanca">Classe:</label>
-						<input type="text" id="cadastre_classe" name="cadastre_classe" class="formularioFicha" value="<?php echo htmlspecialchars($cadastre_classe); ?>" maxlength="20"><br><br>
+						<input type="text" id="cadastre_classe" name="cadastre_classe" class="formularioFicha" value="<?php echo htmlspecialchars($cadastre_classe); ?>" maxlength="30"><br><br>
 
 						<label for="cadastre_us_principal" class="campoFicha_Blanca">Ús principal:</label>
 						<input type="text" id="cadastre_us_principal" name="cadastre_us_principal" class="formularioFicha" value="<?php echo htmlspecialchars($cadastre_us_principal); ?>" maxlength="50"><br><br>
@@ -352,7 +354,8 @@
 		<?php } ?>
 		<li class="fondoBotoneraFicha">
 			<input type="submit" class="boton" value="Desar canvis">
-			<input type="hidden" name="us_principal" value="<?php echo $usPrincipalFiltro ?>">
+			<input type="hidden" name="cadastre_us_principal_filtro" value="<?php echo $usPrincipalFiltro ?>">
+			<input type="hidden" name="return_qs" value="<?php echo htmlspecialchars($return_qs); ?>">
 		</li>		
 		</form>
 		<!-- Formulario para eliminar -->
@@ -375,7 +378,7 @@
 			</button>	
 		</li>		-->
 		<li class="volverFicha">
-			<input type="button" class="boton" value="Tornar al llistat" onclick="window.location.href='centreListFiltro.php?cadastre_us_principal=<?php echo $usPrincipalFiltro ?>';">
+			<input type="button" class="boton" value="Tornar al llistat" onclick="window.location.href='centreListFiltro.php<?php echo ($return_qs !== '' ? ('?' . $return_qs) : ''); ?>';">
 		</li>			
 	</div>
 	<br />
