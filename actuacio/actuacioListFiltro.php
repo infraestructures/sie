@@ -597,7 +597,6 @@ if (!$result_actuacions) {
             </tbody>
         </table>
     </div>
-    </form>
 </body>
 
 </html>

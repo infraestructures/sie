@@ -58,7 +58,7 @@
 		<div class="espacioMarron">&nbsp;</div>
 		<div id="fichaEditable" style="background-color:#ffffff;">
 		<div class="cabeceraFicha"></div>
-		<form name="entidad" method="post" action="documentActuacioInsertUpdate.php">
+		<form id="entidad" name="entidad" method="post" action="documentActuacioInsertUpdate.php">
 			<input type="hidden" name="id_actuacio" value="<?php echo $idActuacio ?>">
 			<input type="hidden" name="id_document" value="<?php echo $idDocument ?>">
 			<div class="contenedorFicha">
@@ -73,19 +73,22 @@
 					</div>
 				</div>
 			</div>				
-		</div>
-		<li class="fondoBotoneraFicha">
-			<button type="submit" class="boton">Desar canvis</button>
-		</li>
-		<li class="volverFicha">
-			<button type="button" class="boton"onclick="window.history.back();">Tornar al llistat</button>
-		</li>		
 		</form>
-		<!-- Formulario para eliminar -->
-		<form method="get" action="documentActuacioDelete.php">
-			<input type="hidden" name="id_document" value="<?php echo $idDocument ?>">
-			<input type="hidden" name="id_actuacio" value="<?php echo $idActuacio ?>">
-			<button type="submit" class="boton" onclick="return confirm('¿Estàs segur de borrar aquest document?');">Eliminar</button>
-		</form>		
+		</div>
+		<ul class="botoneraFicha">
+			<li class="fondoBotoneraFicha">
+				<button type="submit" form="entidad" class="boton">Desar canvis</button>
+			</li>
+			<li class="fondoBotoneraFicha">
+				<form method="get" action="documentActuacioDelete.php" style="display:inline;">
+					<input type="hidden" name="id_document" value="<?php echo $idDocument ?>">
+					<input type="hidden" name="id_actuacio" value="<?php echo $idActuacio ?>">
+					<button type="submit" class="boton" onclick="return confirm('??Est??s segur de borrar aquest document?');">Eliminar</button>
+				</form>
+			</li>
+			<li class="volverFicha">
+				<button type="button" class="boton"onclick="window.history.back();">Tornar al llistat</button>
+			</li>
+		</ul>
 	</body>
 </html>

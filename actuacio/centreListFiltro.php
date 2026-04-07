@@ -138,7 +138,6 @@ $result = $connexio->query($sql);?>
             </tbody>
         </table>
     </div>
-    </form>
 </body>
 
 </html>

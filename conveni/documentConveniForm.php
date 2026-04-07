@@ -58,7 +58,7 @@
 		<div class="espacioMarron">&nbsp;</div>
 		<div id="fichaEditable" style="background-color:#ffffff;">
 		<div class="cabeceraFicha"></div>
-		<form name="entidad" method="post" action="documentConveniInsertUpdate.php">
+		<form id="entidad" name="entidad" method="post" action="documentConveniInsertUpdate.php">
 			<input type="hidden" name="id_conveni" value="<?php echo $idConveni ?>">
 			<input type="hidden" name="id_document" value="<?php echo $idDocument ?>">
 			<div class="contenedorFicha">
@@ -73,19 +73,22 @@
 					</div>
 				</div>
 			</div>				
-		</div>
-		<li class="fondoBotoneraFicha">
-			<input type="submit" class="boton" onclick="return confirm('Estàs segur de desar els canvis?');" value="Desar canvis">
-		</li>
-		<li class="volverFicha">
-			<button type="button" class="boton"onclick="window.history.back();">Tornar al llistat</button>
-		</li>		
 		</form>
-		<!-- Formulario para eliminar -->
-		<form method="get" action="documentConveniDelete.php">
-			<input type="hidden" name="id_document" value="<?php echo $idDocument ?>">
-			<input type="hidden" name="id_conveni" value="<?php echo $idConveni ?>">
-			<button type="submit" class="boton" onclick="return confirm('¿Estàs segur de borrar aquest document?');">Eliminar</button>
-		</form>		
+		</div>
+		<ul class="botoneraFicha">
+			<li class="fondoBotoneraFicha">
+				<input type="submit" form="entidad" class="boton" onclick="return confirm('Est??s segur de desar els canvis?');" value="Desar canvis">
+			</li>
+			<li class="fondoBotoneraFicha">
+				<form method="get" action="documentConveniDelete.php" style="display:inline;">
+					<input type="hidden" name="id_document" value="<?php echo $idDocument ?>">
+					<input type="hidden" name="id_conveni" value="<?php echo $idConveni ?>">
+					<button type="submit" class="boton" onclick="return confirm('??Est??s segur de borrar aquest document?');">Eliminar</button>
+				</form>
+			</li>
+			<li class="volverFicha">
+				<button type="button" class="boton"onclick="window.history.back();">Tornar al llistat</button>
+			</li>
+		</ul>
 	</body>
 </html>

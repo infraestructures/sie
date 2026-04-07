@@ -181,7 +181,7 @@ if (!empty($cadastre_data_consulta)) {
 		<div class="espacioMarron">&nbsp;</div>
 		<div id="fichaEditable" style="background-color:#ffffff;">
 		<div class="cabeceraFicha"></div>
-		<form name="entidad" method="post" action="centreInsertUpdate.php">
+		<form id="entidad" name="entidad" method="post" action="centreInsertUpdate.php">
 			<div class="contenedorFicha">
 				<div class="tituloSeccion"><p class="textoTituloSeccion">Datos generales</p></div>
 				<div class="contenidoSeccion">
@@ -256,7 +256,6 @@ if (!empty($cadastre_data_consulta)) {
 					</div>
 				</div>
 			</div>				
-		</div>
 	
 			<div class="contenedorFicha">
 				<div class="tituloSeccion"><p class="textoTituloSeccion">Informació cadastral</p></div>
@@ -352,34 +351,35 @@ if (!empty($cadastre_data_consulta)) {
         </table>
     </div>
 		<?php } ?>
-		<li class="fondoBotoneraFicha">
-			<input type="submit" class="boton" value="Desar canvis">
-			<input type="hidden" name="cadastre_us_principal_filtro" value="<?php echo $usPrincipalFiltro ?>">
-			<input type="hidden" name="return_qs" value="<?php echo htmlspecialchars($return_qs); ?>">
-		</li>		
+		<input type="hidden" name="cadastre_us_principal_filtro" value="<?php echo $usPrincipalFiltro ?>">
+		<input type="hidden" name="return_qs" value="<?php echo htmlspecialchars($return_qs); ?>">
 		</form>
-		<!-- Formulario para eliminar -->
-		<form method="post" action="centreDelete.php">
+		<ul class="botoneraFicha">
 			<li class="fondoBotoneraFicha">
-				<input type="hidden" name="id" value="<?php echo $id ?>">
-				<button type="submit" class="boton" onclick="return confirm('Estàs segur de borrar aquest centre?');">Eliminar</button>
+				<input type="submit" form="entidad" class="boton" value="Desar canvis">
 			</li>
-		</form>	
-		<!-- Botó Assignar 
-		<li class="fondoBotoneraFicha">
-			<button type="button" class="boton" onclick="location.href='espaiCentreList.php?id_centre=<?= htmlspecialchars($id) ?>&nom_centre=<?= htmlspecialchars($centre) ?>'">
-				Assignar Espais
-			</button>	
-		</li>
-		 Botó Actuacions
-		<li class="fondoBotoneraFicha">
-			<button type="button" class="boton" onclick="location.href='../actuacio/actuacioListFiltro.php?id_centre=<?= htmlspecialchars($id) ?>&nom_centre=<?= htmlspecialchars($centre) ?>'">
-				Actuacions
-			</button>	
-		</li>		-->
-		<li class="volverFicha">
-			<input type="button" class="boton" value="Tornar al llistat" onclick="window.location.href='centreListFiltro.php<?php echo ($return_qs !== '' ? ('?' . $return_qs) : ''); ?>';">
-		</li>			
+			<li class="fondoBotoneraFicha">
+				<form method="post" action="centreDelete.php" style="display:inline;">
+					<input type="hidden" name="id" value="<?php echo $id ?>">
+					<button type="submit" class="boton" onclick="return confirm('Est??s segur de borrar aquest centre?');">Eliminar</button>
+				</form>
+			</li>
+			<!-- Bot?? Assignar 
+			<li class="fondoBotoneraFicha">
+				<button type="button" class="boton" onclick="location.href='espaiCentreList.php?id_centre=<?= htmlspecialchars($id) ?>&nom_centre=<?= htmlspecialchars($centre) ?>'">
+					Assignar Espais
+				</button>	
+			</li>
+			 Bot?? Actuacions
+			<li class="fondoBotoneraFicha">
+				<button type="button" class="boton" onclick="location.href='../actuacio/actuacioListFiltro.php?id_centre=<?= htmlspecialchars($id) ?>&nom_centre=<?= htmlspecialchars($centre) ?>'">
+					Actuacions
+				</button>	
+			</li>		-->
+			<li class="volverFicha">
+				<input type="button" class="boton" value="Tornar al llistat" onclick="window.location.href='centreListFiltro.php<?php echo ($return_qs !== "" ? ('?' . $return_qs) : ""); ?>';">
+			</li>
+		</ul>
 	</div>
 	<br />
 	

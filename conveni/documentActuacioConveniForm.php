@@ -75,7 +75,7 @@
 		<div class="espacioMarron">&nbsp;</div>
 		<div id="fichaEditable" style="background-color:#ffffff;">
 		<div class="cabeceraFicha"></div>
-		<form name="entidad" method="post" action="documentActuacioConveniInsertUpdate.php">
+		<form id="entidad" name="entidad" method="post" action="documentActuacioConveniInsertUpdate.php">
 			<input type="hidden" name="id_actuacio" value="<?php echo $idActuacio ?>">
 			<input type="hidden" name="id_document" value="<?php echo $idDocument ?>">
 			<input type="hidden" name="id_centre" value="<?php echo $idCentre ?>">
@@ -102,21 +102,24 @@
 					</div>
 				</div>
 			</div>				
-		</div>
-		<li class="fondoBotoneraFicha">
-			<input type="submit" class="boton" onclick="return confirm('Estàs segur de desar els canvis?');" value="Desar canvis">
-		</li>
-		<li class="volverFicha">
-			<input type="button" class="boton" value="Tornar a la fitxa de l'actuació" onclick="window.location.href='actuacioConveniForm.php?id_centre=<?php echo $idCentre ?>&id_conveni=<?php echo $idConveni ?>&id=<?php echo $idActuacio ?>'">
-		</li>		
 		</form>
-		<!-- Formulario para eliminar -->
-		<form method="post" action="documentActuacioConveniDelete.php">
-			<input type="hidden" name="id_document" value="<?php echo $idDocument ?>">
-			<input type="hidden" name="id_actuacio" value="<?php echo $idActuacio ?>">
-			<input type="hidden" name="id_centre" value="<?php echo $idCentre ?>">
-			<input type="hidden" name="id_conveni" value="<?php echo $idConveni ?>">
-			<button type="submit" class="boton" onclick="return confirm('¿Estàs segur de borrar aquest document?');">Eliminar</button>
-		</form>		
+		</div>
+		<ul class="botoneraFicha">
+			<li class="fondoBotoneraFicha">
+				<input type="submit" form="entidad" class="boton" onclick="return confirm('Est??s segur de desar els canvis?');" value="Desar canvis">
+			</li>
+			<li class="fondoBotoneraFicha">
+				<form method="post" action="documentActuacioConveniDelete.php" style="display:inline;">
+					<input type="hidden" name="id_document" value="<?php echo $idDocument ?>">
+					<input type="hidden" name="id_actuacio" value="<?php echo $idActuacio ?>">
+					<input type="hidden" name="id_centre" value="<?php echo $idCentre ?>">
+					<input type="hidden" name="id_conveni" value="<?php echo $idConveni ?>">
+					<button type="submit" class="boton" onclick="return confirm('??Est??s segur de borrar aquest document?');">Eliminar</button>
+				</form>
+			</li>
+			<li class="volverFicha">
+				<input type="button" class="boton" value="Tornar a la fitxa de l'actuaci??" onclick="window.location.href='actuacioConveniForm.php?id_centre=<?php echo $idCentre ?>&id_conveni=<?php echo $idConveni ?>&id=<?php echo $idActuacio ?>'">
+			</li>
+		</ul>
 	</body>
 </html>

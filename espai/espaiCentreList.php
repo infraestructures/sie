@@ -45,7 +45,7 @@
 </head>
 
 <body class="contenido" onload="ocultarFondoPrincipal();">
-<form name="entidad">
+<form id="entidad" name="entidad">
 <ul class="botoneraListado" style="margin-top: 20px">
 	<li class="tituloListado">Llistat de espais assignats al <b><?php echo $nomCentre?></b></li>
 	<li class="fondoBotoneraListado">
@@ -92,12 +92,13 @@
 </table>
 </div>
 </form>
-<!-- Botó Càlcul d'espais -->
-<li class="fondoBotoneraFicha">
-	<button type="button" class="boton" onclick="location.href='calculEspais.php?id_centre=<?= htmlspecialchars($idCentre) ?>&nom_centre=<?= htmlspecialchars($nomCentre) ?>'">
-		Calcular Espais
-	</button>	
-</li>
+<ul class="botoneraFicha">
+	<li class="fondoBotoneraFicha">
+		<button type="button" class="boton" onclick="location.href='calculEspais.php?id_centre=<?= htmlspecialchars($idCentre) ?>&nom_centre=<?= htmlspecialchars($nomCentre) ?>'">
+			Calcular Espais
+		</button>	
+	</li>
+</ul>
 </body>
 </html>
 <?php

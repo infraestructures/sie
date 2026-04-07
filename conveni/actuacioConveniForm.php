@@ -107,7 +107,7 @@
 	<div class="espacioMarron">&nbsp;</div>
 	<div id="fichaEditable" style="background-color:#ffffff;">
 		<div class="cabeceraFicha"></div>
-			<form name="entidad" method="post" action="actuacioConveniInsertUpdate.php">
+			<form id="entidad" name="entidad" method="post" action="actuacioConveniInsertUpdate.php">
 				<div class="contenedorFicha">
 					<div class="tituloSeccion">
 						<p class="textoTituloSeccion">Dades generals</p>
@@ -229,27 +229,25 @@
 					</div>			
 				</div>
 				<?php endif; ?>	
-			</div>
 			
-			<li class="fondoBotoneraFicha">
-				<input type="submit" class="boton" onclick="return confirm('Estàs segur de desar els canvis?');" value="Desar canvis">
-			</li>
-		</div>	
 	</form>
-	<!-- Formulario para eliminar -->
-	<form method="get" action="actuacioConveniDelete.php">
+			</div>
+	<ul class="botoneraFicha">
 		<li class="fondoBotoneraFicha">
-			<input type="hidden" name="id" value="<?php echo $id ?>">
-			<input type="hidden" name="id_conveni" value="<?php echo $id_conveni ?>">
-			<input type="hidden" name="id_centre" value="<?php echo $id_centre ?>">
-			<button type="submit" class="boton" onclick="return confirm('Estàs segur de borrar aquesta actuació?');">Eliminar</button>
+			<input type="submit" form="entidad" class="boton" onclick="return confirm('Est??s segur de desar els canvis?');" value="Desar canvis">
 		</li>
-	</form>
-	
-	<li class="volverFicha">
-		<input type="button" class="boton" value="Tornar al centre" onclick="window.location.href='centreConveniForm.php?id_centre=<?php echo $id_centre ?>&id_conveni=<?php echo $id_conveni ?>'">
-
-	</li>
+		<li class="fondoBotoneraFicha">
+			<form method="get" action="actuacioConveniDelete.php" style="display:inline;">
+				<input type="hidden" name="id" value="<?php echo $id ?>">
+				<input type="hidden" name="id_conveni" value="<?php echo $id_conveni ?>">
+				<input type="hidden" name="id_centre" value="<?php echo $id_centre ?>">
+				<button type="submit" class="boton" onclick="return confirm('Est??s segur de borrar aquesta actuaci???');">Eliminar</button>
+			</form>
+		</li>
+		<li class="volverFicha">
+			<input type="button" class="boton" value="Tornar al centre" onclick="window.location.href='centreConveniForm.php?id_centre=<?php echo $id_centre ?>&id_conveni=<?php echo $id_conveni ?>'">
+		</li>
+	</ul>
 	<script>
 		document.addEventListener('DOMContentLoaded', function() {
 			document.querySelectorAll('.abrirEnlace').forEach(function(link) {

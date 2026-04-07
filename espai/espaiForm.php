@@ -51,7 +51,7 @@
 		<div class="espacioMarron">&nbsp;</div>
 		<div id="fichaEditable" style="background-color:#ffffff;">
 		<div class="cabeceraFicha"></div>
-		<form name="entidad" method="post" action="espaiInsertUpdate.php">
+		<form id="entidad" name="entidad" method="post" action="espaiInsertUpdate.php">
 			<div class="contenedorFicha">
 				<div class="tituloSeccion"><p class="textoTituloSeccion">Datos generales</p></div>
 				<div class="contenidoSeccion">
@@ -83,18 +83,21 @@
 					</div>
 				</div>
 			</div>				
-		</div>
-		<li class="fondoBotoneraFicha">
-			<input type="submit" class="boton" value="Desar canvis">
-		</li>
-		<li class="volverFicha">
-			<input type="button" class="boton" value="Tornar al llistat" onclick="window.history.back();">
-		</li>		
 		</form>
-		<!-- Formulario para eliminar -->
-		<form method="post" action="espaiDelete.php">
-			<input type="hidden" name="codi" value="<?php echo $codi ?>">
-			<button type="submit" class="boton" onclick="return confirm('¿Estàs segur de borrar aquest espai?');">Eliminar</button>
-		</form>		
+		</div>
+		<ul class="botoneraFicha">
+			<li class="fondoBotoneraFicha">
+				<input type="submit" form="entidad" class="boton" value="Desar canvis">
+			</li>
+			<li class="fondoBotoneraFicha">
+				<form method="post" action="espaiDelete.php" style="display:inline;">
+					<input type="hidden" name="codi" value="<?php echo $codi ?>">
+					<button type="submit" class="boton" onclick="return confirm('??Est??s segur de borrar aquest espai?');">Eliminar</button>
+				</form>
+			</li>
+			<li class="volverFicha">
+				<input type="button" class="boton" value="Tornar al llistat" onclick="window.history.back();">
+			</li>
+		</ul>
 	</body>
 </html>

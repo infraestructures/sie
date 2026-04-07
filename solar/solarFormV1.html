@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fitxa d’expedient de solar</title>
+
+  <link rel="stylesheet" href="../css/estilos.css" type="text/css" />
+  <link rel="stylesheet" href="../css/estilos_ficha_2.css" type="text/css" />
+
+  <script src="../js/utiles.js" language="javascript"></script>
+  <script src="../js/especificas.js" language="javascript"></script>
+
+  <script>
+    // Prototip: simula desplegable municipi per illa
+    function onIllaChange() {
+      const illa = document.getElementById('illa').value;
+      const municipi = document.getElementById('municipi');
+
+      municipi.innerHTML = '<option value="">Selecciona un municipi</option>';
+
+      const data = {
+        "1": ["Palma", "Calvià", "Marratxí"],
+        "2": ["Maó", "Ciutadella"],
+        "3": ["Eivissa", "Sant Antoni"],
+        "4": ["Sant Francesc", "Es Pujols"]
+      };
+
+      if (!data[illa]) return;
+      data[illa].forEach((m) => {
+        const opt = document.createElement('option');
+        opt.value = m;
+        opt.textContent = m;
+        municipi.appendChild(opt);
+      });
+    }
+  </script>
+</head>
+
+<body class="contenido" onload="ocultarFondoPrincipal();">
+  <div class="contenedorFiltro"></div>
+
+  <ul class="botoneraFicha">
+    <li class="tituloFicha">
+      <p class="posicionTituloFicha">FITXA D’EXPEDIENT DE SOLAR</p>
+    </li>
+  </ul>
+
+  <div class="espacioMarron">&nbsp;</div>
+
+  <!-- Prototip estàtic: sense action real -->
+  <form name="entidad" method="post" action="#">
+    <div id="fichaEditable" style="background-color:#ffffff;">
+      <div class="cabeceraFicha"></div>
+
+      <div class="contenedorFicha">
+        <div class="tituloSeccion">
+          <p class="textoTituloSeccion">Dades generals</p>
+        </div>
+
+        <input type="hidden" name="id" value="">
+
+        <table>
+          <tr>
+            <td>
+              <label class="campoFicha_Blanca">Estat:</label>
+              <select id="estat" name="estat" class="campoFicha_Blanca">
+                <option value="pendent">Pendent</option>
+                <option value="en_tramit" selected>En tràmit</option>
+                <option value="tancat">Tancat</option>
+              </select>
+            </td>
+
+            <td>
+              <label class="campoFicha_Blanca">Centre:</label>
+              <!-- En versió dinàmica: select o cerca -->
+              <input type="text" id="centre" name="centre" class="formularioFicha" value="IES Son Ferrer" size="40">
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              <label class="campoFicha_Blanca">Illa:</label>
+              <select name="illa" id="illa" class="campoFicha_Blanca" onchange="onIllaChange()">
+                <option value="">Selecciona una illa</option>
+                <option value="1" selected>Mallorca</option>
+                <option value="2">Menorca</option>
+                <option value="3">Eivissa</option>
+                <option value="4">Formentera</option>
+              </select>
+            </td>
+
+            <td>
+              <label class="campoFicha_Blanca">Municipi:</label>
+              <select id="municipi" name="municipi" class="campoFicha_Blanca">
+                <option value="">Selecciona un municipi</option>
+                <option value="Calvià" selected>Calvià</option>
+                <option value="Palma">Palma</option>
+                <option value="Marratxí">Marratxí</option>
+              </select>
+            </td>
+          </tr>
+
+          <tr>
+            <td colspan="3">
+              <div class="tituloSeccion" style="margin-top: 15px;">
+                <p class="textoTituloSeccion">Tipus d’actuació</p>
+              </div>
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              <label class="campoFicha_Blanca" style="display:inline-block; margin-right:10px;">
+                <input type="checkbox" name="obra_nova" value="1"> Obra nova
+              </label>
+
+              <label class="campoFicha_Blanca" style="display:inline-block; margin-right:10px;">
+                <input type="checkbox" name="reforma_integral" value="1"> Reforma integral
+              </label>
+
+              <label class="campoFicha_Blanca" style="display:inline-block; margin-right:10px;">
+                <input type="checkbox" name="ampliacio" value="1" checked> Ampliació
+              </label>
+            </td>
+          </tr>
+
+          <tr>
+            <td colspan="3">
+              <div class="tituloSeccion" style="margin-top: 15px;">
+                <p class="textoTituloSeccion">Fites / tràmits</p>
+              </div>
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              <label for="data_sollicitud" class="campoFicha_Blanca">Data sol·licitud:</label>
+              <input type="date" id="data_sollicitud" name="data_sollicitud" class="formularioFicha" value="2025-10-12">
+            </td>
+
+            <td colspan="2">
+              <label for="obs_sollicitud" class="campoFicha_Blanca" style="align-self:start; display:grid">Obs. sol·licitud:</label>
+              <textarea id="obs_sollicitud" name="obs_sollicitud" class="contenedorFicha_Blanca" rows="3" cols="70">Documentació pendent de registre.</textarea>
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              <label for="data_topografic" class="campoFicha_Blanca">Data topogràfic:</label>
+              <input type="date" id="data_topografic" name="data_topografic" class="formularioFicha" value="2025-11-05">
+            </td>
+
+            <td colspan="2">
+              <label for="obs_topografic" class="campoFicha_Blanca" style="align-self:start; display:grid">Obs. topogràfic:</label>
+              <textarea id="obs_topografic" name="obs_topografic" class="contenedorFicha_Blanca" rows="3" cols="70">Topogràfic rebut. Revisió tècnica en curs.</textarea>
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              <label for="data_acord_ple" class="campoFicha_Blanca">Data acord de ple:</label>
+              <input type="date" id="data_acord_ple" name="data_acord_ple" class="formularioFicha" value="">
+            </td>
+
+            <td colspan="2">
+              <label for="obs_acord_ple" class="campoFicha_Blanca" style="align-self:start; display:grid">Obs. acord de ple:</label>
+              <textarea id="obs_acord_ple" name="obs_acord_ple" class="contenedorFicha_Blanca" rows="3" cols="70"></textarea>
+            </td>
+          </tr>
+
+          <tr>
+            <td colspan="3">
+              <div class="tituloSeccion" style="margin-top: 15px;">
+                <p class="textoTituloSeccion">Notes / prioritats</p>
+              </div>
+              <textarea name="notes" class="contenedorFicha_Blanca" rows="5" cols="100">Prioritat alta. Coordinar amb urbanisme municipal.</textarea>
+            </td>
+          </tr>
+        </table>
+      </div>
+
+      <br><br>
+
+      <ul class="botoneraFicha">
+        <li class="fondoBotoneraFicha">
+          <input type="submit" class="boton" onclick="return confirm('Prototip: desar canvis (sense BD).');" value="Desar canvis">
+        </li>
+      </ul>
+    </div>
+  </form>
+
+  <form method="post" action="#">
+    <ul class="botoneraFicha" style="display: flex; justify-content: flex-end;">
+      <li class="fondoBotoneraFicha">
+        <button type="submit" class="boton" onclick="return confirm('Prototip: eliminar (sense BD).');">Eliminar</button>
+      </li>
+      <li class="fondoBotoneraFicha">
+        <input type="button" class="boton" value="Tornar al llistat" onclick="window.location.href='solarListFiltro.php'">
+      </li>
+    </ul>
+  </form>
+
+</body>
+</html>

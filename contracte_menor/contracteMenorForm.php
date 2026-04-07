@@ -144,7 +144,7 @@ function checkedSN($v){ return ($v === 'S') ? 'checked' : ''; }
     <div id="fichaEditable" style="background-color:#ffffff;">
         <div class="cabeceraFicha"></div>
 
-        <form name="entidad" method="post" action="contracteMenorInsertUpdate.php">
+        <form id="entidad" name="entidad" method="post" action="contracteMenorInsertUpdate.php">
             <div class="contenedorFicha">
 
                 <div class="tituloSeccion"><p class="textoTituloSeccion">Dades generals</p></div>
@@ -427,19 +427,19 @@ function checkedSN($v){ return ($v === 'S') ? 'checked' : ''; }
 
             </div>
 
-            <li class="fondoBotoneraFicha">
-                <input type="submit" class="boton" onclick="return confirm('Estàs segur de desar els canvis?');" value="Desar canvis">
-            </li>
         </form>
-
-        <form method="post" action="contracteMenorDelete.php">
+        <ul class="botoneraFicha">
             <li class="fondoBotoneraFicha">
-                <input type="hidden" name="id" value="<?php echo htmlspecialchars($id ?? ''); ?>">
-                <button type="submit" class="boton" onclick="return confirm('Estàs segur de borrar aquest contracte menor?');">Eliminar</button>
+                <input type="submit" form="entidad" class="boton" onclick="return confirm('Est??s segur de desar els canvis?');" value="Desar canvis">
             </li>
-        </form>
-
-        <li class="volverFicha"><input type="button" class="boton" value="Tornar al llistat" onclick="window.location.href='<?php echo $tornar ?>'"> </li>
+            <li class="fondoBotoneraFicha">
+                <form method="post" action="contracteMenorDelete.php" style="display:inline;">
+                    <input type="hidden" name="id" value="<?php echo htmlspecialchars($id ?? ""); ?>">
+                    <button type="submit" class="boton" onclick="return confirm('Est??s segur de borrar aquest contracte menor?');">Eliminar</button>
+                </form>
+            </li>
+            <li class="volverFicha"><input type="button" class="boton" value="Tornar al llistat" onclick="window.location.href='<?php echo $tornar ?>'"> </li>
+        </ul>
 
     </div>
 

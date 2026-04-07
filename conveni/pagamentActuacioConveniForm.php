@@ -66,7 +66,7 @@
 		<div class="espacioMarron">&nbsp;</div>
 		<div id="fichaEditable" style="background-color:#ffffff;">
 		<div class="cabeceraFicha"></div>
-		<form name="entidad" method="post" action="pagamentActuacioConveniInsertUpdate.php">
+		<form id="entidad" name="entidad" method="post" action="pagamentActuacioConveniInsertUpdate.php">
 			<input type="hidden" name="id_pagament" value="<?php echo $idPagament ?>">
 			<input type="hidden" name="id_centre" value="<?php echo $id_centre ?>">
 			<input type="hidden" name="id_conveni" value="<?php echo $id_conveni ?>">
@@ -82,19 +82,22 @@
 					</div>
 				</div>
 			</div>				
-		</div>
-		<li class="fondoBotoneraFicha">
-			<button type="submit" class="boton" onclick="return confirm('Estàs segur de desar els canvis?');">Desar canvis</button>
-		</li>
-		<li class="volverFicha">
-			<button type="button" class="boton"onclick="window.history.back();">Tornar al llistat</button>
-		</li>		
 		</form>
-		<!-- Formulario para eliminar -->
-		<form method="get" action="pagamentActuacioConveniDelete.php">
-			<input type="hidden" name="id_pagament" value="<?php echo $idPagament ?>">
-			<input type="hidden" name="id_conveni" value="<?php echo $id_conveni ?>">
-			<button type="submit" class="boton" onclick="return confirm('¿Estàs segur de borrar aquest pagament?');">Eliminar</button>
-		</form>		
+		</div>
+		<ul class="botoneraFicha">
+			<li class="fondoBotoneraFicha">
+				<button type="submit" form="entidad" class="boton" onclick="return confirm('Est??s segur de desar els canvis?');">Desar canvis</button>
+			</li>
+			<li class="fondoBotoneraFicha">
+				<form method="get" action="pagamentActuacioConveniDelete.php" style="display:inline;">
+					<input type="hidden" name="id_pagament" value="<?php echo $idPagament ?>">
+					<input type="hidden" name="id_conveni" value="<?php echo $id_conveni ?>">
+					<button type="submit" class="boton" onclick="return confirm('??Est??s segur de borrar aquest pagament?');">Eliminar</button>
+				</form>
+			</li>
+			<li class="volverFicha">
+				<button type="button" class="boton"onclick="window.history.back();">Tornar al llistat</button>
+			</li>
+		</ul>
 	</body>
 </html>
