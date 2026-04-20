@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="ca">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Centre Educatiu</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Centre Educatiu</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -52,9 +52,6 @@
 </head>
 <body>
     <h1>Centre Educatiu</h1>
-
-    
-
 <form id="form-centre-conveni">
     <label for="conveni_id">Conveni</label>
     <select id="conveni_id" name="conveni_id" required>
@@ -62,20 +59,15 @@
         <option value="1">Conveni 1</option>
         <option value="2">Conveni 2</option>
     </select>
-
     <label for="centre_id">Centre</label>
     <select id="centre_id" name="centre_id" required>
         <option value="">-- Selecciona un centre --</option>
         <option value="1">Centre A</option>
         <option value="2">Centre B</option>
     </select>
-
     <label for="import_total">Import total</label>
     <input type="number" id="import_total" name="import_total" step="0.01" required>
 </form>
-
-
-
     <h2>Llista d'Actuacions a centres educatius</h2>
 	<button id="afegir-actuacio" onclick="window.location.href='centreActuacioForm.php'">Afegir actuació</button>
     <table>

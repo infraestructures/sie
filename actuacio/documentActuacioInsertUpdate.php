@@ -42,4 +42,3 @@
 
     $stmt->close();
     $connexio->close();
-?>

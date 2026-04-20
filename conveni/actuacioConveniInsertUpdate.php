@@ -1,21 +1,17 @@
 <?php
 	include '../connectarBD.php';
-
     // Recollir els valors del formulari
     $id_actuacio = isset($_POST['id_actuacio']) ? intval($_POST['id_actuacio']) : null;
     $id_centre = isset($_POST['id_centre']) ? intval($_POST['id_centre']) : null;
     $id_conveni = isset($_POST['id_conveni']) ? intval($_POST['id_conveni']) : null;
     $descripcio = trim($_POST['descripcio'] ?? null);
     $observacions = trim($_POST['observacions'] ?? '');
-
     $pressupost_inicial = isset($_POST['pressupost_inicial']) ? floatval($_POST['pressupost_inicial']) : null;
     $pressupost_definitiu = isset($_POST['pressupost_definitiu']) ? floatval($_POST['pressupost_definitiu']) : null;
     $aprovacio_inicial = trim($_POST['aprovacio_inicial'] ?? null);
     $aprovacio_definitiva = trim($_POST['aprovacio_definitiva'] ?? null);
     $previsio_inici = trim($_POST['previsio_inici'] ?? null);
     $previsio_final = trim($_POST['previsio_final'] ?? null);
-
-
     if ($id_actuacio) {
         // UPDATE si s'ha rebut un ID
         $sql = "UPDATE actuacio_conveni SET
@@ -28,12 +24,10 @@
                 previsio_inici=?,
                 previsio_final=?
             WHERE id=?";
-
         $stmt = $connexio->prepare($sql);
         if (!$stmt) {
             die("Error en la preparació de la consulta: " . $connexio->error);
         }
-
         if (
             !$stmt->bind_param(
                 "ssddssssi",
@@ -50,7 +44,6 @@
         ) {
             die("Bind failed: (" . $stmt->errno . ") " . $stmt->error);
         }
-
     } else {
         // INSERT si no hi ha ID
         $sql = "INSERT INTO actuacio_conveni (
@@ -65,12 +58,10 @@
                 previsio_inici,
                 previsio_final
             ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-
         $stmt = $connexio->prepare($sql);
         if (!$stmt) {
             die("Error en la preparació de la consulta: " . $connexio->error);
         }
-
         if (
             !$stmt->bind_param(
                 "iissddssss",
@@ -88,9 +79,7 @@
         ) {
             die("Bind failed: (" . $stmt->errno . ") " . $stmt->error);
         }
-
     }
-    
     if ($stmt->execute()) {
         // Redirigir després de l'operació
         header("Location: centreConveniForm.php?id_conveni=$id_conveni&id_centre=$id_centre");
@@ -98,7 +87,6 @@
     } else {
         echo "Error: " . $stmt->error;
     }
-    
     $stmt->close();
     $connexio->close();
 ?>

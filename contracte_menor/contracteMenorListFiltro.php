@@ -1,6 +1,5 @@
 <?php
 include '../connectarBD.php';
-
 // Filtres
 $codiFiltro      = $_POST['codi_filtro'] ?? '';
 $centreFiltro    = $_POST['centre_filtro'] ?? '';
@@ -13,20 +12,16 @@ $empresaFiltro   = $_POST['empresa_filtro'] ?? '';
 $rebutSolicitudFiltro = $_POST['rebut_solicitud_filtro'] ?? '';
 $rebut3PresFiltro     = $_POST['rebut_3_pressupost_filtro'] ?? '';
 $facturaFiltro        = $_POST['factura_conformada_filtro'] ?? '';
-
 $order_by = $_GET['order_by'] ?? 'codi';
 $order_direction = $_GET['order_direction'] ?? 'DESC';
-
 function getOrderDirection($col, $ob, $od){
     if ($ob === $col) return ($od === 'ASC') ? 'DESC' : 'ASC';
     return 'ASC';
 }
-
 $illasResult = $connexio->query("SELECT id, nom FROM Illa ORDER BY nom");
 $municipisQuery = $illaFiltro ? "SELECT id, nom FROM Municipi WHERE illa_id=".intval($illaFiltro)." ORDER BY nom" : "SELECT id, nom FROM Municipi ORDER BY nom";
 $municipisResult = $connexio->query($municipisQuery);
 $empresesResult = $connexio->query("SELECT id, nom FROM empresa ORDER BY nom");
-
 $sql = "SELECT cm.id, cm.codi, cm.data, cm.actuacio, cm.pressupost,
                cm.rebut_solicitud, cm.rebut_3_pressupost, cm.factura_conformada,
                c.Centre AS nom_centre,
@@ -35,7 +30,6 @@ $sql = "SELECT cm.id, cm.codi, cm.data, cm.actuacio, cm.pressupost,
         JOIN centres c ON cm.centre_id = c.id
         LEFT JOIN empresa e ON cm.empresa_id = e.id
         WHERE 1=1";
-
 if ($codiFiltro !== '')   $sql .= " AND cm.codi LIKE '%".$connexio->real_escape_string($codiFiltro)."%'";
 if ($centreFiltro !== '') $sql .= " AND c.Centre LIKE '%".$connexio->real_escape_string($centreFiltro)."%'";
 if ($illaFiltro !== '')   $sql .= " AND c.id_illa = ".intval($illaFiltro);
@@ -44,16 +38,13 @@ if ($dataIniciFiltro !== '') $sql .= " AND cm.data >= '".$connexio->real_escape_
 if ($dataFiFiltro !== '')  $sql .= " AND cm.data <= '".$connexio->real_escape_string($dataFiFiltro)."'";
 if ($actuacioFiltro !== '') $sql .= " AND cm.actuacio LIKE '%".$connexio->real_escape_string($actuacioFiltro)."%'";
 if ($empresaFiltro !== '')  $sql .= " AND cm.empresa_id = ".intval($empresaFiltro);
-
 $validSN = ['S','N'];
 if (in_array($rebutSolicitudFiltro, $validSN, true)) $sql .= " AND cm.rebut_solicitud='".$rebutSolicitudFiltro."'";
 if (in_array($rebut3PresFiltro, $validSN, true))     $sql .= " AND cm.rebut_3_pressupost='".$rebut3PresFiltro."'";
 if (in_array($facturaFiltro, $validSN, true))        $sql .= " AND cm.factura_conformada='".$facturaFiltro."'";
-
 $allowed_order = ['codi','data','nom_centre','pressupost','actuacio','nom_empresa'];
 if (!in_array($order_by, $allowed_order, true)) $order_by = 'codi';
 $order_direction = ($order_direction === 'ASC') ? 'ASC' : 'DESC';
-
 if ($order_by === 'codi') {
     $sql .= " ORDER BY CAST(SUBSTRING_INDEX(cm.codi,'-',-1) AS UNSIGNED) $order_direction, CAST(SUBSTRING_INDEX(cm.codi,'-',1) AS UNSIGNED) $order_direction";
 } elseif ($order_by === 'nom_centre') {
@@ -61,24 +52,18 @@ if ($order_by === 'codi') {
 } else {
     $sql .= " ORDER BY $order_by $order_direction";
 }
-
 $result = $connexio->query($sql);
 if (!$result) die("Error consulta contractes menors: ".$connexio->error);
 ?>
-
 <html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestió de contractes menors</title>
-
-    <link rel="stylesheet" href="../css/estilos.css" type="text/css" />
-    <link rel="stylesheet" href="../css/estilos_ficha_2.css" type="text/css" />
-    <script src="../js/utiles.js" language="JavaScript"></script>
-    <script src="../js/especificas.js" language="JavaScript"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-    <script>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Gestió de contractes menors</title>
+	<link rel="stylesheet" href="../estils/estils.css" type="text/css" />
+	<script src="../js/utils.js" language="JavaScript"></script>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script>
         $(document).ready(function() {
             $('#illa_filtro').change(function() {
                 var illaID = $(this).val();
@@ -94,9 +79,7 @@ if (!$result) die("Error consulta contractes menors: ".$connexio->error);
         });
     </script>
 </head>
-
 <body class="contenido" onload="ocultarFondoPrincipal();">
-
 <div class="contenedorFiltro">
     <ul class="botoneraFicha">
           <li class="tituloFicha">
@@ -104,10 +87,8 @@ if (!$result) die("Error consulta contractes menors: ".$connexio->error);
           </li>
     </ul>
     <div class="espacioMarron">&nbsp;</div>
-
     <table cellpadding="0" cellspacing="0" border="0" width="100%" class="formularioFiltro">
         <form id="formularioFiltroBusqueda" name="formularioFiltroBusqueda" action="contracteMenorListFiltro.php" method="post">
-
         <tr>
             <td class="contenedorCamposFiltro">
                 <label class="formularioFiltro">Codi:</label>
@@ -136,7 +117,6 @@ if (!$result) die("Error consulta contractes menors: ".$connexio->error);
                 </select>
             </td>
         </tr>
-
         <tr>
             <td class="contenedorCamposFiltro">
                 <label class="formularioFiltro">Data inici:</label>
@@ -160,7 +140,6 @@ if (!$result) die("Error consulta contractes menors: ".$connexio->error);
                 </select>
             </td>
         </tr>
-
         <tr>
             <td class="contenedorCamposFiltro">
                 <label class="formularioFiltro">Rebut sol·licitud:</label>
@@ -190,18 +169,15 @@ if (!$result) die("Error consulta contractes menors: ".$connexio->error);
                 <input type="submit" class="btnBuscar" name="btnConsultar" value="Cercar">
             </td>
         </tr>
-
         </form>
     </table>
 </div>
-
 <ul class="botoneraListado">
     <li class="tituloListado">LLISTAT DE CONTRACTES MENORS</li>
     <li class="fondoBotoneraListado">
         <input type="button" class="boton" value="Nou contracte menor" onclick="location.href='contracteMenorForm.php';">
     </li>
 </ul>
-
 <div class="contenedorListado">
     <table class="listado" cellpadding="0" cellspacing="0" width="100%">
         <thead>
@@ -243,8 +219,6 @@ if (!$result) die("Error consulta contractes menors: ".$connexio->error);
         </tbody>
     </table>
 </div>
-
 </body>
 </html>
-
 <?php $connexio->close(); ?>

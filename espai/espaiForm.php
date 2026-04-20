@@ -1,21 +1,17 @@
 <!DOCTYPE html>
 <?php
 	include '../connectarBD.php';
-	
 	// Inicializa variables para los campos del formulario
 	$codi = $nom = $tipus = $ubicacio = $ocupacio = $metres = "";
-
 	// Verifica si se ha recibido un parámetro 'codi'
 	if (isset($_GET['codi'])) {
 		$codi = $_GET['codi'];
-
 		// Consulta para obtener los datos del espacio
 		$sql = "SELECT * FROM espai WHERE codi = ?";
 		$stmt = $connexio->prepare($sql);
 		$stmt->bind_param("i", $codi);
 		$stmt->execute();
 		$resultat = $stmt->get_result();
-
 		if ($resultat->num_rows > 0) {
 			$fila = $resultat->fetch_assoc();
 			$nom = $fila['nom'];
@@ -26,23 +22,15 @@
 		}
 	}
 ?>	
-
-
 <html>
-	<head>
-
-		<title>Fitxa d'espai de centre educatiu</title>
-
-		<link rel="stylesheet" href="css/estilos.css" type="text/css" />
-		<link rel="stylesheet" href="css/estilos_ficha_2.css" type="text/css" />
-
-		<script src="js/utiles.js" language="javascript"></script>
-		<script src="js/especificas.js" language="javascript"></script>
-		
-		<meta charset="UTF-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	</head>
-	<body class="contenido" onload="ocultarFondoPrincipal();">
+<head>
+	<title>Fitxa d'espai de centre educatiu</title>
+	<link rel="stylesheet" href="estils/estils.css" type="text/css" />
+	<script src="js/utils.js" language="javascript"></script>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body class="contenido" onload="ocultarFondoPrincipal();">
 		<!-- Formulario para insertar o actualizar -->		
 		<div class="contenedorFiltro"></div>
 		<ul class="botoneraFicha">
@@ -57,27 +45,22 @@
 				<div class="contenidoSeccion">
 					<div class="fila">						
 							<input type="hidden" name="codi" value="<?php echo $codi ?>">
-
 							<label for="tipus" class="campoFicha_Blanca">Tipus d'espai:</label>
 							<select id="tipus" name="tipus" class="formularioFicha" required>
 								<option value="">Seleccioni un tipus d'espai</option>
                                 <option value="Docent" <?php echo ($tipus == "Docent") ? 'selected' : ''; ?>>Docent</option>
 								<option value="Complementari" <?php echo ($tipus == "Complementari") ? 'selected' : ''; ?>>Complementari</option>
 							</select>
-
 							<label for="nom" class="campoFicha_Blanca">Nom de l'espai:</label>
 							<input type="text" id="nom" name="nom" class="formularioFicha" size="30" value="<?php echo $nom; ?>" required><br><br>
-							
 							<label for="ubicacio" class="campoFicha_Blanca">Ubicació:</label>
 							<select id="ubicacio" name="ubicacio" class="formularioFicha" required>
 								<option value="">Seleccioni un tipus d'espai</option>
                                 <option value="Interior" <?php echo ($ubicacio == "Interior") ? 'selected' : ''; ?>>Interior</option>
 								<option value="Exterior" <?php echo ($ubicacio == "Exterior") ? 'selected' : ''; ?>>Exterior</option>
 							</select>
-							
 							<label for="ocupacio" class="campoFicha_Blanca">Ocupació per persona:</label>
 							<input type="text" id="ocupacio" name="ocupacio" class="formularioFicha" value="<?php echo $ocupacio; ?>" required><br><br>
-
 							<label for="metres" class="campoFicha_Blanca">Metres per unitat:</label>
 							<input type="text" id="metres" name="metres" class="formularioFicha" size="30" value="<?php echo $metres; ?>" required><br><br>
 					</div>
@@ -99,5 +82,5 @@
 				<input type="button" class="boton" value="Tornar al llistat" onclick="window.history.back();">
 			</li>
 		</ul>
-	</body>
+</body>
 </html>

@@ -32,7 +32,6 @@
 // Class to create DataMatrix ECC 200 barcode arrays for TCPDF class.
 // DataMatrix (ISO/IEC 16022:2006) is a 2-dimensional bar code.
 //============================================================+
-
 /**
 * @file
 * Class to create DataMatrix ECC 200 barcode arrays for TCPDF class.
@@ -42,62 +41,47 @@
 * @author Nicola Asuni
 * @version 1.0.008
 */
-
 // custom definitions
 if (!defined('DATAMATRIXDEFS')) {
-
 	/**
 	 * Indicate that definitions for this class are set
 	 */
 	define('DATAMATRIXDEFS', true);
-
 	// -----------------------------------------------------
-
 } // end of custom definitions
-
 // #*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#
-
-
 /**
 * ASCII encoding: ASCII character 0 to 127 (1 byte per CW)
 */
 define('ENC_ASCII', 0);
-
 /**
 * C40 encoding: Upper-case alphanumeric (3/2 bytes per CW)
 */
 define('ENC_C40', 1);
-
 /**
 * TEXT encoding: Lower-case alphanumeric (3/2 bytes per CW)
 */
 define('ENC_TXT', 2);
-
 /**
 * X12 encoding: ANSI X12 (3/2 byte per CW)
 */
 define('ENC_X12', 3);
-
 /**
 * EDIFACT encoding: ASCII character 32 to 94 (4/3 bytes per CW)
 */
 define('ENC_EDF', 4);
-
 /**
 * BASE 256 encoding: ASCII character 0 to 255 (1 byte per CW)
 */
 define('ENC_BASE256', 5);
-
 /**
 * ASCII extended encoding: ASCII character 128 to 255 (1/2 byte per CW)
 */
 define('ENC_ASCII_EXT', 6);
-
 /**
 * ASCII number encoding: ASCII digits (2 bytes per CW)
 */
 define('ENC_ASCII_NUM', 7);
-
 /**
 * @class Datamatrix
 * Class to create DataMatrix ECC 200 barcode arrays for TCPDF class.
@@ -108,19 +92,16 @@ define('ENC_ASCII_NUM', 7);
 * @version 1.0.004
 */
 class Datamatrix {
-
 	/**
 	 * Barcode array to be returned which is readable by TCPDF.
 	 * @protected
 	 */
 	protected $barcode_array = array();
-
 	/**
 	 * Store last used encoding for data codewords.
 	 * @protected
 	 */
 	protected $last_enc = ENC_ASCII;
-
 	/**
 	 * Table of Data Matrix ECC 200 Symbol Attributes:<ul>
 	 * <li>total matrix rows (including finder pattern)</li>
@@ -176,13 +157,11 @@ class Datamatrix {
 		array(0x010,0x024,0x00e,0x020,0x010,0x012,0x00e,0x010,0x001,0x002,0x002,0x020,0x018,0x001,0x020,0x018), // 16x36
 		array(0x010,0x030,0x00e,0x02c,0x010,0x018,0x00e,0x016,0x001,0x002,0x002,0x031,0x01c,0x001,0x031,0x01c)  // 16x48
 	);
-
 	/**
 	 * Map encodation modes whit character sets.
 	 * @protected
 	 */
 	protected $chset_id = array(ENC_C40 => 'C40', ENC_TXT => 'TXT', ENC_X12 =>'X12');
-
 	/**
 	 * Basic set of characters for each encodation mode.
 	 * @protected
@@ -223,9 +202,7 @@ class Datamatrix {
 			0x47=>0x14,0x48=>0x15,0x49=>0x16,0x4a=>0x17,0x4b=>0x18,0x4c=>0x19,0x4d=>0x1a,0x4e=>0x1b,0x4f=>0x1c,0x50=>0x1d, //
 			0x51=>0x1e,0x52=>0x1f,0x53=>0x20,0x54=>0x21,0x55=>0x22,0x56=>0x23,0x57=>0x24,0x58=>0x25,0x59=>0x26,0x5a=>0x27) //
 		);
-
 // -----------------------------------------------------------------------------
-
 	/**
 	 * This is the class constructor.
 	 * Creates a datamatrix object
@@ -343,7 +320,6 @@ class Datamatrix {
 		$this->barcode_array['num_cols'] = $params[1];
 		$this->barcode_array['bcode'] = $grid;
 	}
-
 	/**
 	 * Returns a barcode array which is readable by TCPDF
 	 * @return array barcode array readable by TCPDF;
@@ -352,7 +328,6 @@ class Datamatrix {
 	public function getBarcodeArray() {
 		return $this->barcode_array;
 	}
-
 	/**
 	 * Product of two numbers in a Power-of-Two Galois Field
 	 * @param int $a first number to multiply.
@@ -369,7 +344,6 @@ class Datamatrix {
 		}
 		return ($alog[($log[$a] + $log[$b]) % ($gf - 1)]);
 	}
-
 	/**
 	 * Add error correction codewords to data codewords array (ANNEX E).
 	 * @param array $wd Array of datacodewords.
@@ -435,7 +409,6 @@ class Datamatrix {
 		ksort($wd);
 		return $wd;
 	}
-
 	/**
 	 * Return the 253-state codeword
 	 * @param int $cwpad Pad codeword.
@@ -450,7 +423,6 @@ class Datamatrix {
 		}
 		return $pad;
 	}
-
 	/**
 	 * Return the 255-state codeword
 	 * @param int $cwpad Pad codeword.
@@ -465,7 +437,6 @@ class Datamatrix {
 		}
 		return $pad;
 	}
-
 	/**
 	 * Returns true if the char belongs to the selected mode
 	 * @param int $chr Character (byte) to check.
@@ -511,7 +482,6 @@ class Datamatrix {
 		}
 		return $status;
 	}
-
 	/**
 	 * The look-ahead test scans the data to be encoded to find the best mode (Annex P - steps from J to S).
 	 * @param string $data data to encode
@@ -643,7 +613,6 @@ class Datamatrix {
 			}
 		} // end of while
 	}
-
 	/**
 	 * Get the switching codeword to a new encoding mode (latch codeword)
 	 * @param int $mode New encoding mode.
@@ -682,7 +651,6 @@ class Datamatrix {
 		}
 		return $cw;
 	}
-
 	/**
 	 * Choose the minimum matrix size and return the max number of data codewords.
 	 * @param int $numcw Number of current codewords.
@@ -697,7 +665,6 @@ class Datamatrix {
 		}
 		return 0;
 	}
-
 	/**
 	 * Get high level encoding using the minimum symbol data characters for ECC 200
 	 * @param string $data data to encode
@@ -966,7 +933,6 @@ class Datamatrix {
 		} // end of while
 		return $cw;
 	}
-
 	/**
 	 * Places "chr+bit" with appropriate wrapping within array[].
 	 * (Annex F - ECC 200 symbol character placement)
@@ -992,7 +958,6 @@ class Datamatrix {
 		$marr[(($row * $ncol) + $col)] = ((10 * $chr) + $bit);
 		return $marr;
 	}
-
 	/**
 	 * Places the 8 bits of a utah-shaped symbol character.
 	 * (Annex F - ECC 200 symbol character placement)
@@ -1016,7 +981,6 @@ class Datamatrix {
 		$marr = $this->placeModule($marr, $nrow, $ncol, $row,   $col,   $chr, 8);
 		return $marr;
 	}
-
 	/**
 	 * Places the 8 bits of the first special corner case.
 	 * (Annex F - ECC 200 symbol character placement)
@@ -1038,7 +1002,6 @@ class Datamatrix {
 		$marr = $this->placeModule($marr, $nrow, $ncol, 3,       $ncol-1, $chr, 8);
 		return $marr;
 	}
-
 	/**
 	 * Places the 8 bits of the second special corner case.
 	 * (Annex F - ECC 200 symbol character placement)
@@ -1060,7 +1023,6 @@ class Datamatrix {
 		$marr = $this->placeModule($marr, $nrow, $ncol, 1,       $ncol-1, $chr, 8);
 		return $marr;
 	}
-
 	/**
 	 * Places the 8 bits of the third special corner case.
 	 * (Annex F - ECC 200 symbol character placement)
@@ -1082,7 +1044,6 @@ class Datamatrix {
 		$marr = $this->placeModule($marr, $nrow, $ncol, 3,       $ncol-1, $chr, 8);
 		return $marr;
 	}
-
 	/**
 	 * Places the 8 bits of the fourth special corner case.
 	 * (Annex F - ECC 200 symbol character placement)
@@ -1104,7 +1065,6 @@ class Datamatrix {
 		$marr = $this->placeModule($marr, $nrow, $ncol, 1,       $ncol-1, $chr, 8);
 		return $marr;
 	}
-
 	/**
 	 * Build a placement map.
 	 * (Annex F - ECC 200 symbol character placement)
@@ -1169,7 +1129,6 @@ class Datamatrix {
 		}
 		return $marr;
 	}
-
 } // end DataMatrix class
 //============================================================+
 // END OF FILE

@@ -1,17 +1,12 @@
 <!DOCTYPE html>
 <html>
-
 <head>
-    <meta charset="UTF-8">
-    <title>Gestió de contractes menors</title>
-
+	<meta charset="UTF-8">
+	<title>Gestió de contractes menors</title>
     <!-- Mateix look&feel que actuacions -->
-    <link rel="stylesheet" href="../css/estilos.css" type="text/css" />
-    <link rel="stylesheet" href="../css/estilos_ficha_2.css" type="text/css" />
-
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-    <script>
+	<link rel="stylesheet" href="../estils/estils.css" type="text/css" />
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script>
         // Dades de prova de contractes menors (mock)
         const CONTRACTES = [
             {
@@ -80,18 +75,15 @@
                 seguiment: "Enviat a UGE. Pendent confirmació d’instal·lació i factura."
             }
         ];
-
         const formatter = new Intl.NumberFormat("ca-ES", {
             style: "currency",
             currency: "EUR",
             minimumFractionDigits: 2
         });
-
         function formatEuro(v) {
             if (v == null || v === "" || isNaN(v)) return "-";
             return formatter.format(v);
         }
-
         function getEstat(c) {
             const txt = (c.seguiment || "").toLowerCase();
             if (txt.includes("finalitzad") || txt.includes("tancat") || txt.includes("factura registrada")) {
@@ -102,33 +94,27 @@
             }
             return "En curs";
         }
-
         function aplicaFiltres() {
             const codi = $("#codi_filtro").val().toLowerCase().trim();
             const centre = $("#centre_filtro").val().toLowerCase().trim();
             const illa = $("#illa_filtro").val();
             const tipus = $("#tipus_filtro").val();
             const estat = $("#estat_filtro").val();
-
             return CONTRACTES.filter(c => {
                 if (codi && !c.codi.toLowerCase().includes(codi)) return false;
                 if (centre && !c.centre.toLowerCase().includes(centre)) return false;
                 if (illa && c.illa !== illa) return false;
                 if (tipus && c.tipus !== tipus) return false;
-
                 const e = getEstat(c);
                 if (estat && estat !== e) return false;
                 return true;
             });
         }
-
         function renderLlistat() {
             const tbody = $("#llistatContractes");
             tbody.empty();
-
             const filtrats = aplicaFiltres();
             let total = filtrats.length;
-
             if (total === 0) {
                 tbody.append(
                     "<tr><td colspan='8' class='campoListado'>No s'han trobat contractes amb aquests filtres.</td></tr>"
@@ -136,7 +122,6 @@
                 $("#resumTotal").text("Total contractes: 0");
                 return;
             }
-
             filtrats.forEach((c, idx) => {
                 const estat = getEstat(c);
                 const fons = (idx % 2 === 0) ? "fondoListadoCalle" : "fondoListadoCalleAlterno";
@@ -159,15 +144,12 @@
                 });
                 tbody.append(row);
             });
-
             $("#resumTotal").text("Total contractes: " + total);
         }
-
         $(function () {
             // Esdeveniments filtres
             $("#codi_filtro, #centre_filtro").on("input", renderLlistat);
             $("#illa_filtro, #tipus_filtro, #estat_filtro").on("change", renderLlistat);
-
             $("#btnReset").on("click", function () {
                 $("#codi_filtro").val("");
                 $("#centre_filtro").val("");
@@ -176,21 +158,17 @@
                 $("#estat_filtro").val("");
                 renderLlistat();
             });
-
             $("#btnNova").on("click", function () {
                 // En l’app real: location.href = 'cmForm.php';
                 alert("Obriria la pantalla d'ALTA de contracte menor (cmForm.php)");
             });
-
             renderLlistat();
         });
     </script>
 </head>
-
 <body class="contenido">
     <div class="contenedorFiltro">
         <h2>Gestió de contractes menors</h2>
-
         <!-- Filtres, amb mateixa estructura que actuacioListFiltro -->
         <table cellpadding="0" cellspacing="0" border="0" width="100%" class="formularioFiltro">
             <tr>
@@ -237,7 +215,6 @@
             </tr>
         </table>
     </div>
-
     <!-- Botonera llistat -->
     <ul class="botoneraListado">
         <li class="tituloListado">LLISTAT DE CONTRACTES MENORS</li>
@@ -245,7 +222,6 @@
             <input type="button" class="boton" id="btnNova" value="Nou contracte menor">
         </li>
     </ul>
-
     <div class="contenedorListado">
         <table class="listado" cellpadding="0" cellspacing="0" width="100%">
             <thead>
@@ -265,10 +241,8 @@
             </tbody>
         </table>
     </div>
-
     <div class="finalListado">
         <span id="resumTotal" class="campoListado" style="padding-left:10px;">Total contractes: 0</span>
     </div>
 </body>
-
 </html>

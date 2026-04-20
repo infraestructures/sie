@@ -17,6 +17,6 @@
 	if ($stmt->execute()) {
 		header("Location: $tornar");
 	} else {
-		echo "Sha produït un error a l'eliminar l'actuació: " . $connexio->error;
+		echo "Sha produÃ¯t un error a l'eliminar l'actuaciÃ³: " . $connexio->error;
 	}
 ?>

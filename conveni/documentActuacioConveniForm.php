@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <?php
 	include '../connectarBD.php';
-	
 	// Inicialitzar variables per als camps del formulari
 	$idDocument = isset($_GET['id_document']) ? intval($_GET['id_document']) : null;
 	$idActuacio = isset($_GET['id_actuacio']) ? intval($_GET['id_actuacio']) : null;
@@ -11,7 +10,6 @@
 	$url = '';
 	$data = '';
 	$tipus_id = '';
-
 	// Si es rep un `codi`, consultar la taula `document_actuacio_conveni` per obtenir les dades
 	if ($idDocument) {
 		$sql = "
@@ -28,7 +26,6 @@
 		$stmt->bind_param("i", $idDocument);
 		$stmt->execute();
 		$resultat = $stmt->get_result();
-
 		// Si es troben resultats, assignar els valors a les variables
 		if ($resultat->num_rows > 0) {
 			$row = $resultat->fetch_assoc();
@@ -37,10 +34,8 @@
 			$data = $row['data'];
 			$url = $row['url'];
 		}
-
 		$stmt->close();
 	}
-
 	// Obtenir els tipus de document d'actuació de conveni
 	$sql = "SELECT id, descripcio FROM tipus_document_actuacio_conveni";
 	$result = $connexio->query($sql);
@@ -49,24 +44,15 @@
 		$tipus_document_actuacio_conveni[] = $row;
 	}
 ?>	
-
-
 <html>
-	<head>
-
-		<title>Fitxa de document d'actuació de conveni</title>
-
-		<link rel="stylesheet" href="../css/estilos.css" type="text/css" />
-		<link rel="stylesheet" href="../css/estilos_ficha_2.css" type="text/css" />
-
-		<script src="../js/utiles.js" language="javascript"></script>
-		<script src="../js/especificas.js" language="javascript"></script>
-
-		
-		<meta charset="UTF-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	</head>
-	<body class="contenido" onload="ocultarFondoPrincipal();">
+<head>
+	<title>Fitxa de document d'actuació de conveni</title>
+	<link rel="stylesheet" href="../estils/estils.css" type="text/css" />
+	<script src="../js/utils.js" language="javascript"></script>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body class="contenido" onload="ocultarFondoPrincipal();">
 		<!-- Formulario para insertar o actualizar -->		
 		<div class="contenedorFiltro"></div>
 		<ul class="botoneraFicha">
@@ -121,5 +107,5 @@
 				<input type="button" class="boton" value="Tornar a la fitxa de l'actuaci??" onclick="window.location.href='actuacioConveniForm.php?id_centre=<?php echo $idCentre ?>&id_conveni=<?php echo $idConveni ?>&id=<?php echo $idActuacio ?>'">
 			</li>
 		</ul>
-	</body>
+</body>
 </html>

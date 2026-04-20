@@ -1,6 +1,5 @@
 <?php
 	include '../connectarBD.php';
-
     // Recollir els valors del formulari
     $idDocument = isset($_POST['id_document']) ? intval($_POST['id_document']) : null;
     $idActuacio = isset($_POST['id_actuacio']) ? intval($_POST['id_actuacio']) : null;
@@ -10,7 +9,6 @@
     $tipus_id = isset($_POST['tipus_id']) ? trim($_POST['tipus_id']) : '';
     $data = isset($_POST['data']) ? trim($_POST['data']) : '';
     $url = isset($_POST['url']) ? trim($_POST['url']) : '';
-
     if ($idDocument) {
         // UPDATE si s'ha rebut un ID
         $sql = "UPDATE document_actuacio_conveni 
@@ -45,7 +43,6 @@
             die("Bind failed: (" . $stmt->errno . ") " . $stmt->error);
         }
     }
-
     if ($stmt->execute()) {
         // Redirigir després de l'operació
         header("Location: actuacioConveniForm.php?id=$idActuacio&id_conveni=$idConveni&id_centre=$idCentre");
@@ -53,7 +50,6 @@
     } else {
         echo "Error: " . $stmt->error;
     }
-
     $stmt->close();
     $connexio->close();
 ?>

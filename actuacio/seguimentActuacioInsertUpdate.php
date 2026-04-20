@@ -32,7 +32,6 @@
         if (!$stmt->bind_param("sssi", $data, $accio, $url, $idActuacio)) {
             die("Bind failed: (" . $stmt->errno . ") " . $stmt->error);
         }
-        
     }
 
     if ($stmt->execute()) {
@@ -45,4 +44,3 @@
 
     $stmt->close();
     $connexio->close();
-?>

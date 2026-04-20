@@ -1,6 +1,5 @@
 <?php
 	include '../connectarBD.php';
-
 	// Recollir dades del formulari amb variables en camelCase
 	$idCentre = $_POST['id_centre'];
 	$nomCentre = $_POST['nom_centre'];
@@ -13,7 +12,6 @@
 	$numAlumnesBatx = $_POST['num_alumnes_batx'];
 	$numAlumnesFp = $_POST['num_alumnes_fp'];
 	$preuMetreConstruït = $_POST['preu_metre_construit'];
-
 	if ($operacio == 'update') {
 		// Actualitzar
 		echo "hola: ".$numAlumnesPrimaria;
@@ -46,13 +44,11 @@
 			$numAlumnesFp, $preuMetreConstruït
 		);
 	}
-	
 	if ($stmt->execute()) {
 		header('Location: espaiCentreList.php?id_centre=' . $idCentre . '&nom_centre=' . $nomCentre);
 	} else {
 		echo "Error: " . $connexio->error;
 	}
-	
 	// Tancar la connexió
 	$stmt->close();
 	$connexio->close();

@@ -1,14 +1,12 @@
 <!DOCTYPE html>
 <?php
 	include '../connectarBD.php';
-
 	// Recupera els valors
 	$id_conveni = $_GET['id_conveni'] ?? null;
 	$id_centre	= $_GET['id_centre'] ?? null;
 	$id_municipi = $_GET['id_municipi'] ?? null;
 	$nom_municipi = $_GET['nom_municipi'] ?? null;
 	$codi_conveni = $_GET['codi_conveni'] ?? null;
-
 	$centre_conveni = [
 		'id_centre' => '',
 		'id_conveni' => '',
@@ -20,7 +18,6 @@
 		'nom_centre' => '',
 		'ajuntament_id' => ''
 	];
-
 	$operacio = "insertar";
 	if ($id_centre) {
 		$operacio = "modificar";
@@ -40,9 +37,7 @@
 		WHERE 
 			cc.id_conveni = ? AND
 			cc.id_centre = ?;";
-
 		$stmt = $connexio->prepare($sql);
-
 		if (!$stmt) {
 			die("Error SQL: " . $connexio->error);
 		}
@@ -54,10 +49,8 @@
 		$nom_centre = $centre_conveni["nom_centre"];
 		$codi_conveni = $centre_conveni["codi_conveni"];
 	}
-
 	$sql_centres = "SELECT id, Centre FROM Centres WHERE id_municipi = $id_municipi ORDER BY Centre";
 	$result_centres = $connexio->query($sql_centres);
-
 	// Llista d'actuacions associades al centre
 	$sql_actuacions_centres = "SELECT 
 						a.id, 
@@ -75,21 +68,12 @@
 					WHERE a.conveni_id = $id_conveni
 					AND	a.centre_id = $id_centre;";
 	$result_actuacions_centres = $connexio->query($sql_actuacions_centres);
-
 ?>
 <html>
-
 <head>
-
 	<title>Fitxa de centre</title>
-
-	<link rel="stylesheet" href="../css/estilos.css" type="text/css" />
-	<link rel="stylesheet" href="../css/estilos_ficha_2.css" type="text/css" />
-
-	<script src="../js/utiles.js" language="javascript"></script>
-	<script src="../js/especificas.js" language="javascript"></script>
-	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
+	<link rel="stylesheet" href="../estils/estils.css" type="text/css" />
+	<script src="../js/utils.js" language="javascript"></script>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
@@ -141,10 +125,8 @@
 									<?php endwhile; ?>
 								</select>
 							<?php endif; ?>
-
 							<!-- Solo un input oculto para el JS -->
 							<input type="hidden" id="centre_id" name="centre_id" value="<?= $id_centre ?>">
-
 							<button type="button" onclick="obrirCentre()">Veure centre</button>
 						</td>	
 						<td>
@@ -170,9 +152,7 @@
 						<input type="button" class="boton" value="Nova actuació" onclick="location.href='actuacioConveniForm.php?id_conveni=<?php echo $id_conveni ?>&id_centre=<?php echo $id_centre ?>&nom_centre=<?php echo $nom_centre ?>';">
 					</li>
 				</ul>
-
 				<div class="espacioMarronClaro"></div>
-
 				<div id="cuerpo" class="scroll_total">
 					<table class="listado" cellpadding="0" cellspacing="0" width="100%">
 						<thead>
@@ -238,7 +218,6 @@
 			const url = `../centre/centreForm.php?id=${encodeURIComponent(codiCentre)}`;
 			window.open(url, 'Centre', 'width=800,height=600,scrollbars=yes,resizable=yes');
 		}		
-
 		function actualitzaCentreId() {
 			const select = document.getElementById('centre');
 			if (!select) {
@@ -253,7 +232,6 @@
 				console.log('✅ centre_id actualitzat:', hidden.value);
 			}
 		}
-
 		window.addEventListener('DOMContentLoaded', function () {
 			const hidden = document.getElementById('centre_id');
 			console.log('centre_id trobat?', hidden);

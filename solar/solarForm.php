@@ -1,17 +1,13 @@
 <?php
 declare(strict_types=1);
-
 require_once __DIR__ . '/../connectarBD.php';
-
 mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 ini_set('display_errors', '1');
 error_reporting(E_ALL);
-
 function h($v): string
 {
     return htmlspecialchars((string) $v, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
 }
-
 function post_bool(string $k): int
 {
     return isset($_POST[$k]) ? 1 : 0;
@@ -36,7 +32,6 @@ function post_date(string $k): ?string
     $v = trim($_POST[$k] ?? '');
     return $v === '' ? null : $v;
 }
-
 /** bind_params($stmt, ['i','s',...], [$a,$b,...]) */
 function bind_params(mysqli_stmt $stmt, array $types, array $params): void
 {
@@ -46,7 +41,6 @@ function bind_params(mysqli_stmt $stmt, array $types, array $params): void
         $refs[$k] = &$params[$k];
     $stmt->bind_param($typeStr, ...$refs);
 }
-
 /** Devuelve set de columnas reales de una tabla. */
 function table_columns(mysqli $db, string $table): array
 {
@@ -56,7 +50,6 @@ function table_columns(mysqli $db, string $table): array
         $cols[$r['Field']] = true;
     return $cols;
 }
-
 /** Devuelve el solar principal asociado a un expedient (o 0 si no existe). */
 function get_solar_principal_id(mysqli $db, int $expedient_id): int
 {
@@ -71,10 +64,8 @@ function get_solar_principal_id(mysqli $db, int $expedient_id): int
     $row = $st->get_result()->fetch_assoc();
     return $row ? (int) $row['solar_id'] : 0;
 }
-
 $errors = [];
 $expedient_id = isset($_GET['id']) ? (int) $_GET['id'] : 0;
-
 $exp = [
     'id' => 0,
     'centre_id' => 0,
@@ -87,7 +78,6 @@ $exp = [
     'data_acord_ple' => '',
     'obs_acord_ple' => '',
 ];
-
 $sol = [
     'id' => 0,
     'illa_id' => '',
@@ -138,7 +128,6 @@ $sol = [
     'postobra_cessio_us_feta' => 0,
     'notes' => '',
 ];
-
 $serveis = [
     'aigua' => ['disponible' => 0, 'cabal_m3h' => '', 'pressio_kgcm2' => '', 'grup_pressio_necessari' => 0],
     'electricitat' => ['disponible' => 0, 'kw_obra' => '', 'kw_funcionament' => '', 'requereix_ct' => 0],
@@ -146,9 +135,7 @@ $serveis = [
     'clavegueram' => ['disponible' => 0, 'cota' => '', 'diametre' => ''],
     'pluvials' => ['disponible' => 0, 'solucio_pluvials' => ''],
 ];
-
 $checkedTipus = ['obra_nova' => false, 'reforma_integral' => false, 'ampliacio' => false, 'urbanitzacio' => false, 'altres' => false];
-
 /** Documentació requerida (solar_documentacio.tipus) */
 $docTypes = [
     'acord_ple' => 'Acord de ple',
@@ -161,7 +148,6 @@ $docs = [];
 foreach ($docTypes as $t => $_lbl) {
     $docs[$t] = ['aportat' => 0, 'data_aportacio' => '', 'observacions' => ''];
 }
-
 /** Informes sectorials (solar_informe_sectorial.tipus) */
 $infTypes = [
     'aesa_servituds_aeronautiques' => 'AESA (servituds aeronàutiques)',
@@ -171,7 +157,6 @@ $infs = [];
 foreach ($infTypes as $t => $_lbl) {
     $infs[$t] = ['afectacio_sel' => 'pendent', 'viabilitat' => 'pendent', 'data_informe' => '', 'condicionants' => ''];
 }
-
 // =====================================================
 // DELETE
 // =====================================================
@@ -185,13 +170,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'delet
             $solar_id = get_solar_principal_id($connexio, $expedient_id);
             if ($solar_id <= 0)
                 throw new Exception("No existeix solar principal per a aquest expedient.");
-
             foreach (['solar_documentacio', 'solar_informe_sectorial', 'solar_serveis'] as $t) {
                 $st = $connexio->prepare("DELETE FROM `$t` WHERE solar_id=?");
                 $st->bind_param("i", $solar_id);
                 $st->execute();
             }
-
             $sql = "SELECT a.id
               FROM actuacions_solar a
               JOIN actuacions_solar_solars ass ON ass.actuacio_solar_id=a.id
@@ -203,14 +186,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'delet
             $rs = $st->get_result();
             while ($r = $rs->fetch_assoc())
                 $ids[] = (int) $r['id'];
-
             if ($ids) {
                 $stDel = $connexio->prepare("DELETE FROM actuacions_solar_solars WHERE actuacio_solar_id=? AND solar_id=?");
                 foreach ($ids as $aid) {
                     $stDel->bind_param("ii", $aid, $solar_id);
                     $stDel->execute();
                 }
-
                 $stCheck = $connexio->prepare("SELECT COUNT(*) AS c FROM actuacions_solar_solars WHERE actuacio_solar_id=?");
                 $stDelAct = $connexio->prepare("DELETE FROM actuacions_solar WHERE id=?");
                 foreach ($ids as $aid) {
@@ -223,11 +204,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'delet
                     }
                 }
             }
-
             $st = $connexio->prepare("DELETE FROM solars WHERE id=?");
             $st->bind_param("i", $solar_id);
             $st->execute();
-
             $connexio->commit();
             header("Location: solarListFiltro.php");
             exit;
@@ -237,17 +216,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'delet
         }
     }
 }
-
 // =====================================================
 // SAVE
 // =====================================================
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') !== 'delete') {
     $expedient_id = (int) ($_POST['expedient_id'] ?? 0);
-
     $centre_id = (int) ($_POST['centre_id'] ?? 0);
     if ($centre_id <= 0)
         $errors[] = "Has de seleccionar un centre de la llista (no text lliure).";
-
     if (!$errors) {
         $st = $connexio->prepare("SELECT Centre FROM centres WHERE id=? LIMIT 1");
         $st->bind_param("i", $centre_id);
@@ -255,7 +231,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') !== 'delet
         if (!$st->get_result()->fetch_assoc())
             $errors[] = "El centre seleccionat no existeix (id=$centre_id).";
     }
-
     $estat = $_POST['estat'] ?? 'pendent';
     $data_sollicitud = post_date('data_sollicitud');
     $obs_sollicitud = post_str('obs_sollicitud');
@@ -263,10 +238,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') !== 'delet
     $obs_topografic = post_str('obs_topografic');
     $data_acord_ple = post_date('data_acord_ple');
     $obs_acord_ple = post_str('obs_acord_ple');
-
     $illa_id = post_int('illa_id') ?? post_int('illa');
     $municipi_id = post_int('municipi_id') ?? post_int('municipi');
-
     $ref_cadastral = post_str('ref_cadastral');
     $ref_registral = post_str('ref_registral');
     $superficie_m2 = post_dec('superficie_m2');
@@ -275,17 +248,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') !== 'delet
     $requereix_agrupacio = post_bool('requereix_agrupacio');
     $requereix_segregacio = post_bool('requereix_segregacio');
     $observacions_parcelles = post_str('observacions_parcelles');
-
     $titularitat_municipal_acreditada = post_bool('titularitat_municipal_acreditada');
     $lliure_carregues = post_bool('lliure_carregues');
     $lliure_gravamens = post_bool('lliure_gravamens');
     $inventari_municipal_inclos = post_bool('inventari_municipal_inclos');
-
     $servituds_detectades = post_bool('servituds_detectades');
     $servituds_compatibles = (isset($_POST['servituds_compatibles']) && $_POST['servituds_compatibles'] !== '')
         ? (int) $_POST['servituds_compatibles'] : null;
     $servituds_detall = post_str('servituds_detall');
-
     $regim_cessio = post_str('regim_cessio');
     $finalitat_educativa_condicionada = post_bool('finalitat_educativa_condicionada');
     $limit_temporal_text = post_str('limit_temporal_text');
@@ -294,54 +264,42 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') !== 'delet
     $data_info_publica = post_date('data_info_publica');
     $assabentat_consell_insular = post_bool('assabentat_consell_insular');
     $data_assabentat = post_date('data_assabentat');
-
     $qualificacio_urbanistica = post_str('qualificacio_urbanistica');
     $parametres_edificatoris = post_str('parametres_edificatoris');
     $usos_permesos = post_str('usos_permesos');
     $afectacio_apr = post_bool('afectacio_apr');
     $detall_apr = post_str('detall_apr') ?? post_str('detall_apr_geologia');
-
     $condicions_higienicosanitaries_ok = post_bool('condicions_higienicosanitaries_ok');
     $data_cert_higienico = post_date('data_cert_higienico');
-
     $delimitat_fisicament = post_bool('delimitat_fisicament');
     $data_delimitacio = post_date('data_delimitacio');
     $sense_obstacles = post_bool('sense_obstacles');
     $observacions_obstacles = post_str('observacions_obstacles');
     $serveis_basics_ok = post_bool('serveis_basics_ok');
-
     $accessos_ok = post_bool('accessos_ok');
     $estudi_mobilitat_aportat = post_bool('estudi_mobilitat_aportat');
     $accessibilitat_universal_ok = post_bool('accessibilitat_universal_ok');
     $detall_accessos = post_str('detall_accessos');
-
     $postobra_obra_nova_notari_feta = post_bool('postobra_obra_nova_notari_feta');
     $data_obra_nova = post_date('data_obra_nova');
     $postobra_inscripcio_registre_feta = post_bool('postobra_inscripcio_registre_feta');
     $data_inscripcio = post_date('data_inscripcio');
     $postobra_cessio_us_feta = post_bool('postobra_cessio_us_feta');
-
     $notes = post_str('notes');
-
     $serveis['aigua']['disponible'] = post_bool('aigua_disponible');
     $serveis['aigua']['cabal_m3h'] = post_dec('aigua_cabal_m3h');
     $serveis['aigua']['pressio_kgcm2'] = post_dec('aigua_pressio_kgcm2');
     $serveis['aigua']['grup_pressio_necessari'] = post_bool('aigua_grup_pressio_necessari');
-
     $serveis['electricitat']['disponible'] = post_bool('electricitat_disponible');
     $serveis['electricitat']['kw_obra'] = post_dec('electricitat_kw_obra');
     $serveis['electricitat']['kw_funcionament'] = post_dec('electricitat_kw_funcionament');
     $serveis['electricitat']['requereix_ct'] = post_bool('requereix_ct');
-
     $serveis['telefonia']['disponible'] = post_bool('telefonia_disponible');
-
     $serveis['clavegueram']['disponible'] = post_bool('clavegueram_disponible');
     $serveis['clavegueram']['cota'] = post_dec('clavegueram_cota');
     $serveis['clavegueram']['diametre'] = post_str('clavegueram_diametre');
-
     $serveis['pluvials']['disponible'] = post_bool('pluvials_disponible');
     $serveis['pluvials']['solucio_pluvials'] = post_str('solucio_pluvials');
-
     foreach ($checkedTipus as $k => $_)
         $checkedTipus[$k] = isset($_POST[$k]);
     $tipusSeleccionats = [];
@@ -352,7 +310,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') !== 'delet
         $tipusSeleccionats = ['altres'];
         $checkedTipus['altres'] = true;
     }
-
     if (!$errors) {
         $connexio->begin_transaction();
         try {
@@ -396,11 +353,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') !== 'delet
                 $st->execute();
                 $expedient_id = (int) $connexio->insert_id;
             }
-
             $solar_id = get_solar_principal_id($connexio, $expedient_id);
-
             $sol_cols_db = table_columns($connexio, 'solars');
-
             $wanted = [
                 'municipi_id' => ['i', $municipi_id],
                 'illa_id' => ['i', $illa_id],
@@ -450,7 +404,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') !== 'delet
                 'postobra_cessio_us_feta' => ['i', $postobra_cessio_us_feta],
                 'notes' => ['s', $notes],
             ];
-
             $cols = [];
             $types = [];
             $params = [];
@@ -463,7 +416,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') !== 'delet
             }
             if (!$cols)
                 throw new Exception("No hi ha cap columna de solars coincident amb el formulari.");
-
             if ($solar_id > 0) {
                 $set = implode(",", array_map(fn($c) => "$c=?", $cols));
                 $sql = "UPDATE solars SET $set WHERE id=?";
@@ -481,19 +433,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') !== 'delet
                 bind_params($st, $types, $params);
                 $st->execute();
                 $solar_id = (int) $connexio->insert_id;
-
                 $sql = "INSERT INTO actuacions_solar (expedient_id, tipus) VALUES (?, 'altres')";
                 $st = $connexio->prepare($sql);
                 $st->bind_param("i", $expedient_id);
                 $st->execute();
                 $act_id = (int) $connexio->insert_id;
-
                 $sql = "INSERT INTO actuacions_solar_solars (actuacio_solar_id, solar_id, rol) VALUES (?, ?, 'principal')";
                 $st = $connexio->prepare($sql);
                 $st->bind_param("ii", $act_id, $solar_id);
                 $st->execute();
             }
-
             $existing = [];
             $sql = "SELECT id, tipus FROM actuacions_solar WHERE expedient_id=?";
             $st = $connexio->prepare($sql);
@@ -502,7 +451,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') !== 'delet
             $rs = $st->get_result();
             while ($r = $rs->fetch_assoc())
                 $existing[(string) $r['tipus']] = (int) $r['id'];
-
             $isFirst = true;
             foreach ($tipusSeleccionats as $tipus) {
                 $act_id = $existing[$tipus] ?? 0;
@@ -515,7 +463,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') !== 'delet
                 }
                 $rol = $isFirst ? 'principal' : 'auxiliar';
                 $isFirst = false;
-
                 $sql = "INSERT INTO actuacions_solar_solars (actuacio_solar_id, solar_id, rol)
                 VALUES (?,?,?)
                 ON DUPLICATE KEY UPDATE rol=VALUES(rol)";
@@ -523,14 +470,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') !== 'delet
                 $st->bind_param("iis", $act_id, $solar_id, $rol);
                 $st->execute();
             }
-
             $srv_cols_db = table_columns($connexio, 'solar_serveis');
             $hasExtended =
                 isset($srv_cols_db['cabal_m3h']) ||
                 isset($srv_cols_db['kw_obra']) ||
                 isset($srv_cols_db['solucio_pluvials']) ||
                 isset($srv_cols_db['pressio_kgcm2']);
-
             if ($hasExtended) {
                 $allSrvCols = [
                     'solar_id' => ['i', null],
@@ -550,33 +495,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') !== 'delet
                 foreach ($allSrvCols as $c => $_)
                     if (isset($srv_cols_db[$c]))
                         $srvCols[] = $c;
-
                 $placeholders = rtrim(str_repeat("?,", count($srvCols)), ",");
                 $updates = implode(",", array_map(
                     fn($c) => "$c=VALUES($c)",
                     array_filter($srvCols, fn($c) => !in_array($c, ['solar_id', 'tipus'], true))
                 ));
-
                 $sql = "INSERT INTO solar_serveis (" . implode(",", $srvCols) . ") VALUES ($placeholders)
                 ON DUPLICATE KEY UPDATE $updates";
                 $st = $connexio->prepare($sql);
-
                 foreach ($serveis as $tipus => $v) {
                     $disponible = (int) ($v['disponible'] ?? 0);
-
                     $cabal = ($tipus === 'aigua') ? ($v['cabal_m3h'] === null ? null : (string) $v['cabal_m3h']) : null;
                     $pressio = ($tipus === 'aigua') ? ($v['pressio_kgcm2'] === null ? null : (string) $v['pressio_kgcm2']) : null;
                     $grup = ($tipus === 'aigua') ? (int) ($v['grup_pressio_necessari'] ?? 0) : 0;
-
                     $kw_obra = ($tipus === 'electricitat') ? ($v['kw_obra'] === null ? null : (string) $v['kw_obra']) : null;
                     $kw_func = ($tipus === 'electricitat') ? ($v['kw_funcionament'] === null ? null : (string) $v['kw_funcionament']) : null;
                     $req_ct = ($tipus === 'electricitat') ? (int) ($v['requereix_ct'] ?? 0) : 0;
-
                     $cota = ($tipus === 'clavegueram') ? ($v['cota'] === null ? null : (string) $v['cota']) : null;
                     $diam = ($tipus === 'clavegueram') ? ($v['diametre'] ?? null) : null;
-
                     $sol_pluv = ($tipus === 'pluvials') ? ($v['solucio_pluvials'] ?? null) : null;
-
                     $p = [];
                     $t = [];
                     foreach ($srvCols as $c) {
@@ -630,13 +567,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') !== 'delet
                   valor2=VALUES(valor2),
                   notes=VALUES(notes)";
                 $st = $connexio->prepare($sql);
-
                 foreach ($serveis as $tipus => $v) {
                     $disponible = (int) ($v['disponible'] ?? 0);
                     $valor1 = null;
                     $valor2 = null;
                     $notesSrv = null;
-
                     if ($tipus === 'aigua') {
                         $valor1 = $v['cabal_m3h'] === null ? null : (string) $v['cabal_m3h'];
                         $valor2 = $v['pressio_kgcm2'] === null ? null : (string) $v['pressio_kgcm2'];
@@ -651,22 +586,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') !== 'delet
                     } elseif ($tipus === 'pluvials') {
                         $notesSrv = $v['solucio_pluvials'] ?? null;
                     }
-
                     $st->bind_param("isisss", $solar_id, $tipus, $disponible, $valor1, $valor2, $notesSrv);
                     $st->execute();
                 }
             }
-
             $sql = "DELETE FROM solar_documentacio WHERE solar_id=?";
             $st = $connexio->prepare($sql);
             $st->bind_param("i", $solar_id);
             $st->execute();
-
             $postedDocs = $_POST['doc'] ?? [];
             $sql = "INSERT INTO solar_documentacio (solar_id, tipus, aportat, data_aportacio, observacions)
               VALUES (?,?,?,?,?)";
             $stIns = $connexio->prepare($sql);
-
             foreach ($docTypes as $tipus => $_lbl) {
                 $row = $postedDocs[$tipus] ?? [];
                 $aportat = isset($row['aportat']) ? 1 : 0;
@@ -677,17 +608,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') !== 'delet
                 $stIns->bind_param("isiss", $solar_id, $tipus, $aportat, $data_ap, $obs);
                 $stIns->execute();
             }
-
             $sql = "DELETE FROM solar_informe_sectorial WHERE solar_id=?";
             $st = $connexio->prepare($sql);
             $st->bind_param("i", $solar_id);
             $st->execute();
-
             $postedInf = $_POST['inf'] ?? [];
             $sql = "INSERT INTO solar_informe_sectorial (solar_id, tipus, afectacio, viabilitat, data_informe, condicionants)
               VALUES (?,?,?,?,?,?)";
             $stInf = $connexio->prepare($sql);
-
             foreach ($infTypes as $tipus => $_lbl) {
                 $row = $postedInf[$tipus] ?? [];
                 $afSel = (string) ($row['afectacio_sel'] ?? 'pendent');
@@ -697,29 +625,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') !== 'delet
                 $data_inf = ($data_inf === '') ? null : $data_inf;
                 $cond = trim((string) ($row['condicionants'] ?? ''));
                 $cond = ($cond === '') ? null : $cond;
-
                 $stInf->bind_param("isisss", $solar_id, $tipus, $afectacio, $viabilitat, $data_inf, $cond);
                 $stInf->execute();
             }
-
             $connexio->commit();
             header("Location: solarListFiltro.php");
             exit;
-
         } catch (Throwable $e) {
             $connexio->rollback();
             $errors[] = "ERROR GUARDANT: " . $e->getMessage();
         }
     }
 }
-
 // =====================================================
 // LOAD
 // =====================================================
 $centre_txt = '';
 $centre_id = 0;
 $centre_nom = '';
-
 if ($expedient_id > 0) {
     $sql = "SELECT e.*, c.Centre AS centre_nom
           FROM expedients_solar e
@@ -734,7 +657,6 @@ if ($expedient_id > 0) {
         $centre_nom = (string) $row['centre_nom'];
         $centre_txt = $centre_nom;
     }
-
     $sql = "SELECT s.*
           FROM actuacions_solar a
           JOIN actuacions_solar_solars ass ON ass.actuacio_solar_id=a.id AND ass.rol='principal'
@@ -745,7 +667,6 @@ if ($expedient_id > 0) {
     $st->execute();
     if ($row = $st->get_result()->fetch_assoc())
         $sol = array_merge($sol, $row);
-
     $sql = "SELECT DISTINCT tipus FROM actuacions_solar WHERE expedient_id=?";
     $st = $connexio->prepare($sql);
     $st->bind_param("i", $expedient_id);
@@ -756,7 +677,6 @@ if ($expedient_id > 0) {
         if (array_key_exists($t, $checkedTipus))
             $checkedTipus[$t] = true;
     }
-
     if ((int) $sol['id'] > 0) {
         $sql = "SELECT * FROM solar_serveis WHERE solar_id=?";
         $st = $connexio->prepare($sql);
@@ -768,9 +688,7 @@ if ($expedient_id > 0) {
             $t = (string) $r['tipus'];
             if (!isset($serveis[$t]))
                 continue;
-
             $serveis[$t]['disponible'] = (int) ($r['disponible'] ?? 0);
-
             if (isset($r['cabal_m3h']) && $t === 'aigua') {
                 $serveis[$t]['cabal_m3h'] = $r['cabal_m3h'];
                 $serveis[$t]['pressio_kgcm2'] = $r['pressio_kgcm2'];
@@ -801,7 +719,6 @@ if ($expedient_id > 0) {
                 }
             }
         }
-
         $sql = "SELECT tipus, aportat, data_aportacio, observacions
             FROM solar_documentacio WHERE solar_id=?";
         $st = $connexio->prepare($sql);
@@ -817,7 +734,6 @@ if ($expedient_id > 0) {
             $docs[$t]['data_aportacio'] = (string) ($r['data_aportacio'] ?? '');
             $docs[$t]['observacions'] = (string) ($r['observacions'] ?? '');
         }
-
         $sql = "SELECT tipus, afectacio, viabilitat, data_informe, condicionants
             FROM solar_informe_sectorial WHERE solar_id=?";
         $st = $connexio->prepare($sql);
@@ -835,30 +751,23 @@ if ($expedient_id > 0) {
         }
     }
 }
-
 $illes = $connexio->query("SELECT id, nom FROM illa ORDER BY nom")->fetch_all(MYSQLI_ASSOC);
 $solarExists = ((int) $sol['id'] > 0);
 ?>
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Fitxa d’expedient de solar</title>
-
-  <link rel="stylesheet" href="../css/estilos.css" type="text/css" />
-  <link rel="stylesheet" href="../css/estilos_ficha_2.css" type="text/css" />
-
-  <script src="../js/utiles.js" language="javascript"></script>
-  <script src="../js/especificas.js" language="javascript"></script>
-
-  <script>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Fitxa d’expedient de solar</title>
+	<link rel="stylesheet" href="../estils/estils.css" type="text/css" />
+	<script src="../js/utils.js" language="javascript"></script>
+	<script>
     async function onIllaChange() {
       const illa = document.getElementById('illa_id').value;
       const municipi = document.getElementById('municipi_id');
       municipi.innerHTML = '<option value="">Selecciona un municipi</option>';
       if (!illa) return;
-
       const r = await fetch('ajax_municipis.php?illa_id=' + encodeURIComponent(illa));
       const data = await r.json();
       data.forEach((m) => {
@@ -867,26 +776,21 @@ $solarExists = ((int) $sol['id'] > 0);
         opt.textContent = m.nom;
         municipi.appendChild(opt);
       });
-
       const selected = municipi.dataset.selected;
       if (selected) municipi.value = selected;
     }
-
     function initCentreAutocomplete() {
       const input = document.getElementById('centre_txt');
       const hidden = document.getElementById('centre_id');
       const box = document.getElementById('centre_suggest');
       const label = document.getElementById('centre_selected_label');
       if (!input || !hidden || !box) return;
-
       let lastFetch = 0;
       let timer = null;
       let lastQuery = '';
-
       function hideBox(){ box.style.display='none'; box.innerHTML=''; }
       function showBox(){ box.style.display='block'; }
       function clearSelection(){ hidden.value=''; if (label) label.textContent=''; }
-
       function render(items){
         box.innerHTML = '';
         if (!items.length) {
@@ -915,7 +819,6 @@ $solarExists = ((int) $sol['id'] > 0);
         });
         showBox();
       }
-
       async function fetchCentres(q){
         const now = Date.now();
         lastFetch = now;
@@ -927,7 +830,6 @@ $solarExists = ((int) $sol['id'] > 0);
           render(data);
         }catch(e){ /* ignore */ }
       }
-
       input.addEventListener('input', () => {
         const q = input.value.trim();
         clearSelection();
@@ -939,36 +841,28 @@ $solarExists = ((int) $sol['id'] > 0);
           fetchCentres(q);
         }, 200);
       });
-
       input.addEventListener('focus', () => {
         const q = input.value.trim();
         if (q.length >= 2) fetchCentres(q);
       });
-
       document.addEventListener('click', (e) => {
         if (!box.contains(e.target) && e.target !== input) hideBox();
       });
-
       input.addEventListener('blur', () => setTimeout(hideBox, 150));
     }
-
     function confirmGuardar() {
       const centreId = document.getElementById('centre_id')?.value || '';
       const centreTxt = document.getElementById('centre_txt')?.value || '';
       const illaSel = document.getElementById('illa_id');
       const munSel = document.getElementById('municipi_id');
-
       const illaTxt = illaSel?.options[illaSel.selectedIndex]?.text || '';
       const munTxt = munSel?.options[munSel.selectedIndex]?.text || '';
-
       const refCat = document.querySelector('input[name="ref_cadastral"]')?.value || '';
       const sup = document.querySelector('input[name="superficie_m2"]')?.value || '';
-
       if (!centreId) {
         alert("Selecciona el centre DES DE LA LLISTA (autocomplete).");
         return false;
       }
-
       const msg =
         "Confirmes que vols guardar?\n\n" +
         "Centre: " + centreTxt + " (id " + centreId + ")\n" +
@@ -978,23 +872,17 @@ $solarExists = ((int) $sol['id'] > 0);
         "Es guardaran també Serveis, Documentació i Informes sectorials.";
       return confirm(msg);
     }
-
     function confirmEliminar() {
       return confirm("ATENCIÓ: eliminaràs el solar i les seves dades associades (serveis, documentació, informes...).\n\nVols continuar?");
     }
-
-    
 // --- Link preview (URLs dins de textareas) ---
 const urlRe = /(https?:\/\/[^\s<>"']+)/gi;
-
 function escapeHtml(s) {
   return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 }
-
 function renderLinks(text, outEl) {
   const urls = (String(text).match(urlRe) || []).map(u => u.replace(/[)\],.]+$/,''));
   if (!urls.length) { outEl.innerHTML = ""; return; }
-
   const uniq = [...new Set(urls)];
   outEl.innerHTML =
     '<div style="margin-top:6px;"><strong>Enllaços detectats:</strong></div>' +
@@ -1005,23 +893,19 @@ function renderLinks(text, outEl) {
     }).join('') +
     '</ul>';
 }
-
 function hookUrlPreview(textareaId, previewId) {
   const ta = document.getElementById(textareaId);
   const out = document.getElementById(previewId);
   if (!ta || !out) return;
-
   const upd = () => renderLinks(ta.value || "", out);
   ta.addEventListener('input', upd);
   upd(); // al carregar (per valors ja guardats)
 }
-
 window.addEventListener('DOMContentLoaded', () => {
       initCentreAutocomplete();
       if (document.getElementById('illa_id')?.value) onIllaChange();
       const municipi = document.getElementById('municipi_id');
       if (municipi) municipi.dataset.selected = municipi.dataset.selected || municipi.value;
-
       hookUrlPreview('obs_sollicitud', 'prev_obs_sollicitud');
       hookUrlPreview('obs_topografic', 'prev_obs_topografic');
       hookUrlPreview('obs_acord_ple', 'prev_obs_acord_ple');
@@ -1032,18 +916,14 @@ window.addEventListener('DOMContentLoaded', () => {
     .url-preview a { word-break: break-all; }
   </style>
 </head>
-
 <body class="contenido" onload="ocultarFondoPrincipal();">
   <div class="contenedorFiltro"></div>
-
   <ul class="botoneraFicha">
     <li class="tituloFicha">
       <p class="posicionTituloFicha">FITXA D’EXPEDIENT DE SOLAR</p>
     </li>
   </ul>
-
   <div class="espacioMarron">&nbsp;</div>
-
   <?php if ($errors): ?>
     <div style="margin:10px 20px; padding:10px; background:#ffe4e4; border:1px solid #ffb2b2;">
       <?php foreach ($errors as $e): ?>
@@ -1051,22 +931,16 @@ window.addEventListener('DOMContentLoaded', () => {
       <?php endforeach; ?>
     </div>
   <?php endif; ?>
-
   <form name="entidad"
         method="post"
         onsubmit="return confirmGuardar();"
         action="solarForm.php<?php echo $expedient_id ? '?id=' . (int) $expedient_id : ''; ?>">
-
     <input type="hidden" name="action" value="save">
     <input type="hidden" name="expedient_id" value="<?php echo (int) $expedient_id; ?>">
-
     <div id="fichaEditable" style="background-color:#ffffff;">
       <div class="cabeceraFicha"></div>
-
       <div class="contenedorFicha">
-
         <div class="tituloSeccion"><p class="textoTituloSeccion">Dades generals</p></div>
-
         <table>
           <tr>
             <td>
@@ -1077,7 +951,6 @@ window.addEventListener('DOMContentLoaded', () => {
                 <option value="tancat"    <?php echo ($exp['estat'] === 'tancat' ? 'selected' : ''); ?>>Tancat</option>
               </select>
             </td>
-
             <td>
               <label class="campoFicha_Blanca">Centre:</label>
               <div style="position:relative; display:inline-block; width:520px;">
@@ -1095,7 +968,6 @@ window.addEventListener('DOMContentLoaded', () => {
               </div>
             </td>
           </tr>
-
           <tr>
             <td>
               <label class="campoFicha_Blanca">Illa:</label>
@@ -1116,7 +988,6 @@ window.addEventListener('DOMContentLoaded', () => {
             </td>
           </tr>
         </table>
-
         <div class="tituloSeccion" style="margin-top: 15px;"><p class="textoTituloSeccion">Tipus d’actuació</p></div>
         <table><tr><td>
           <?php foreach (['obra_nova' => 'Obra nova', 'reforma_integral' => 'Reforma integral', 'ampliacio' => 'Ampliació', 'urbanitzacio' => 'Urbanització', 'altres' => 'Altres'] as $k => $lbl): ?>
@@ -1125,7 +996,6 @@ window.addEventListener('DOMContentLoaded', () => {
             </label>
           <?php endforeach; ?>
         </td></tr></table>
-
         <div class="tituloSeccion" style="margin-top: 15px;"><p class="textoTituloSeccion">Tràmits</p></div>
         <table>
           <tr>
@@ -1162,7 +1032,6 @@ window.addEventListener('DOMContentLoaded', () => {
             </td>
           </tr>
         </table>
-
         <div class="tituloSeccion" style="margin-top: 15px;"><p class="textoTituloSeccion">Identificació jurídica del solar</p></div>
         <table>
           <tr>
@@ -1180,7 +1049,6 @@ window.addEventListener('DOMContentLoaded', () => {
             </td>
           </tr>
         </table>
-
         <div class="tituloSeccion" style="margin-top: 15px;"><p class="textoTituloSeccion">Parcel·lació / operacions prèvies</p></div>
         <table>
           <tr>
@@ -1202,7 +1070,6 @@ window.addEventListener('DOMContentLoaded', () => {
             </td>
           </tr>
         </table>
-
         <div class="tituloSeccion" style="margin-top: 15px;"><p class="textoTituloSeccion">Estat legal (propietat, càrregues i servituds)</p></div>
         <table><tr><td>
           <?php foreach (['titularitat_municipal_acreditada' => 'Titularitat municipal acreditada', 'lliure_carregues' => 'Lliure de càrregues', 'lliure_gravamens' => 'Lliure de gravàmens', 'inventari_municipal_inclos' => 'Inclòs a inventari municipal'] as $k => $lbl): ?>
@@ -1211,14 +1078,12 @@ window.addEventListener('DOMContentLoaded', () => {
             </label>
           <?php endforeach; ?>
         </td></tr></table>
-
         <div class="tituloSeccion" style="margin-top: 15px;"><p class="textoTituloSeccion">Servituds</p></div>
         <table>
           <tr><td>
             <label class="campoFicha_Blanca" style="display:inline-block; margin-right:10px;">
               <input type="checkbox" name="servituds_detectades" value="1" <?php echo ((int) $sol['servituds_detectades'] === 1 ? 'checked' : ''); ?>> Hi ha servituds
             </label>
-
             <label class="campoFicha_Blanca" style="display:inline-block;">
               Servituds compatibles?
               <select name="servituds_compatibles" class="campoFicha_Blanca">
@@ -1233,7 +1098,6 @@ window.addEventListener('DOMContentLoaded', () => {
             <textarea name="servituds_detall" class="contenedorFicha_Blanca" rows="3" cols="110"><?php echo h($sol['servituds_detall']); ?></textarea>
           </td></tr>
         </table>
-
         <div class="tituloSeccion" style="margin-top: 15px;"><p class="textoTituloSeccion">Règim de cessió i condicions</p></div>
         <table>
           <tr>
@@ -1281,7 +1145,6 @@ window.addEventListener('DOMContentLoaded', () => {
             </td>
           </tr>
         </table>
-
         <div class="tituloSeccion" style="margin-top: 15px;"><p class="textoTituloSeccion">Urbanisme i riscos</p></div>
         <table>
           <tr><td colspan="3">
@@ -1318,7 +1181,6 @@ window.addEventListener('DOMContentLoaded', () => {
             <textarea name="detall_apr" class="contenedorFicha_Blanca" rows="3" cols="110"><?php echo h($sol['detall_apr']); ?></textarea>
           </td></tr>
         </table>
-
         <div class="tituloSeccion" style="margin-top: 15px;"><p class="textoTituloSeccion">Serveis i accessos</p></div>
         <table>
           <tr>
@@ -1330,7 +1192,6 @@ window.addEventListener('DOMContentLoaded', () => {
               <input type="number" step="0.01" name="aigua_pressio_kgcm2" class="formularioFicha" value="<?php echo h($serveis['aigua']['pressio_kgcm2']); ?>"><br>
               <label class="campoFicha_Blanca"><input type="checkbox" name="aigua_grup_pressio_necessari" value="1" <?php echo ($serveis['aigua']['grup_pressio_necessari'] ? 'checked' : ''); ?>> Requereix grup de pressió</label>
             </td>
-
             <td>
               <label class="campoFicha_Blanca"><input type="checkbox" name="electricitat_disponible" value="1" <?php echo ($serveis['electricitat']['disponible'] ? 'checked' : ''); ?>> Electricitat disponible</label><br>
               <label class="campoFicha_Blanca">kW obres:</label>
@@ -1340,12 +1201,10 @@ window.addEventListener('DOMContentLoaded', () => {
               <label class="campoFicha_Blanca"><input type="checkbox" name="requereix_ct" value="1" <?php echo ($serveis['electricitat']['requereix_ct'] ? 'checked' : ''); ?>> Requereix CT</label>
             </td>
           </tr>
-
           <tr>
             <td>
               <label class="campoFicha_Blanca"><input type="checkbox" name="telefonia_disponible" value="1" <?php echo ($serveis['telefonia']['disponible'] ? 'checked' : ''); ?>> Telefonia disponible</label>
             </td>
-
             <td>
               <label class="campoFicha_Blanca"><input type="checkbox" name="clavegueram_disponible" value="1" <?php echo ($serveis['clavegueram']['disponible'] ? 'checked' : ''); ?>> Clavegueram disponible</label>
               &nbsp;&nbsp;
@@ -1356,7 +1215,6 @@ window.addEventListener('DOMContentLoaded', () => {
               <input type="text" name="clavegueram_diametre" class="formularioFicha" value="<?php echo h($serveis['clavegueram']['diametre']); ?>">
             </td>
           </tr>
-
           <tr>
             <td>
               <label class="campoFicha_Blanca"><input type="checkbox" name="pluvials_disponible" value="1" <?php echo ($serveis['pluvials']['disponible'] ? 'checked' : ''); ?>> Xarxa pluvials disponible</label>
@@ -1366,7 +1224,6 @@ window.addEventListener('DOMContentLoaded', () => {
               <textarea name="solucio_pluvials" class="contenedorFicha_Blanca" rows="2" cols="70"><?php echo h($serveis['pluvials']['solucio_pluvials']); ?></textarea>
             </td>
           </tr>
-
           <tr>
             <td colspan="2">
               <label class="campoFicha_Blanca">
@@ -1386,9 +1243,7 @@ window.addEventListener('DOMContentLoaded', () => {
             </td>
           </tr>
         </table>
-
         <div class="tituloSeccion" style="margin-top: 15px;"><p class="textoTituloSeccion">Documentació requerida</p></div>
-
         <table class="listado" cellpadding="0" cellspacing="0" width="100%">
           <thead>
             <tr>
@@ -1415,9 +1270,7 @@ window.addEventListener('DOMContentLoaded', () => {
             <?php endforeach; ?>
           </tbody>
         </table>
-
         <div class="tituloSeccion" style="margin-top: 15px;"><p class="textoTituloSeccion">Informes sectorials</p></div>
-
         <table class="listado" cellpadding="0" cellspacing="0" width="100%">
           <thead>
             <tr>
@@ -1432,7 +1285,6 @@ window.addEventListener('DOMContentLoaded', () => {
             <?php foreach ($infTypes as $tipus => $lbl): ?>
               <tr>
                 <td class="campoListadoInicial"><?php echo h($lbl); ?></td>
-
                 <td class="campoListado">
                   <select class="campoFicha_Blanca" name="inf[<?php echo h($tipus); ?>][afectacio_sel]">
                     <?php
@@ -1445,7 +1297,6 @@ window.addEventListener('DOMContentLoaded', () => {
                     ?>
                   </select>
                 </td>
-
                 <td class="campoListado">
                   <select class="campoFicha_Blanca" name="inf[<?php echo h($tipus); ?>][viabilitat]">
                     <?php
@@ -1458,11 +1309,9 @@ window.addEventListener('DOMContentLoaded', () => {
                     ?>
                   </select>
                 </td>
-
                 <td class="campoListado">
                   <input type="date" name="inf[<?php echo h($tipus); ?>][data_informe]" value="<?php echo h($infs[$tipus]['data_informe']); ?>">
                 </td>
-
                 <td class="campoListado">
                   <input type="text" name="inf[<?php echo h($tipus); ?>][condicionants]" value="<?php echo h($infs[$tipus]['condicionants']); ?>" size="50">
                 </td>
@@ -1470,9 +1319,7 @@ window.addEventListener('DOMContentLoaded', () => {
             <?php endforeach; ?>
           </tbody>
         </table>
-
         <div class="tituloSeccion" style="margin-top: 15px;"><p class="textoTituloSeccion">Preparació del solar i post-obra</p></div>
-
         <table>
           <tr>
             <td>
@@ -1483,7 +1330,6 @@ window.addEventListener('DOMContentLoaded', () => {
               <label class="campoFicha_Blanca">Data:</label>
               <input type="date" name="data_delimitacio" class="formularioFicha" value="<?php echo h($sol['data_delimitacio']); ?>">
             </td>
-
             <td>
               <label class="campoFicha_Blanca">
                 <input type="checkbox" name="sense_obstacles" value="1" <?php echo ((int) $sol['sense_obstacles'] === 1 ? 'checked' : ''); ?>>
@@ -1496,14 +1342,12 @@ window.addEventListener('DOMContentLoaded', () => {
               </label>
             </td>
           </tr>
-
           <tr>
             <td colspan="2">
               <label class="campoFicha_Blanca" style="align-self:start; display:grid">Observacions obstacles / estat físic:</label>
               <textarea name="observacions_obstacles" class="contenedorFicha_Blanca" rows="2" cols="110"><?php echo h($sol['observacions_obstacles']); ?></textarea>
             </td>
           </tr>
-
           <tr>
             <td>
               <label class="campoFicha_Blanca">
@@ -1513,7 +1357,6 @@ window.addEventListener('DOMContentLoaded', () => {
               <label class="campoFicha_Blanca">Data:</label>
               <input type="date" name="data_obra_nova" class="formularioFicha" value="<?php echo h($sol['data_obra_nova']); ?>">
             </td>
-
             <td>
               <label class="campoFicha_Blanca">
                 <input type="checkbox" name="postobra_inscripcio_registre_feta" value="1" <?php echo ((int) $sol['postobra_inscripcio_registre_feta'] === 1 ? 'checked' : ''); ?>>
@@ -1529,19 +1372,15 @@ window.addEventListener('DOMContentLoaded', () => {
             </td>
           </tr>
         </table>
-
         <div class="tituloSeccion" style="margin-top: 15px;"><p class="textoTituloSeccion">Notes / prioritats</p></div>
         <textarea name="notes" class="contenedorFicha_Blanca" rows="5" cols="110"><?php echo h($sol['notes']); ?></textarea>
-
         <div style="margin-top: 20px;">
           <input type="submit" class="boton" value="Guardar">
           <input type="button" class="boton" value="Tornar al llistat" onclick="location.href='solarListFiltro.php';">
         </div>
-
       </div>
     </div>
   </form>
-
   <?php if ($solarExists && $expedient_id > 0): ?>
     <form method="post"
           action="solarForm.php?id=<?php echo (int) $expedient_id; ?>"
@@ -1552,6 +1391,5 @@ window.addEventListener('DOMContentLoaded', () => {
       <button type="submit" class="boton" style="background:#b30000; color:#fff;">Eliminar solar</button>
     </form>
   <?php endif; ?>
-
 </body>
 </html>

@@ -32,7 +32,6 @@
 //   Static image methods used by the TCPDF class.
 //
 //============================================================+
-
 /**
  * @file
  * This is a PHP class that contains static image methods for the TCPDF class.<br>
@@ -40,7 +39,6 @@
  * @author Nicola Asuni
  * @version 1.0.005
  */
-
 /**
  * @class TCPDF_IMAGES
  * Static image methods used by the TCPDF class.
@@ -50,7 +48,6 @@
  * @author Nicola Asuni - info@tecnick.com
  */
 class TCPDF_IMAGES {
-
 	/**
 	 * Array of hinheritable SVG properties.
 	 * @since 5.0.000 (2010-05-02)
@@ -59,9 +56,7 @@ class TCPDF_IMAGES {
 	 * @var string[]
 	 */
 	public static $svginheritprop = array('clip-rule', 'color', 'color-interpolation', 'color-interpolation-filters', 'color-profile', 'color-rendering', 'cursor', 'direction', 'display', 'fill', 'fill-opacity', 'fill-rule', 'font', 'font-family', 'font-size', 'font-size-adjust', 'font-stretch', 'font-style', 'font-variant', 'font-weight', 'glyph-orientation-horizontal', 'glyph-orientation-vertical', 'image-rendering', 'kerning', 'letter-spacing', 'marker', 'marker-end', 'marker-mid', 'marker-start', 'pointer-events', 'shape-rendering', 'stroke', 'stroke-dasharray', 'stroke-dashoffset', 'stroke-linecap', 'stroke-linejoin', 'stroke-miterlimit', 'stroke-opacity', 'stroke-width', 'text-anchor', 'text-rendering', 'visibility', 'word-spacing', 'writing-mode');
-
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
 	/**
 	 * Return the image type given the file name or array returned by getimagesize() function.
 	 * @param string $imgfile image file name
@@ -86,7 +81,6 @@ class TCPDF_IMAGES {
 		}
 		return $type;
 	}
-
 	/**
 	 * Set the transparency for the given GD image.
 	 * @param resource $new_image GD image object
@@ -110,7 +104,6 @@ class TCPDF_IMAGES {
 		imagecolortransparent($new_image, $tid);
 		return $new_image;
 	}
-
 	/**
 	 * Convert the loaded image to a PNG and then return a structure for the PDF creator.
 	 * This function requires GD library and write access to the directory defined on K_PATH_CACHE constant.
@@ -133,7 +126,6 @@ class TCPDF_IMAGES {
 		unlink($tempfile);
 		return $retvars;
 	}
-
 	/**
 	 * Convert the loaded image to a JPEG and then return a structure for the PDF creator.
 	 * This function requires GD library and write access to the directory defined on K_PATH_CACHE constant.
@@ -151,7 +143,6 @@ class TCPDF_IMAGES {
 		unlink($tempfile);
 		return $retvars;
 	}
-
 	/**
 	 * Extract info from a JPEG file without using the GD library.
 	 * @param string $file image file to parse
@@ -230,7 +221,6 @@ class TCPDF_IMAGES {
 		}
 		return array('w' => $a[0], 'h' => $a[1], 'ch' => $channels, 'icc' => $icc, 'cs' => $colspace, 'bpc' => $bpc, 'f' => 'DCTDecode', 'data' => $data);
 	}
-
 	/**
 	 * Extract info from a PNG file without using the GD library.
 	 * @param string $file image file to parse
@@ -351,9 +341,7 @@ class TCPDF_IMAGES {
 		fclose($f);
 		return array('w' => $w, 'h' => $h, 'ch' => $channels, 'icc' => $icc, 'cs' => $colspace, 'bpc' => $bpc, 'f' => 'FlateDecode', 'parms' => $parms, 'pal' => $pal, 'trns' => $trns, 'data' => $data);
 	}
-
 } // END OF TCPDF_IMAGES CLASS
-
 //============================================================+
 // END OF FILE
 //============================================================+

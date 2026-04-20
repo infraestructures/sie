@@ -45,4 +45,3 @@
 
     $stmt->close();
     $connexio->close();
-?>

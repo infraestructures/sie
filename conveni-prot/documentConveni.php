@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="ca">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Fitxa Document Actuació</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Fitxa Document Actuació</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -56,10 +56,8 @@
       <option value="1">Renovació biblioteca (Centre A)</option>
       <option value="2">Millora pista esportiva (Centre B)</option>
     </select>
-
     <label for="titol">Títol del document</label>
     <input type="text" id="titol" name="titol" required>
-
     <label for="tipus">Tipus de document</label>
     <select id="tipus" name="tipus" required>
       <option value="">-- Selecciona un tipus --</option>
@@ -68,16 +66,12 @@
       <option value="acta">Acta</option>
       <option value="altre">Altres</option>
     </select>
-
     <label for="data">Data</label>
     <input type="date" id="data" name="data">
-
     <label for="fitxer_url">Enllaç al fitxer</label>
     <input type="url" id="fitxer_url" name="fitxer_url">
-
     <label for="observacions">Observacions</label>
     <textarea id="observacions" name="observacions" rows="4"></textarea>
-
     <button type="submit">Desar</button>
   </form>
 </body>

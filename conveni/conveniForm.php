@@ -1,13 +1,10 @@
 <!DOCTYPE html>
 <?php
 	include '../connectarBD.php';
-
 	// Recupera el id de la solicitud GET
 	$id = $_GET['id'] ?? null;
-
 	$id_illa = $_GET['illa'] ?? '';
 	$id_municipi = $_GET['municipi'] ?? '';	
-
 	$fechaActual = date('Y-m-d');
 	$conveni = [
 		'codi' => '',
@@ -24,7 +21,6 @@
 		'illa_id' => '',
 		'ajuntament_id' => ''
 	];
-
 	if ($id) {
 		$sql = "SELECT
 			conv.id,
@@ -46,7 +42,6 @@
 			JOIN estat_conveni e ON conv.estat_conveni_id = e.id
 		WHERE conv.id = ?;";
 		$stmt = $connexio->prepare($sql);
-
 		if (!$stmt) {
 			die("Error SQL: " . $connexio->error);
 		}
@@ -54,33 +49,27 @@
 		$stmt->execute();
 		$result = $stmt->get_result();
 		$conveni = $result->fetch_assoc();
-
 		// Documents
 		$stmt = $connexio->prepare("SELECT id, nom, data, url FROM document_conveni WHERE conveni_id = ? order by data");
 		$stmt->bind_param("i", $id);
 		$stmt->execute();
 		$result_documents = $stmt->get_result();
-
 		// Pagaments
 		$stmt = $connexio->prepare("SELECT id, concepte, data, import FROM pagament_conveni WHERE conveni_id = ?");
 		$stmt->bind_param("i", $id);
 		$stmt->execute();
 		$result_pagaments = $stmt->get_result();
 	}
-
 	// Consulta per obtenir la llista d'illes i municipis #dc143c #fb1304
 	$sql_illes = "SELECT id, nom FROM Illa";
 	$result_illes = $connexio->query($sql_illes);
-
 	$sql_municipis = $id_illa
 		? "SELECT id, nom FROM Municipi WHERE illa_id = $id_illa ORDER BY nom"
 		: "SELECT id, nom FROM Municipi ORDER BY nom";
 	$result_municipis = $connexio->query($sql_municipis);
-
 	// Consulta per obtenir la llista d'estats
 	$sql_estats = "SELECT id, nom FROM estat_conveni order by id";
 	$result_estats = $connexio->query($sql_estats);
-
 	// Llista de centres associats al conveni
 	$sql_centres = "SELECT 
 						CENTRES.id, 
@@ -98,25 +87,16 @@
 					JOIN Illa ON CENTRES.id_illa = Illa.id
 					WHERE centre_conveni.id_conveni = $id;";
 	$result_centres = $connexio->query($sql_centres);
-
 	// Variables a enviar al centre
 	$codi_conveni = $conveni["codi"];
 	$nom_municipi = $conveni["nom_municipi"];
 	$id_municipi_get = $conveni['ajuntament_id'];
-
 ?>
-
 <html>
-
 <head>
-
 	<title>Fitxa de conveni</title>
-
-	<link rel="stylesheet" href="../css/estilos.css" type="text/css" />
-	<link rel="stylesheet" href="../css/estilos_ficha_2.css" type="text/css" />
-
-	<script src="../js/utiles.js" language="javascript"></script>
-	<script src="../js/especificas.js" language="javascript"></script>
+	<link rel="stylesheet" href="../estils/estils.css" type="text/css" />
+	<script src="../js/utils.js" language="javascript"></script>
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<script>
 		$(document).ready(function() {
@@ -140,7 +120,6 @@
 				});
 			});
 		});
-
 	function obrirCentre() {
 		const codiCentre = document.getElementById('centre_id').value;
 		if (!codiCentre) {
@@ -150,18 +129,15 @@
 		const url = `../centre/centreForm.php?id=${encodeURIComponent(codiCentre)}`;
 		window.open(url, 'Centre', 'width=800,height=600,scrollbars=yes,resizable=yes');
 	}		
-
 	function actualitzaCentreId() {
 		const select = document.getElementById('centre');
 		const centreId = select.value;
 		document.getElementById('centre_id').value = centreId;
 	}	
-	
 	</script>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
-
 <body class="contenido" onload="ocultarFondoPrincipal();">
 	<!-- Formulario para insertar o actualizar -->
 	<div class="contenedorFiltro"></div>
@@ -282,9 +258,7 @@
 							<input type="button" class="boton" value="Nou document" onclick="location.href='documentConveniForm.php?id_conveni=<?php echo $id ?>';">
 						</li>
 					</ul>
-
 					<div class="espacioMarronClaro"></div>
-
 					<div id="cuerpo" class="scroll_total">
 						<table class="listado" cellpadding="0" cellspacing="0" width="100%">
 							<thead>
@@ -326,9 +300,7 @@
 							<input type="button" class="boton" value="Nou pagament" onclick="location.href='pagamentActuacioConveniForm.php?id_conveni=<?php echo $id ?>';">
 						</li>
 					</ul>
-
 					<div class="espacioMarronClaro"></div>
-
 					<div id="cuerpo" class="scroll_total">
 						<table class="listado" cellpadding="0" cellspacing="0" width="100%">
 							<thead>
@@ -361,7 +333,6 @@
 					</div>			
 				</div>
 				<?php endif; ?>	
-
 			<?php if ($id): ?>
 			<div class="contenedorFicha">
 				<ul class="botoneraListado">
@@ -370,9 +341,7 @@
 						<input type="button" class="boton" value="Nou centre" onclick="location.href='centreConveniForm.php?id_conveni=<?php echo $id ?>&codi_conveni=<?php echo $codi_conveni ?>&id_municipi=<?php echo $id_municipi_get ?>&nom_municipi=<?php echo $nom_municipi ?>';">
 					</li>
 				</ul>
-
 				<div class="espacioMarronClaro"></div>
-
 				<div id="cuerpo" class="scroll_total">
 					<table class="listado" cellpadding="0" cellspacing="0" width="100%">
 						<thead>
@@ -425,6 +394,5 @@
 		</li>
 	</ul>
 	</form>
-
 </body>
 </html>

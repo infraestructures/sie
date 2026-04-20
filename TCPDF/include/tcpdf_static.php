@@ -32,7 +32,6 @@
 //   Static methods used by the TCPDF class.
 //
 //============================================================+
-
 /**
  * @file
  * This is a PHP class that contains static methods for the TCPDF class.<br>
@@ -40,7 +39,6 @@
  * @author Nicola Asuni
  * @version 1.1.5
  */
-
 /**
  * @class TCPDF_STATIC
  * Static methods used by the TCPDF class.
@@ -50,62 +48,52 @@
  * @author Nicola Asuni - info@tecnick.com
  */
 class TCPDF_STATIC {
-
 	/**
 	 * Current TCPDF version.
 	 * @private static
 	 */
 	private static $tcpdf_version = '6.9.4';
-
 	/**
 	 * String alias for total number of pages.
 	 * @public static
 	 */
 	public static $alias_tot_pages = '{:ptp:}';
-
 	/**
 	 * String alias for page number.
 	 * @public static
 	 */
 	public static $alias_num_page = '{:pnp:}';
-
 	/**
 	 * String alias for total number of pages in a single group.
 	 * @public static
 	 */
 	public static $alias_group_tot_pages = '{:ptg:}';
-
 	/**
 	 * String alias for group page number.
 	 * @public static
 	 */
 	public static $alias_group_num_page = '{:png:}';
-
 	/**
 	 * String alias for right shift compensation used to correctly align page numbers on the right.
 	 * @public static
 	 */
 	public static $alias_right_shift = '{rsc:';
-
 	/**
 	 * Encryption padding string.
 	 * @public static
 	 */
 	public static $enc_padding = "\x28\xBF\x4E\x5E\x4E\x75\x8A\x41\x64\x00\x4E\x56\xFF\xFA\x01\x08\x2E\x2E\x00\xB6\xD0\x68\x3E\x80\x2F\x0C\xA9\xFE\x64\x53\x69\x7A";
-
 	/**
 	 * ByteRange placemark used during digital signature process.
 	 * @since 4.6.028 (2009-08-25)
 	 * @public static
 	 */
 	public static $byterange_string = '/ByteRange[0 ********** ********** **********]';
-
 	/**
 	 * Array page boxes names
 	 * @public static
 	 */
 	public static $pageboxes = array('MediaBox', 'CropBox', 'BleedBox', 'TrimBox', 'ArtBox');
-
 	/**
      * Array of default cURL options for curl_setopt_array.
      *
@@ -120,7 +108,6 @@ class TCPDF_STATIC {
         CURLOPT_TIMEOUT => 30,
         CURLOPT_USERAGENT => 'tcpdf',
     ];
-
     /**
      * Array of fixed cURL options for curl_setopt_array.
      *
@@ -130,9 +117,7 @@ class TCPDF_STATIC {
         CURLOPT_FAILONERROR => true,
         CURLOPT_RETURNTRANSFER => true,
     ];
-
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
 	/**
 	 * Return the current TCPDF version.
 	 * @return string TCPDF version string
@@ -142,7 +127,6 @@ class TCPDF_STATIC {
 	public static function getTCPDFVersion() {
 		return self::$tcpdf_version;
 	}
-
 	/**
 	 * Return the current TCPDF producer.
 	 * @return string TCPDF producer string
@@ -152,7 +136,6 @@ class TCPDF_STATIC {
 	public static function getTCPDFProducer() {
 		return "\x54\x43\x50\x44\x46\x20".self::getTCPDFVersion()."\x20\x28\x68\x74\x74\x70\x3a\x2f\x2f\x77\x77\x77\x2e\x74\x63\x70\x64\x66\x2e\x6f\x72\x67\x29";
 	}
-
 	/**
 	 * Check if the URL exist.
 	 * @param string $url URL to check.
@@ -167,7 +150,6 @@ class TCPDF_STATIC {
 		}
     	return (strpos($headers[0], '200') !== false);
 	}
-
 	/**
 	 * Removes SHY characters from text.
 	 * Unicode Data:<ul>
@@ -192,8 +174,6 @@ class TCPDF_STATIC {
 		}
 		return $txt;
 	}
-
-
 	/**
 	 * Get the border mode accounting for multicell position (opens bottom side of multicell crossing pages)
 	 * @param string|array|int $brd Indicates if borders must be drawn around the cell block. The value can be a number:<ul><li>0: no border (default)</li><li>1: frame</li></ul>or a string containing some or all of the following characters (in any order):<ul><li>L: left</li><li>T: top</li><li>R: right</li><li>B: bottom</li></ul> or an array of line styles for each border group: array('LTRB' => array('width' => 2, 'cap' => 'butt', 'join' => 'miter', 'dash' => 0, 'color' => array(0, 0, 0)))
@@ -267,7 +247,6 @@ class TCPDF_STATIC {
 		}
 		return $brd;
 	}
-
 	/**
 	 * Determine whether a string is empty.
 	 * @param string $str string to be checked
@@ -278,7 +257,6 @@ class TCPDF_STATIC {
 	public static function empty_string($str) {
 		return (is_null($str) OR (is_string($str) AND (strlen($str) == 0)));
 	}
-
 	/**
 	 * Returns a temporary filename for caching object on filesystem.
 	 * @param string $type Type of file (name of the subdir on the tcpdf cache folder).
@@ -290,7 +268,6 @@ class TCPDF_STATIC {
 	public static function getObjFilename($type='tmp', $file_id='') {
 		return tempnam(K_PATH_CACHE, '__tcpdf_'.$file_id.'_'.$type.'_'.md5(TCPDF_STATIC::getRandomSeed()).'_');
 	}
-
 	/**
 	 * Add "\" before "\", "(" and ")"
 	 * @param string $s string to escape.
@@ -301,7 +278,6 @@ class TCPDF_STATIC {
 		// the chr(13) substitution fixes the Bugs item #1421290.
 		return strtr($s, array(')' => '\\)', '(' => '\\(', '\\' => '\\\\', chr(13) => '\r'));
 	}
-
 	/**
 	* Escape some special characters (&lt; &gt; &amp;) for XML output.
 	* @param string $str Input string to convert.
@@ -314,7 +290,6 @@ class TCPDF_STATIC {
 		$str = strtr($str === null ? '' : $str, $replaceTable);
 		return $str;
 	}
-
 	/**
 	 * Creates a copy of a class object
 	 * @param object $object class object to be cloned
@@ -329,7 +304,6 @@ class TCPDF_STATIC {
 		}
 		return @clone($object);
 	}
-
 	/**
 	 * Output input data and compress it if possible.
 	 * @param string $data Data to output.
@@ -344,7 +318,6 @@ class TCPDF_STATIC {
 		}
 		echo $data;
 	}
-
 	/**
 	 * Replace page number aliases with number.
 	 * @param string $page Page content.
@@ -364,7 +337,6 @@ class TCPDF_STATIC {
 		}
 		return array($page, $diff);
 	}
-
 	/**
 	 * Returns timestamp in seconds from formatted date-time.
 	 * @param string $date Formatted date-time.
@@ -379,7 +351,6 @@ class TCPDF_STATIC {
 		}
 		return strtotime($date);
 	}
-
 	/**
 	 * Returns a formatted date-time.
 	 * @param int $time Time in seconds.
@@ -390,7 +361,6 @@ class TCPDF_STATIC {
 	public static function getFormattedDate($time) {
 		return substr_replace(date('YmdHisO', intval($time)), '\'', (0 - 2), 0).'\'';
 	}
-
 	/**
 	 * Returns a string containing random data to be used as a seed for encryption methods.
 	 * @param string $seed starting seed value
@@ -404,7 +374,6 @@ class TCPDF_STATIC {
 		if (function_exists('posix_getpid')) {
 			$rnd .= posix_getpid();
 		}
-
 		if (function_exists('random_bytes')) {
 			$rnd .= random_bytes(512);
 		} elseif (function_exists('openssl_random_pseudo_bytes') AND (strtoupper(substr(PHP_OS, 0, 3)) !== 'WIN')) {
@@ -417,7 +386,6 @@ class TCPDF_STATIC {
 		}
 		return $rnd.$seed.__FILE__.microtime(true);
 	}
-
 	/**
 	 * Encrypts a string using MD5 and returns it's value as a binary string.
 	 * @param string $str input string
@@ -428,7 +396,6 @@ class TCPDF_STATIC {
 	public static function _md5_16($str) {
 		return pack('H*', md5($str));
 	}
-
 	/**
 	 * Returns the input text encrypted using AES algorithm and the specified key.
 	 * This method requires openssl or mcrypt. Text is padded to 16bytes blocks
@@ -457,7 +424,6 @@ class TCPDF_STATIC {
 		$text = $iv.$text;
 		return $text;
 	}
-
 	/**
 	 * Returns the input text encrypted using AES algorithm and the specified key.
 	 * This method requires openssl or mcrypt. Text is not padded
@@ -482,7 +448,6 @@ class TCPDF_STATIC {
 		$text = mcrypt_encrypt(MCRYPT_RIJNDAEL_128, $key, $text, MCRYPT_MODE_CBC, $iv);
 		return $text;
 	}
-
 	/**
 	 * Returns the input text encrypted using RC4 algorithm and the specified key.
 	 * RC4 is the standard encryption algorithm used in PDF format
@@ -530,7 +495,6 @@ class TCPDF_STATIC {
 		}
 		return $out;
 	}
-
 	/**
 	 * Return the permission code used on encryption (P value).
 	 * @param array $permissions the set of permissions (specify the ones you want to block).
@@ -567,7 +531,6 @@ class TCPDF_STATIC {
 		}
 		return $protection;
 	}
-
 	/**
 	 * Convert hexadecimal string to string
 	 * @param string $bs byte-string to convert
@@ -589,7 +552,6 @@ class TCPDF_STATIC {
 		}
 		return $string;
 	}
-
 	/**
 	 * Convert string to hexadecimal string (byte string)
 	 * @param string $s string to convert
@@ -606,7 +568,6 @@ class TCPDF_STATIC {
 		}
 		return $bs;
 	}
-
 	/**
 	 * Convert encryption P value to a string of bytes, low-order byte first.
 	 * @param string $protection 32bit encryption permission value (P value)
@@ -623,7 +584,6 @@ class TCPDF_STATIC {
 		$str .= chr(bindec(substr($binprot, 0, 8)));
 		return $str;
 	}
-
 	/**
 	 * Encode a name object.
 	 * @param string $name Name object to encode.
@@ -645,7 +605,6 @@ class TCPDF_STATIC {
 		}
 		return $escname;
 	}
-
 	/**
 	 * Convert JavaScript form fields properties array to Annotation Properties array.
 	 * @param array $prop javascript field properties. Possible values are described on official Javascript for Acrobat API reference.
@@ -1012,7 +971,6 @@ class TCPDF_STATIC {
 		// - textColor, textFont, textSize
 		return $opt;
 	}
-
 	/**
 	 * Format the page numbers.
 	 * This method can be overridden for custom formats.
@@ -1024,7 +982,6 @@ class TCPDF_STATIC {
 	public static function formatPageNumber($num) {
 		return number_format((float)$num, 0, '', '.');
 	}
-
 	/**
 	 * Format the page numbers on the Table Of Content.
 	 * This method can be overridden for custom formats.
@@ -1037,7 +994,6 @@ class TCPDF_STATIC {
 	public static function formatTOCPageNumber($num) {
 		return number_format((float)$num, 0, '', '.');
 	}
-
 	/**
 	 * Extracts the CSS properties from a CSS string.
 	 * @param string $cssdata string containing CSS definitions.
@@ -1128,7 +1084,6 @@ class TCPDF_STATIC {
 		// return array
 		return $cssdata;
 	}
-
 	/**
 	 * Cleanup HTML code (requires HTML Tidy library).
 	 * @param string $html htmlcode to fix
@@ -1198,7 +1153,6 @@ class TCPDF_STATIC {
 		// return the cleaned XHTML code + CSS
 		return $css.$html;
 	}
-
 	/**
 	 * Returns true if the CSS selector is valid for the selected HTML tag
 	 * @param array $dom array of HTML tags and properties
@@ -1358,7 +1312,6 @@ class TCPDF_STATIC {
 		}
 		return $valid;
 	}
-
 	/**
 	 * Returns the styles array that apply for the selected HTML tag.
 	 * @param array $dom array of HTML tags and properties
@@ -1405,7 +1358,6 @@ class TCPDF_STATIC {
 		ksort($cssordered, SORT_STRING);
 		return array($selectors, $cssordered);
 	}
-
 	/**
 	 * Compact CSS data array into single string.
 	 * @param array $css array of CSS properties
@@ -1436,7 +1388,6 @@ class TCPDF_STATIC {
 		$tagstyle = preg_replace('/[;]+/', ';', $tagstyle);
 		return $tagstyle;
 	}
-
 	/**
 	 * Returns the Roman representation of an integer number
 	 * @param int $number number to convert
@@ -1504,7 +1455,6 @@ class TCPDF_STATIC {
 		}
 		return $roman;
 	}
-
 	/**
 	 * Find position of last occurrence of a substring in a string
 	 * @param string $haystack The string to search in.
@@ -1520,7 +1470,6 @@ class TCPDF_STATIC {
 		$pos = strpos(strrev($haystack), strrev($needle), $offset);
 		return ($pos === false)?false:($length - $pos - strlen($needle));
 	}
-
 	/**
 	 * Returns an array of hyphenation patterns.
 	 * @param string $file TEX file containing hypenation patterns. TEX patterns can be downloaded from http://www.ctan.org/tex-archive/language/hyph-utf8/tex/generic/hyph-utf8/patterns/
@@ -1553,7 +1502,6 @@ class TCPDF_STATIC {
 		}
 		return $patterns;
 	}
-
 	/**
 	 * Get the Path-Painting Operators.
 	 * @param string $style Style of rendering. Possible values are:
@@ -1645,7 +1593,6 @@ class TCPDF_STATIC {
 		}
 		return $op;
 	}
-
 	/**
 	 * Get the product of two SVG tranformation matrices
 	 * @param array $ta first SVG tranformation matrix
@@ -1665,7 +1612,6 @@ class TCPDF_STATIC {
 		$tm[5] = ($ta[1] * $tb[4]) + ($ta[3] * $tb[5]) + $ta[5];
 		return $tm;
 	}
-
 	/**
 	 * Get the tranformation matrix from SVG transform attribute
 	 * @param string $attribute transformation
@@ -1760,7 +1706,6 @@ class TCPDF_STATIC {
 		}
 		return $tm;
 	}
-
 	/**
 	 * Returns the angle in radiants between two vectors
 	 * @param int $x1 X coordinate of first vector point
@@ -1784,7 +1729,6 @@ class TCPDF_STATIC {
 		}
 		return $angle;
 	}
-
 	/**
 	 * Split string by a regular expression.
 	 * This is a wrapper for the preg_split function to avoid the bug: https://bugs.php.net/bug.php?id=45850
@@ -1822,7 +1766,6 @@ class TCPDF_STATIC {
 		}
 		return $ret;
 	}
-
 	/**
 	 * Wrapper to use fopen only with local files
 	 * @param string $filename Name of the file to open
@@ -1838,7 +1781,6 @@ class TCPDF_STATIC {
 		}
 		return fopen($filename, $mode);
 	}
-
 	/**
 	 * Check if the URL exist.
 	 * @param string $url URL to check.
@@ -1866,7 +1808,6 @@ class TCPDF_STATIC {
 		curl_close($crs);
 		return ($code == 200);
 	}
-
 	/**
 	 * Encode query params in URL
 	 *
@@ -1887,7 +1828,6 @@ class TCPDF_STATIC {
 		}
 		return $updatedUrl;
 	}
-
 	/**
 	 * Wrapper for file_exists.
 	 * Checks whether a file or directory exists.
@@ -1905,7 +1845,6 @@ class TCPDF_STATIC {
 		}
 		return @file_exists($filename);
 	}
-
 	/**
 	 * Reads entire file into a string.
 	 * The file can be also an URL.
@@ -2003,7 +1942,6 @@ class TCPDF_STATIC {
 		}
 		return false;
 	}
-
 	/**
 	 * Get ULONG from string (Big Endian 32-bit unsigned integer).
 	 * @param string $str string from where to extract value
@@ -2017,7 +1955,6 @@ class TCPDF_STATIC {
 		$v = unpack('Ni', substr($str, $offset, 4));
 		return $v['i'];
 	}
-
 	/**
 	 * Get USHORT from string (Big Endian 16-bit unsigned integer).
 	 * @param string $str string from where to extract value
@@ -2031,7 +1968,6 @@ class TCPDF_STATIC {
 		$v = unpack('ni', substr($str, $offset, 2));
 		return $v['i'];
 	}
-
 	/**
 	 * Get SHORT from string (Big Endian 16-bit signed integer).
 	 * @param string $str String from where to extract value.
@@ -2045,7 +1981,6 @@ class TCPDF_STATIC {
 		$v = unpack('si', substr($str, $offset, 2));
 		return $v['i'];
 	}
-
 	/**
 	 * Get FWORD from string (Big Endian 16-bit signed integer).
 	 * @param string $str String from where to extract value.
@@ -2062,7 +1997,6 @@ class TCPDF_STATIC {
 		}
 		return $v;
 	}
-
 	/**
 	 * Get UFWORD from string (Big Endian 16-bit unsigned integer).
 	 * @param string $str string from where to extract value
@@ -2076,7 +2010,6 @@ class TCPDF_STATIC {
 		$v = self::_getUSHORT($str, $offset);
 		return $v;
 	}
-
 	/**
 	 * Get FIXED from string (32-bit signed fixed-point number (16.16).
 	 * @param string $str string from where to extract value
@@ -2094,7 +2027,6 @@ class TCPDF_STATIC {
 		$v = floatval(''.$m.'.'.$f.'');
 		return $v;
 	}
-
 	/**
 	 * Get BYTE from string (8-bit unsigned integer).
 	 * @param string $str String from where to extract value.
@@ -2129,7 +2061,6 @@ class TCPDF_STATIC {
 		}
 		return $data;
 	}
-
 	/**
 	 * Read a 4-byte (32 bit) integer from file.
 	 * @param resource $f file resource.
@@ -2140,7 +2071,6 @@ class TCPDF_STATIC {
 		$a = unpack('Ni', fread($f, 4));
 		return $a['i'];
 	}
-
 	/**
 	 * Array of page formats
 	 * measures are calculated in this way: (inches * 72) or (millimeters * 72 / 25.4)
@@ -2498,8 +2428,6 @@ class TCPDF_STATIC {
 		'FR_TELLIERE'            => array(  963.780,  1247.244), // = (  340 x 440  ) mm  = ( 13.39 x 17.32 ) in
 		'FR_POT'                 => array(  878.740,  1133.858), // = (  310 x 400  ) mm  = ( 12.20 x 15.75 ) in
 	);
-
-
 	/**
 	 * Get page dimensions from format name.
 	 * @param mixed $format The format name @see self::$page_format<ul>
@@ -2513,7 +2441,6 @@ class TCPDF_STATIC {
 		}
 		return self::$page_formats['A4'];
 	}
-
 	/**
 	 * Set page boundaries.
 	 * @param int $page page number
@@ -2546,7 +2473,6 @@ class TCPDF_STATIC {
 		$pagedim[$page][$type]['ury'] = ($ury * $k);
 		return $pagedim;
 	}
-
 	/**
 	 * Swap X and Y coordinates of page boxes (change page boxes orientation).
 	 * @param int $page page number
@@ -2569,7 +2495,6 @@ class TCPDF_STATIC {
 		}
 		return $pagedim;
 	}
-
 	/**
 	 * Get the canonical page layout mode.
 	 * @param string $layout The page layout. Possible values are:<ul><li>SinglePage Display one page at a time</li><li>OneColumn Display the pages in one column</li><li>TwoColumnLeft Display the pages in two columns, with odd-numbered pages on the left</li><li>TwoColumnRight Display the pages in two columns, with odd-numbered pages on the right</li><li>TwoPageLeft (PDF 1.5) Display the pages two at a time, with odd-numbered pages on the left</li><li>TwoPageRight (PDF 1.5) Display the pages two at a time, with odd-numbered pages on the right</li></ul>
@@ -2612,7 +2537,6 @@ class TCPDF_STATIC {
 		}
 		return $layout_mode;
 	}
-
 	/**
 	 * Get the canonical page layout mode.
 	 * @param string $mode A name object specifying how the document should be displayed when opened:<ul><li>UseNone Neither document outline nor thumbnail images visible</li><li>UseOutlines Document outline visible</li><li>UseThumbs Thumbnail images visible</li><li>FullScreen Full-screen mode, with no menu bar, window controls, or any other window visible</li><li>UseOC (PDF 1.5) Optional content group panel visible</li><li>UseAttachments (PDF 1.6) Attachments panel visible</li></ul>
@@ -2651,9 +2575,7 @@ class TCPDF_STATIC {
 		}
 		return $page_mode;
 	}
-
 } // END OF TCPDF_STATIC CLASS
-
 //============================================================+
 // END OF FILE
 //============================================================+

@@ -1,17 +1,14 @@
 <!DOCTYPE html>
 <?php
 	include '../connectarBD.php';
-
 	// Recuperar dades de la fitxa del centre
 	$id_centre = $_GET['id_centre'] ?? '';
 	$id_conveni = $_GET['id_conveni'] ?? '';
-
 	// Inicialitzar variables per als camps del formulari
 	$idPagament = isset($_GET['id_pagament']) ? intval($_GET['id_pagament']) : null;
 	$concepte = '';
 	$import = '';
 	$data = '';
-
 	// Si es rep un `codi`, consultar la taula `pagament_conveni` per obtenir les dades
 	if ($idPagament) {
 		$sql = "
@@ -35,29 +32,18 @@
 			$data = $row['data'];
 			$import = $row['import'];
 		}
-
 		$stmt->close();
 	}
-
 ?>	
-
-
 <html>
-	<head>
-
-		<title>Fitxa de pagament d'actuació de conveni</title>
-
-		<link rel="stylesheet" href="../css/estilos.css" type="text/css" />
-		<link rel="stylesheet" href="../css/estilos_ficha_2.css" type="text/css" />
-
-		<script src="../js/utiles.js" language="javascript"></script>
-		<script src="../js/especificas.js" language="javascript"></script>
-
-		
-		<meta charset="UTF-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	</head>
-	<body class="contenido" onload="ocultarFondoPrincipal();">
+<head>
+	<title>Fitxa de pagament d'actuació de conveni</title>
+	<link rel="stylesheet" href="../estils/estils.css" type="text/css" />
+	<script src="../js/utils.js" language="javascript"></script>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body class="contenido" onload="ocultarFondoPrincipal();">
 		<!-- Formulario para insertar o actualizar -->		
 		<div class="contenedorFiltro"></div>
 		<ul class="botoneraFicha">
@@ -99,5 +85,5 @@
 				<button type="button" class="boton"onclick="window.history.back();">Tornar al llistat</button>
 			</li>
 		</ul>
-	</body>
+</body>
 </html>

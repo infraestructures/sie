@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="ca">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Actuació a Centre Educatiu</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Actuació a Centre Educatiu</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -54,42 +54,34 @@
         grid-template-columns: 1fr 1fr;
         gap: 20px;
     }
-
     .formularioFichaRow {
         display: flex;
         align-items: center;
     }
-
     .formularioFichaRow label {
         flex: 0 0 150px;
         text-align: right;
         margin-right: 10px;
     }
-
     .formularioFichaRow input,
     .formularioFichaRow textarea {
         flex: 1;
         padding: 5px;
         box-sizing: border-box;
     }
-
     .formularioFichaRow textarea {
         width: calc(100% - 160px); /* Ajusta el ancho del textarea */
     }
-
-
     </style>
 </head>
 <body>
     <h1>Actuació a Centre Educatiu</h1>
-
     <form id="centre-form">
 		<div class="formularioFichaContainer">
 			<div class="formularioFichaRow">	
 				<label for="nom-centre">Nom del centre</label>
 				<input type="text" id="nom_centre" name="nom_centre" value="CEIP Calonge" readonly>
 			</div>
-
 			<div class="formularioFichaRow">
 				<label for="actuacio">Actuació</label>
 				<input type="text" id="actuacio" name="actuacio" required>
@@ -132,7 +124,6 @@
 			</div>
 		</div>
     </form>
-
     <h2>Pagaments</h2>
     <button id="afegir-pagament" onclick="window.location.href='pagamentActuacioForm.php'">Nou pagament</button>
     <table>
@@ -156,7 +147,6 @@
             </tr>
         </tbody>
     </table>
-
     <h2>Documents d'actuacions</h2>
     <button id="afegir-document" onclick="window.location.href='documentActuacioForm.php'">Nou document</button>
     <table>

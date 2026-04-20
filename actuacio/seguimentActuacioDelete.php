@@ -7,10 +7,9 @@
 	$sql = "DELETE FROM seguiment_actuacio WHERE id = ?";
 	$stmt = $connexio->prepare($sql);
 	$stmt->bind_param('i', $id);
-echo "id: $id";
+
 	if ($stmt->execute()) {
 		header("Location: actuacioForm.php?id=". $idActuacio);
 	} else {
 		echo "Error: " . $connexio->error;
 	}
-?>

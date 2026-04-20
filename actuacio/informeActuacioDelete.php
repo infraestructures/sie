@@ -7,7 +7,6 @@
 	$sql = "DELETE FROM informe_actuacio WHERE id = ?";
 	$stmt = $connexio->prepare($sql);
 	$stmt->bind_param('i', $id);
-
 	if ($stmt->execute()) {
 		header("Location: actuacioForm.php?id=". $idActuacio);
 	} else {

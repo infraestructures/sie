@@ -62,7 +62,6 @@
 // http://www.denso-wave.com/qrcode/index-e.html
 // ---------------------------------------------------------
 //============================================================+
-
 /**
  * @file
  * Class to create QR-code arrays for TCPDF class.
@@ -78,175 +77,132 @@
  * @author Nicola Asuni
  * @version 1.0.010
  */
-
 // definitions
 if (!defined('QRCODEDEFS')) {
-
 	/**
 	 * Indicate that definitions for this class are set
 	 */
 	define('QRCODEDEFS', true);
-
 	// -----------------------------------------------------
-
 	// Encoding modes (characters which can be encoded in QRcode)
-
 	/**
 	 * Encoding mode
 	 */
 	define('QR_MODE_NL', -1);
-
 	/**
 	 * Encoding mode numeric (0-9). 3 characters are encoded to 10bit length. In theory, 7089 characters or less can be stored in a QRcode.
 	 */
 	define('QR_MODE_NM', 0);
-
 	/**
 	 * Encoding mode alphanumeric (0-9A-Z $%*+-./:) 45characters. 2 characters are encoded to 11bit length. In theory, 4296 characters or less can be stored in a QRcode.
 	 */
 	define('QR_MODE_AN', 1);
-
 	/**
 	 * Encoding mode 8bit byte data. In theory, 2953 characters or less can be stored in a QRcode.
 	 */
 	define('QR_MODE_8B', 2);
-
 	/**
 	 * Encoding mode KANJI. A KANJI character (multibyte character) is encoded to 13bit length. In theory, 1817 characters or less can be stored in a QRcode.
 	 */
 	define('QR_MODE_KJ', 3);
-
 	/**
 	 * Encoding mode STRUCTURED (currently unsupported)
 	 */
 	define('QR_MODE_ST', 4);
-
 	// -----------------------------------------------------
-
 	// Levels of error correction.
 	// QRcode has a function of an error correcting for miss reading that white is black.
 	// Error correcting is defined in 4 level as below.
-
 	/**
 	 * Error correction level L : About 7% or less errors can be corrected.
 	 */
 	define('QR_ECLEVEL_L', 0);
-
 	/**
 	 * Error correction level M : About 15% or less errors can be corrected.
 	 */
 	define('QR_ECLEVEL_M', 1);
-
 	/**
 	 * Error correction level Q : About 25% or less errors can be corrected.
 	 */
 	define('QR_ECLEVEL_Q', 2);
-
 	/**
 	 * Error correction level H : About 30% or less errors can be corrected.
 	 */
 	define('QR_ECLEVEL_H', 3);
-
 	// -----------------------------------------------------
-
 	// Version. Size of QRcode is defined as version.
 	// Version is from 1 to 40.
 	// Version 1 is 21*21 matrix. And 4 modules increases whenever 1 version increases.
 	// So version 40 is 177*177 matrix.
-
 	/**
 	 * Maximum QR Code version.
 	 */
 	define('QRSPEC_VERSION_MAX', 40);
-
 	/**
 	 * Maximum matrix size for maximum version (version 40 is 177*177 matrix).
 	 */
     define('QRSPEC_WIDTH_MAX', 177);
-
 	// -----------------------------------------------------
-
 	/**
 	 * Matrix index to get width from $capacity array.
 	 */
     define('QRCAP_WIDTH',    0);
-
     /**
 	 * Matrix index to get number of words from $capacity array.
 	 */
     define('QRCAP_WORDS',    1);
-
     /**
 	 * Matrix index to get remainder from $capacity array.
 	 */
     define('QRCAP_REMINDER', 2);
-
     /**
 	 * Matrix index to get error correction level from $capacity array.
 	 */
     define('QRCAP_EC',       3);
-
 	// -----------------------------------------------------
-
 	// Structure (currently usupported)
-
 	/**
 	 * Number of header bits for structured mode
 	 */
     define('STRUCTURE_HEADER_BITS',  20);
-
     /**
 	 * Max number of symbols for structured mode
 	 */
     define('MAX_STRUCTURED_SYMBOLS', 16);
-
 	// -----------------------------------------------------
-
     // Masks
-
     /**
 	 * Down point base value for case 1 mask pattern (concatenation of same color in a line or a column)
 	 */
     define('N1',  3);
-
     /**
 	 * Down point base value for case 2 mask pattern (module block of same color)
 	 */
 	define('N2',  3);
-
     /**
 	 * Down point base value for case 3 mask pattern (1:1:3:1:1(dark:bright:dark:bright:dark)pattern in a line or a column)
 	 */
 	define('N3', 40);
-
     /**
 	 * Down point base value for case 4 mask pattern (ration of dark modules in whole)
 	 */
 	define('N4', 10);
-
 	// -----------------------------------------------------
-
 	// Optimization settings
-
 	/**
 	 * if true, estimates best mask (spec. default, but extremally slow; set to false to significant performance boost but (propably) worst quality code
 	 */
 	define('QR_FIND_BEST_MASK', true);
-
 	/**
 	 * if false, checks all masks available, otherwise value tells count of masks need to be checked, mask id are got randomly
 	 */
 	define('QR_FIND_FROM_RANDOM', 2);
-
 	/**
 	 * when QR_FIND_BEST_MASK === false
 	 */
 	define('QR_DEFAULT_MASK', 2);
-
 	// -----------------------------------------------------
-
 } // end of definitions
-
 /**
  * @class QRcode
  * Class to create QR-code arrays for TCPDF class.
@@ -263,173 +219,141 @@ if (!defined('QRCODEDEFS')) {
  * @version 1.0.010
  */
 class QRcode {
-
 	/**
 	 * Barcode array to be returned which is readable by TCPDF.
 	 * @protected
 	 */
 	protected $barcode_array = array();
-
 	/**
 	 * QR code version. Size of QRcode is defined as version. Version is from 1 to 40. Version 1 is 21*21 matrix. And 4 modules increases whenever 1 version increases. So version 40 is 177*177 matrix.
 	 * @protected
 	 */
 	protected $version = 0;
-
 	/**
 	 * Levels of error correction. See definitions for possible values.
 	 * @protected
 	 */
 	protected $level = QR_ECLEVEL_L;
-
 	/**
 	 * Encoding mode.
 	 * @protected
 	 */
 	protected $hint = QR_MODE_8B;
-
 	/**
 	 * Boolean flag, if true the input string will be converted to uppercase.
 	 * @protected
 	 */
 	protected $casesensitive = true;
-
 	/**
 	 * Structured QR code (not supported yet).
 	 * @protected
 	 */
 	protected $structured = 0;
-
 	/**
 	 * Mask data.
 	 * @protected
 	 */
 	protected $data;
-
 	// FrameFiller
-
 	/**
 	 * Width.
 	 * @protected
 	 */
 	protected $width;
-
 	/**
 	 * Frame.
 	 * @protected
 	 */
 	protected $frame;
-
 	/**
 	 * X position of bit.
 	 * @protected
 	 */
 	protected $x;
-
 	/**
 	 * Y position of bit.
 	 * @protected
 	 */
 	protected $y;
-
 	/**
 	 * Direction.
 	 * @protected
 	 */
 	protected $dir;
-
 	/**
 	 * Single bit value.
 	 * @protected
 	 */
 	protected $bit;
-
 	// ---- QRrawcode ----
-
 	/**
 	 * Data code.
 	 * @protected
 	 */
 	protected $datacode = array();
-
 	/**
 	 * Error correction code.
 	 * @protected
 	 */
 	protected $ecccode = array();
-
 	/**
 	 * Blocks.
 	 * @protected
 	 */
 	protected $blocks;
-
 	/**
 	 * Reed-Solomon blocks.
 	 * @protected
 	 */
 	protected $rsblocks = array(); //of RSblock
-
 	/**
 	 * Counter.
 	 * @protected
 	 */
 	protected $count;
-
 	/**
 	 * Data length.
 	 * @protected
 	 */
 	protected $dataLength;
-
 	/**
 	 * Error correction length.
 	 * @protected
 	 */
 	protected $eccLength;
-
 	/**
 	 * Value b1.
 	 * @protected
 	 */
 	protected $b1;
-
 	// ---- QRmask ----
-
 	/**
 	 * Run length.
 	 * @protected
 	 */
 	protected $runLength = array();
-
 	// ---- QRsplit ----
-
 	/**
 	 * Input data string.
 	 * @protected
 	 */
 	protected $dataStr = '';
-
 	/**
 	 * Input items.
 	 * @protected
 	 */
 	protected $items;
-
 	// Reed-Solomon items
-
 	/**
 	 * Reed-Solomon items.
 	 * @protected
 	 */
 	protected $rsitems = array();
-
 	/**
 	 * Array of frames.
 	 * @protected
 	 */
 	protected $frames = array();
-
 	/**
 	 * Alphabet-numeric convesion table.
 	 * @protected
@@ -444,7 +368,6 @@ class QRcode {
 		-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, //
 		-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1  //
 		);
-
 	/**
 	 * Array Table of the capacity of symbols.
 	 * See Table 1 (pp.13) and Table 12-16 (pp.30-36), JIS X0510:2004.
@@ -493,7 +416,6 @@ class QRcode {
 		array(173, 3532, 0, array( 720, 1316, 1950, 2310)), //
 		array(177, 3706, 0, array( 750, 1372, 2040, 2430))  // 40
 	);
-
 	/**
 	 * Array Length indicator.
 	 * @protected
@@ -504,7 +426,6 @@ class QRcode {
 		array( 8, 16, 16),
 		array( 8, 10, 12)
 	);
-
 	/**
 	 * Array Table of the error correction code (Reed-Solomon block).
 	 * See Table 12-16 (pp.30-36), JIS X0510:2004.
@@ -553,7 +474,6 @@ class QRcode {
 		array(array(20,  4), array(40,  7), array(43, 22), array(10, 67)), //
 		array(array(19,  6), array(18, 31), array(34, 34), array(20, 61))  // 40
 	);
-
 	/**
 	 * Array Positions of alignment patterns.
 	 * This array includes only the second and the third position of the alignment patterns. Rest of them can be calculated from the distance between them.
@@ -571,7 +491,6 @@ class QRcode {
 		array(30, 56), array(34, 60), array(30, 58), array(34, 62), array(30, 54), // 31-35
 		array(24, 50), array(28, 54), array(32, 58), array(26, 54), array(30, 58)  // 35-40
 	);
-
 	/**
 	 * Array Version information pattern (BCH coded).
 	 * See Table 1 in Appendix D (pp.68) of JIS X0510:2004.
@@ -585,7 +504,6 @@ class QRcode {
 		0x1f250, 0x209d5, 0x216f0, 0x228ba, 0x2379f, 0x24b0b, 0x2542e, 0x26a64, //
 		0x27541, 0x28c69
 	);
-
 	/**
 	 * Array Format information
 	 * @protected
@@ -596,12 +514,8 @@ class QRcode {
 		array(0x355f, 0x3068, 0x3f31, 0x3a06, 0x24b4, 0x2183, 0x2eda, 0x2bed), //
 		array(0x1689, 0x13be, 0x1ce7, 0x19d0, 0x0762, 0x0255, 0x0d0c, 0x083b)  //
 	);
-
-
 	// -------------------------------------------------
 	// -------------------------------------------------
-
-
 	/**
 	 * This is the class constructor.
 	 * Creates a QRcode object
@@ -645,7 +559,6 @@ class QRcode {
 		}
 		$this->barcode_array = $barcode_array;
 	}
-
 	/**
 	 * Returns a barcode array which is readable by TCPDF
 	 * @return array barcode array readable by TCPDF;
@@ -654,7 +567,6 @@ class QRcode {
 	public function getBarcodeArray() {
 		return $this->barcode_array;
 	}
-
 	/**
 	 * Convert the frame in binary form
 	 * @param array $frame array to binarize
@@ -670,7 +582,6 @@ class QRcode {
 		}
 		return $frame;
 	}
-
 	/**
 	 * Encode the input string to QR code
 	 * @param string $string input string to encode
@@ -686,7 +597,6 @@ class QRcode {
 		}
 		$this->encodeMask(-1);
 	}
-
 	/**
 	 * Encode mask
 	 * @param int $mask masking mode
@@ -694,7 +604,6 @@ class QRcode {
 	protected function encodeMask($mask) {
 		$spec = array(0, 0, 0, 0, 0);
 		$this->datacode = $this->getByteStream($this->items);
-
 		if (is_null($this->datacode)) {
 			return NULL;
 		}
@@ -747,11 +656,8 @@ class QRcode {
 		}
 		$this->data = $masked;
 	}
-
 	// - - - - - - - - - - - - - - - - - - - - - - - - -
-
 	// FrameFiller
-
 	/**
 	 * Set frame value at specified position
 	 * @param array $at x,y position
@@ -760,7 +666,6 @@ class QRcode {
 	protected function setFrameAt($at, $val) {
 		$this->frame[$at['y']][$at['x']] = chr($val);
 	}
-
 	/**
 	 * Get frame value at specified position
 	 * @param array $at x,y position
@@ -769,7 +674,6 @@ class QRcode {
 	protected function getFrameAt($at) {
 		return ord($this->frame[$at['y']][$at['x']]);
 	}
-
 	/**
 	 * Return the next frame position
 	 * @return array of x,y coordinates
@@ -820,11 +724,8 @@ class QRcode {
 		} while(ord($this->frame[$y][$x]) & 0x80);
 		return array('x'=>$x, 'y'=>$y);
 	}
-
 	// - - - - - - - - - - - - - - - - - - - - - - - - -
-
 	// QRrawcode
-
 	/**
 	 * Initialize code.
 	 * @param array $spec array of ECC specification
@@ -876,7 +777,6 @@ class QRcode {
 		}
 		return 0;
 	}
-
 	/**
 	 * Return Reed-Solomon block code.
 	 * @return array rsblocks
@@ -900,11 +800,8 @@ class QRcode {
 		$this->count++;
 		return $ret;
 	}
-
 	// - - - - - - - - - - - - - - - - - - - - - - - - -
-
 	// QRmask
-
 	/**
 	 * Write Format Information on frame and returns the number of black bits
 	 * @param int $width frame width
@@ -948,7 +845,6 @@ class QRcode {
 		}
 		return $blacks;
 	}
-
 	/**
 	 * mask0
 	 * @param int $x X position
@@ -958,7 +854,6 @@ class QRcode {
 	 protected function mask0($x, $y) {
 		return ($x + $y) & 1;
 	}
-
 	/**
 	 * mask1
 	 * @param int $x X position
@@ -968,7 +863,6 @@ class QRcode {
 	 protected function mask1($x, $y) {
 		return ($y & 1);
 	}
-
 	/**
 	 * mask2
 	 * @param int $x X position
@@ -978,7 +872,6 @@ class QRcode {
 	 protected function mask2($x, $y) {
 		return ($x % 3);
 	}
-
 	/**
 	 * mask3
 	 * @param int $x X position
@@ -988,7 +881,6 @@ class QRcode {
 	 protected function mask3($x, $y) {
 		return ($x + $y) % 3;
 	}
-
 	/**
 	 * mask4
 	 * @param int $x X position
@@ -998,7 +890,6 @@ class QRcode {
 	 protected function mask4($x, $y) {
 		return (((int)($y / 2)) + ((int)($x / 3))) & 1;
 	}
-
 	/**
 	 * mask5
 	 * @param int $x X position
@@ -1008,7 +899,6 @@ class QRcode {
 	 protected function mask5($x, $y) {
 		return (($x * $y) & 1) + ($x * $y) % 3;
 	}
-
 	/**
 	 * mask6
 	 * @param int $x X position
@@ -1018,7 +908,6 @@ class QRcode {
 	 protected function mask6($x, $y) {
 		return ((($x * $y) & 1) + ($x * $y) % 3) & 1;
 	}
-
 	/**
 	 * mask7
 	 * @param int $x X position
@@ -1028,7 +917,6 @@ class QRcode {
 	 protected function mask7($x, $y) {
 		return ((($x * $y) % 3) + (($x + $y) & 1)) & 1;
 	}
-
 	/**
 	 * Return bitmask
 	 * @param int $maskNo mask number
@@ -1050,7 +938,6 @@ class QRcode {
 		}
 		return $bitMask;
 	}
-
 	/**
 	 * makeMaskNo
 	 * @param int $maskNo
@@ -1078,7 +965,6 @@ class QRcode {
 		}
 		return $b;
 	}
-
 	/**
 	 * makeMask
 	 * @param int $width
@@ -1093,7 +979,6 @@ class QRcode {
 		$this->writeFormatInformation($width, $masked, $maskNo, $level);
 		return $masked;
 	}
-
 	/**
 	 * calcN1N3
 	 * @param int $length
@@ -1123,7 +1008,6 @@ class QRcode {
 		}
 		return $demerit;
 	}
-
 	/**
 	 * evaluateSymbol
 	 * @param int $width
@@ -1184,7 +1068,6 @@ class QRcode {
 		}
 		return $demerit;
 	}
-
 	/**
 	 * mask
 	 * @param int $width
@@ -1223,11 +1106,8 @@ class QRcode {
 		}
 		return $bestMask;
 	}
-
 	// - - - - - - - - - - - - - - - - - - - - - - - - -
-
 	// QRsplit
-
 	/**
 	 * Return true if the character at specified position is a number
 	 * @param string $str string
@@ -1240,7 +1120,6 @@ class QRcode {
 		}
 		return ((ord($str[$pos]) >= ord('0'))&&(ord($str[$pos]) <= ord('9')));
 	}
-
 	/**
 	 * Return true if the character at specified position is an alphanumeric character
 	 * @param string $str string
@@ -1253,7 +1132,6 @@ class QRcode {
 		}
 		return ($this->lookAnTable(ord($str[$pos])) >= 0);
 	}
-
 	/**
 	 * identifyMode
 	 * @param int $pos
@@ -1279,7 +1157,6 @@ class QRcode {
 		}
 		return QR_MODE_8B;
 	}
-
 	/**
 	 * eatNum
 	 * @return int run
@@ -1311,7 +1188,6 @@ class QRcode {
 		$this->items = $this->appendNewInputItem($this->items, QR_MODE_NM, $run, str_split($this->dataStr));
 		return $run;
 	}
-
 	/**
 	 * eatAn
 	 * @return int run
@@ -1350,7 +1226,6 @@ class QRcode {
 		$this->items = $this->appendNewInputItem($this->items, QR_MODE_AN, $run, str_split($this->dataStr));
 		return $run;
 	}
-
 	/**
 	 * eatKanji
 	 * @return int run
@@ -1364,7 +1239,6 @@ class QRcode {
 		$run = $p;
 		return $run;
 	}
-
 	/**
 	 * eat8
 	 * @return int run
@@ -1413,7 +1287,6 @@ class QRcode {
 		$this->items = $this->appendNewInputItem($this->items, QR_MODE_8B, $run, str_split($this->dataStr));
 		return $run;
 	}
-
 	/**
 	 * splitString
 	 * @return int
@@ -1453,7 +1326,6 @@ class QRcode {
 		}
 		return 0;
 	}
-
 	/**
 	 * toUpper
 	 */
@@ -1473,11 +1345,8 @@ class QRcode {
 		}
 		return $this->dataStr;
 	}
-
 	// - - - - - - - - - - - - - - - - - - - - - - - - -
-
 	// QRinputItem
-
 	/**
 	 * newInputItem
 	 * @param int $mode
@@ -1501,7 +1370,6 @@ class QRcode {
 		$inputitem['bstream'] = $bstream;
 		return $inputitem;
 	}
-
 	/**
 	 * encodeModeNum
 	 * @param array $inputitem
@@ -1530,7 +1398,6 @@ class QRcode {
 		}
 		return $inputitem;
 	}
-
 	/**
 	 * encodeModeAn
 	 * @param array $inputitem
@@ -1553,7 +1420,6 @@ class QRcode {
 		}
 		return $inputitem;
 	}
-
 	/**
 	 * encodeMode8
 	 * @param array $inputitem
@@ -1569,7 +1435,6 @@ class QRcode {
 		}
 		return $inputitem;
 	}
-
 	/**
 	 * encodeModeKanji
 	 * @param array $inputitem
@@ -1593,7 +1458,6 @@ class QRcode {
 		}
 		return $inputitem;
 	}
-
 	/**
 	 * encodeModeStructure
 	 * @param array $inputitem
@@ -1607,7 +1471,6 @@ class QRcode {
 		$inputitem['bstream'] = $this->appendNum($inputitem['bstream'], 8, ord($inputitem['data'][2]));
 		return $inputitem;
 	}
-
 	/**
 	 * encodeBitStream
 	 * @param array $inputitem
@@ -1654,11 +1517,8 @@ class QRcode {
 		}
 		return $inputitem;
 	}
-
 	// - - - - - - - - - - - - - - - - - - - - - - - - -
-
 	// QRinput
-
 	/**
 	 * Append data to an input object.
 	 * The data is copied and appended to the input object.
@@ -1676,7 +1536,6 @@ class QRcode {
 		}
 		return $items;
 	}
-
 	/**
 	 * insertStructuredAppendHeader
 	 * @param array $items
@@ -1697,7 +1556,6 @@ class QRcode {
 		array_unshift($items, $entry);
 		return $items;
 	}
-
 	/**
 	 * calcParity
 	 * @param array $items
@@ -1714,7 +1572,6 @@ class QRcode {
 		}
 		return $parity;
 	}
-
 	/**
 	 * checkModeNum
 	 * @param int $size
@@ -1729,7 +1586,6 @@ class QRcode {
 		}
 		return true;
 	}
-
 	/**
 	 * Look up the alphabet-numeric conversion table (see JIS X0510:2004, pp.19).
 	 * @param int $c character value
@@ -1738,7 +1594,6 @@ class QRcode {
 	protected function lookAnTable($c) {
 		return (($c > 127)?-1:$this->anTable[$c]);
 	}
-
 	/**
 	 * checkModeAn
 	 * @param int $size
@@ -1753,7 +1608,6 @@ class QRcode {
 		}
 		return true;
 	}
-
 	/**
 	 * estimateBitsModeNum
 	 * @param int $size
@@ -1774,7 +1628,6 @@ class QRcode {
 		}
 		return $bits;
 	}
-
 	/**
 	 * estimateBitsModeAn
 	 * @param int $size
@@ -1787,7 +1640,6 @@ class QRcode {
 		}
 		return $bits;
 	}
-
 	/**
 	 * estimateBitsMode8
 	 * @param int $size
@@ -1796,7 +1648,6 @@ class QRcode {
 	 protected function estimateBitsMode8($size) {
 		return (int)($size * 8);
 	}
-
 	/**
 	 * estimateBitsModeKanji
 	 * @param int $size
@@ -1805,7 +1656,6 @@ class QRcode {
 	 protected function estimateBitsModeKanji($size) {
 		return (int)($size * 6.5); // (size / 2 ) * 13
 	}
-
 	/**
 	 * checkModeKanji
 	 * @param int $size
@@ -1824,7 +1674,6 @@ class QRcode {
 		}
 		return true;
 	}
-
 	/**
 	 * Validate the input data.
 	 * @param int $mode encoding mode.
@@ -1858,7 +1707,6 @@ class QRcode {
 		}
 		return false;
 	}
-
 	/**
 	 * estimateBitStreamSize
 	 * @param array $items
@@ -1902,7 +1750,6 @@ class QRcode {
 		}
 		return $bits;
 	}
-
 	/**
 	 * estimateVersion
 	 * @param array $items
@@ -1921,7 +1768,6 @@ class QRcode {
 		} while ($version > $prev);
 		return $version;
 	}
-
 	/**
 	 * lengthOfCode
 	 * @param int $mode
@@ -1978,7 +1824,6 @@ class QRcode {
 		}
 		return $size;
 	}
-
 	/**
 	 * createBitStream
 	 * @param array $items
@@ -1993,7 +1838,6 @@ class QRcode {
 		}
 		return array($items, $total);
 	}
-
 	/**
 	 * convertData
 	 * @param array $items
@@ -2022,7 +1866,6 @@ class QRcode {
 		}
 		return $items;
 	}
-
 	/**
 	 * Append Padding Bit to bitstream
 	 * @param array $bstream
@@ -2055,7 +1898,6 @@ class QRcode {
 		}
 		return $this->appendBitstream($bstream, $padding);
 	}
-
 	/**
 	 * mergeBitStream
 	 * @param array $items items
@@ -2072,7 +1914,6 @@ class QRcode {
 		}
 		return $bstream;
 	}
-
 	/**
 	 * Returns a stream of bits.
 	 * @param int $items
@@ -2082,7 +1923,6 @@ class QRcode {
 		$bstream = $this->mergeBitStream($items);
 		return $this->appendPaddingBit($bstream);
 	}
-
 	/**
 	 * Pack all bit streams padding bits into a byte array.
 	 * @param int $items
@@ -2092,11 +1932,8 @@ class QRcode {
 		$bstream = $this->getBitStream($items);
 		return $this->bitstreamToByte($bstream);
 	}
-
 	// - - - - - - - - - - - - - - - - - - - - - - - - -
-
 	// QRbitstream
-
 	/**
 	 * Return an array with zeros
 	 * @param int $setLength array size
@@ -2105,7 +1942,6 @@ class QRcode {
 	 protected function allocate($setLength) {
 		return array_fill(0, $setLength, 0);
 	}
-
 	/**
 	 * Return new bitstream from number
 	 * @param int $bits number of bits
@@ -2125,7 +1961,6 @@ class QRcode {
 		}
 		return $bstream;
 	}
-
 	/**
 	 * Return new bitstream from bytes
 	 * @param int $size size
@@ -2149,7 +1984,6 @@ class QRcode {
 		}
 		return $bstream;
 	}
-
 	/**
 	 * Append one bitstream to another
 	 * @param array $bitstream original bitstream
@@ -2165,7 +1999,6 @@ class QRcode {
 		}
 		return array_values(array_merge($bitstream, $append));
 	}
-
 	/**
 	 * Append one bitstream created from number to another
 	 * @param array $bitstream original bitstream
@@ -2180,7 +2013,6 @@ class QRcode {
 		$b = $this->newFromNum($bits, $num);
 		return $this->appendBitstream($bitstream, $b);
 	}
-
 	/**
 	 * Append one bitstream created from bytes to another
 	 * @param array $bitstream original bitstream
@@ -2195,7 +2027,6 @@ class QRcode {
 		$b = $this->newFromBytes($size, $data);
 		return $this->appendBitstream($bitstream, $b);
 	}
-
 	/**
 	 * Convert bitstream to bytes
 	 * @param array $bstream original bitstream
@@ -2232,11 +2063,8 @@ class QRcode {
 		}
 		return $data;
 	}
-
 	// - - - - - - - - - - - - - - - - - - - - - - - - -
-
 	// QRspec
-
 	/**
 	 * Replace a value on the array at the specified position
 	 * @param array $srctab
@@ -2250,7 +2078,6 @@ class QRcode {
 		$srctab[$y] = substr_replace($srctab[$y], ($replLen !== false)?substr($repl,0,$replLen):$repl, $x, ($replLen !== false)?$replLen:strlen($repl));
 		return $srctab;
 	}
-
 	/**
 	 * Return maximum data code length (bytes) for the version.
 	 * @param int $version version
@@ -2260,7 +2087,6 @@ class QRcode {
 	protected function getDataLength($version, $level) {
 		return $this->capacity[$version][QRCAP_WORDS] - $this->capacity[$version][QRCAP_EC][$level];
 	}
-
 	/**
 	 * Return maximum error correction code length (bytes) for the version.
 	 * @param int $version version
@@ -2270,7 +2096,6 @@ class QRcode {
 	protected function getECCLength($version, $level){
 		return $this->capacity[$version][QRCAP_EC][$level];
 	}
-
 	/**
 	 * Return the width of the symbol for the version.
 	 * @param int $version version
@@ -2279,7 +2104,6 @@ class QRcode {
 	protected function getWidth($version) {
 		return $this->capacity[$version][QRCAP_WIDTH];
 	}
-
 	/**
 	 * Return the numer of remainder bits.
 	 * @param int $version version
@@ -2288,7 +2112,6 @@ class QRcode {
 	protected function getRemainder($version) {
 		return $this->capacity[$version][QRCAP_REMINDER];
 	}
-
 	/**
 	 * Return a version number that satisfies the input code length.
 	 * @param int $size input code length (bytes)
@@ -2305,7 +2128,6 @@ class QRcode {
 		// the size of input data is greater than QR capacity, try to lover the error correction mode
 		return -1;
 	}
-
 	/**
 	 * Return the size of length indicator for the mode and version.
 	 * @param int $mode encoding mode
@@ -2325,7 +2147,6 @@ class QRcode {
 		}
 		return $this->lengthTableBits[$mode][$l];
 	}
-
 	/**
 	 * Return the maximum length for the mode and version.
 	 * @param int $mode encoding mode
@@ -2350,7 +2171,6 @@ class QRcode {
 		}
 		return $words;
 	}
-
 	/**
 	 * Return an array of ECC specification.
 	 * @param int $version version
@@ -2381,7 +2201,6 @@ class QRcode {
 		}
 		return $spec;
 	}
-
 	/**
 	 * Put an alignment marker.
 	 * @param array $frame frame
@@ -2404,7 +2223,6 @@ class QRcode {
 		}
 		return $frame;
 	}
-
 	/**
 	 * Put an alignment pattern.
 	 * @param int $version version
@@ -2446,7 +2264,6 @@ class QRcode {
 		}
 		return $frame;
 	}
-
 	/**
 	 * Return BCH encoded version information pattern that is used for the symbol of version 7 or greater. Use lower 18 bits.
 	 * @param int $version version
@@ -2458,7 +2275,6 @@ class QRcode {
 		}
 		return $this->versionPattern[($version - 7)];
 	}
-
 	/**
 	 * Return BCH encoded format information pattern.
 	 * @param array $mask
@@ -2474,7 +2290,6 @@ class QRcode {
 		}
 		return $this->formatInfo[$level][$mask];
 	}
-
 	/**
 	 * Put a finder pattern.
 	 * @param array $frame frame
@@ -2497,7 +2312,6 @@ class QRcode {
 		}
 		return $frame;
 	}
-
 	/**
 	 * Return a copy of initialized frame.
 	 * @param int $version version
@@ -2562,7 +2376,6 @@ class QRcode {
 		$frame[$width - 8][8] = "\x81";
 		return $frame;
 	}
-
 	/**
 	 * Set new frame for the specified version.
 	 * @param int $version version
@@ -2580,7 +2393,6 @@ class QRcode {
 		}
 		return $this->frames[$version];
 	}
-
 	/**
 	 * Return block number 0
 	 * @param array $spec
@@ -2589,7 +2401,6 @@ class QRcode {
 	 protected function rsBlockNum($spec) {
 		return ($spec[0] + $spec[3]);
 	}
-
 	/**
 	* Return block number 1
 	 * @param array $spec
@@ -2598,7 +2409,6 @@ class QRcode {
 	 protected function rsBlockNum1($spec) {
 		return $spec[0];
 	}
-
 	/**
 	 * Return data codes 1
 	 * @param array $spec
@@ -2607,7 +2417,6 @@ class QRcode {
 	 protected function rsDataCodes1($spec) {
 		return $spec[1];
 	}
-
 	/**
 	 * Return ecc codes 1
 	 * @param array $spec
@@ -2616,7 +2425,6 @@ class QRcode {
 	 protected function rsEccCodes1($spec) {
 		return $spec[2];
 	}
-
 	/**
 	 * Return block number 2
 	 * @param array $spec
@@ -2625,7 +2433,6 @@ class QRcode {
 	 protected function rsBlockNum2($spec) {
 		return $spec[3];
 	}
-
 	/**
 	 * Return data codes 2
 	 * @param array $spec
@@ -2634,7 +2441,6 @@ class QRcode {
 	 protected function rsDataCodes2($spec) {
 		return $spec[4];
 	}
-
 	/**
 	 * Return ecc codes 2
 	 * @param array $spec
@@ -2643,7 +2449,6 @@ class QRcode {
 	 protected function rsEccCodes2($spec) {
 		return $spec[2];
 	}
-
 	/**
 	 * Return data length
 	 * @param array $spec
@@ -2652,7 +2457,6 @@ class QRcode {
 	 protected function rsDataLength($spec) {
 		return ($spec[0] * $spec[1]) + ($spec[3] * $spec[4]);
 	}
-
 	/**
 	 * Return ecc length
 	 * @param array $spec
@@ -2661,11 +2465,8 @@ class QRcode {
 	 protected function rsEccLength($spec) {
 		return ($spec[0] + $spec[3]) * $spec[2];
 	}
-
 	// - - - - - - - - - - - - - - - - - - - - - - - - -
-
 	// QRrs
-
 	/**
 	 * Initialize a Reed-Solomon codec and add it to existing rsitems
 	 * @param int $symsize symbol size, bits
@@ -2688,11 +2489,8 @@ class QRcode {
 		array_unshift($this->rsitems, $rs);
 		return $rs;
 	}
-
 	// - - - - - - - - - - - - - - - - - - - - - - - - -
-
 	// QRrsItem
-
 	/**
 	 * modnn
 	 * @param array $rs RS values
@@ -2706,7 +2504,6 @@ class QRcode {
 		}
 		return $x;
 	}
-
 	/**
 	 * Initialize a Reed-Solomon codec and returns an array of values.
 	 * @param int $symsize symbol size, bits
@@ -2793,7 +2590,6 @@ class QRcode {
 		}
 		return $rs;
 	}
-
 	/**
 	 * Encode a Reed-Solomon codec and returns the parity array
 	 * @param array $rs RS values
@@ -2835,9 +2631,7 @@ class QRcode {
 		}
 		return $parity;
 	}
-
 } // end QRcode class
-
 //============================================================+
 // END OF FILE
 //============================================================+

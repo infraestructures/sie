@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <?php
     include '../connectarBD.php';
-
     // Variables rebudes
     $idCentre = isset($_POST['id_centre'])? $_POST['id_centre']: '';
     $centreFiltro = isset($_POST['centre_filtro'])? $_POST['centre_filtro']: '';
@@ -10,16 +9,13 @@
     $dataIniciFiltro = isset($_POST['data_inici_filtro'])? $_POST['data_inici_filtro']: '';
     $dataFiFiltro = isset($_POST['data_fi_filtro'])? $_POST['data_fi_filtro']: '';
     $estatFiltro = isset($_POST['estat_filtro'])? $_POST['estat_filtro']: '';
-
     // Consultar datos para los desplegables
     $illasQuery = "SELECT id, nom FROM Illa ORDER BY nom";
     $illasResult = $connexio->query($illasQuery);
-
     $municipisQuery = $illaFiltro
     ? "SELECT id, nom FROM Municipi WHERE illa_id = $illaFiltro ORDER BY nom"
     : "SELECT id, nom FROM Municipi ORDER BY nom";
     $municipisResult = $connexio->query($municipisQuery);
-
     // Consultar la llista de convenis
     $sql = "SELECT
                 conv.id,
@@ -40,7 +36,6 @@
                 JOIN estat_conveni e ON conv.estat_conveni_id = e.id
             WHERE 1 = 1			
             ";
-
     if (!empty($illaFiltro)) {
         $sql.= " AND m.illa_id = ". intval($illaFiltro);
     }
@@ -60,32 +55,23 @@
         $sql .= " AND conv.data_inici <= '" . $dataFiFiltro . "'";
     }
 $sql.= " ORDER BY conv.codi DESC;";
-
     $result_convenis = $connexio->query($sql);
-
     if (!$result_convenis) {
         die("Query failed: " . $connexio->error);
     }
-
     // Consulta per obtenir la llista d'estats
     $sql_estats = "SELECT id, nom FROM estat_conveni order by id";
     $result_estats = $connexio->query($sql_estats);
 ?>
-
 <html>
-
 <head>
-
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestió de convenis</title>
-
-    <link rel="stylesheet" href="../css/estilos.css" type="text/css" />
-    <link rel="stylesheet" href="../css/estilos_ficha_2.css" type="text/css" />
-    <script src="../js/utiles.js" type="" language="JavaScript"></script>
-    <script src="../js/especificas.js" type="" language="JavaScript"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Gestió de convenis</title>
+	<link rel="stylesheet" href="../estils/estils.css" type="text/css" />
+	<script src="../js/utils.js" type="" language="JavaScript"></script>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script>
         $(document).ready(function() {
             $('#illa_filtro').change(function() {
                 var illaID = $(this).val();
@@ -105,10 +91,8 @@ $sql.= " ORDER BY conv.codi DESC;";
                 });
             });
         });
-
     </script>	
 </head>
-
 <body class="contenido" onload="ocultarFondoPrincipal();">
     <div class="contenedorFiltro">
         <ul class="botoneraFicha">
@@ -133,7 +117,6 @@ $sql.= " ORDER BY conv.codi DESC;";
                                     </option>
                                 <?php endwhile;?>
                             </select>
-
                             <label for="municipi_filtro" class="formularioFiltro">Ajuntament:</label>
                             <select id="municipi_filtro" name="municipi_filtro" class="campoFicha_Blanca">
                                 <option value="">Seleccioni un municipi</option>
@@ -151,10 +134,8 @@ $sql.= " ORDER BY conv.codi DESC;";
                         <div class="filtro">
                             <label for="data_inici_filtro" class="formularioFiltro">Data Inici:</label>
                             <input type="date" name="data_inici_filtro" value="<?= htmlspecialchars($dataIniciFiltro) ?>">
-
                             <label for="data_fi_filtro" class="formularioFiltro">Data Fi:</label>
                             <input type="date" name="data_fi_filtro" value="<?= htmlspecialchars($dataFiFiltro) ?>">
-
                             <button type="submit" class="boton">Cercar</button>					        
                         </div>                                          
 				    </td>
@@ -168,9 +149,7 @@ $sql.= " ORDER BY conv.codi DESC;";
             <input type="button" class="boton" value="Nou conveni" onclick="location.href='conveniForm.php';">
         </li>
     </ul>
-
     <div class="espacioMarronClaro"></div>
-
     <div id="cuerpo" class="scroll_total">
         <table class="listado" cellpadding="0" cellspacing="0" width="100%">
             <thead>
@@ -206,7 +185,6 @@ $sql.= " ORDER BY conv.codi DESC;";
         </table>
     </div>
 </body>
-
 </html>
 <?php
 // Tancar la connexió

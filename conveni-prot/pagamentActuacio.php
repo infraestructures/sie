@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="ca">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fitxa de Pagament</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Fitxa de Pagament</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -56,22 +56,16 @@
             <option value="1">Renovació biblioteca (Centre A)</option>
             <option value="2">Millora pista esportiva (Centre B)</option>
         </select>
-
         <label for="nom">Nom del pagament</label>
         <input type="text" id="nom" name="nom" required>
-
         <label for="data">Data</label>
         <input type="date" id="data" name="data" required>
-
         <label for="quantitat">Quantitat (€)</label>
         <input type="number" id="quantitat" name="quantitat" step="0.01" required>
-
         <label for="justificant_url">Enllaç al justificant</label>
         <input type="url" id="justificant_url" name="justificant_url">
-
         <label for="observacions">Observacions</label>
         <textarea id="observacions" name="observacions" rows="4"></textarea>
-
         <button type="submit">Desar</button>
     </form>
 </body>

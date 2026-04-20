@@ -1,16 +1,13 @@
 <?php
 	include '../connectarBD.php';
-
     // Recuperar dades de la fitxa del centre
     $id_centre = $_POST['id_centre'] ?? '';
     $id_conveni = $_POST['id_conveni'] ?? '';
-    
     // Recollir els valors del formulari
     $idPagament = isset($_POST['id_pagament']) ? intval($_POST['id_pagament']) : null;
     $concepte = isset($_POST['concepte']) ? trim($_POST['concepte']) : '';
     $data = isset($_POST['data']) ? trim($_POST['data']) : '';
     $import = isset($_POST['import']) ? doubleval($_POST['import']) : '';
-
     if ($idPagament) {
         // UPDATE si s'ha rebut un ID
         $sql = "UPDATE pagament_conveni 
@@ -43,7 +40,6 @@
             die("Bind failed: (" . $stmt->errno . ") " . $stmt->error);
         }
     }
-
     if ($stmt->execute()) {
         // Redirigir després de l'operació
         header("Location: conveniForm.php?id=". $id_conveni);
@@ -51,7 +47,6 @@
     } else {
         echo "Error: " . $stmt->error;
     }
-
     $stmt->close();
     $connexio->close();
 ?>

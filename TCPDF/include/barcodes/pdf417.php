@@ -42,7 +42,6 @@
 //		Maximum Data Characters:     1850 text, 2710 digits, 1108 bytes
 //
 //============================================================+
-
 /**
  * @file
  * Class to create PDF417 barcode arrays for TCPDF class.
@@ -52,36 +51,27 @@
  * @author Nicola Asuni
  * @version 1.0.005
  */
-
 // definitions
 if (!defined('PDF417DEFS')) {
-
 	/**
 	 * Indicate that definitions for this class are set
 	 */
 	define('PDF417DEFS', true);
-
 	// -----------------------------------------------------
-
 	/**
 	 * Row height respect X dimension of single module
 	 */
 	define('ROWHEIGHT', 4);
-
 	/**
 	 * Horizontal quiet zone in modules
 	 */
 	define('QUIETH', 2);
-
 	/**
 	 * Vertical quiet zone in modules
 	 */
 	define('QUIETV', 2);
-
 } // end of definitions
-
 // #*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#
-
 /**
  * @class PDF417
  * Class to create PDF417 barcode arrays for TCPDF class.
@@ -91,25 +81,21 @@ if (!defined('PDF417DEFS')) {
  * @version 1.0.003
  */
 class PDF417 {
-
 	/**
 	 * Barcode array to be returned which is readable by TCPDF.
 	 * @protected
 	 */
 	protected $barcode_array = array();
-
 	/**
 	 * Start pattern.
 	 * @protected
 	 */
 	protected $start_pattern = '11111111010101000';
-
 	/**
 	 * Stop pattern.
 	 * @protected
 	 */
 	protected $stop_pattern = '111111101000101001';
-
 	/**
 	 * Array of text Compaction Sub-Modes (values 0xFB - 0xFF are used for submode changers).
 	 * @protected
@@ -120,7 +106,6 @@ class PDF417 {
 		array(0x30,0x31,0x32,0x33,0x34,0x35,0x36,0x37,0x38,0x39,0x26,0x0d,0x09,0x2c,0x3a,0x23,0x2d,0x2e,0x24,0x2f,0x2b,0x25,0x2a,0x3d,0x5e,0xFB,0x20,0xFD,0xFE,0xFF), // Mixed
 		array(0x3b,0x3c,0x3e,0x40,0x5b,0x5c,0x5d,0x5f,0x60,0x7e,0x21,0x0d,0x09,0x2c,0x3a,0x0a,0x2d,0x2e,0x24,0x2f,0x22,0x7c,0x2a,0x28,0x29,0x3f,0x7b,0x7d,0x27,0xFF) // Puntuaction
 	);
-
 	/**
 	 * Array of switching codes for Text Compaction Sub-Modes.
 	 * @protected
@@ -131,7 +116,6 @@ class PDF417 {
 		'20' => array(28), '21' => array(27), '23' => array(25), //
 		'30' => array(29), '31' => array(29,27), '32' => array(29,28) //
 	);
-
 	/**
 	 * Clusters of codewords (0, 3, 6)<br/>
 	 * Values are hex equivalents of binary representation of bars (1 = bar, 0 = space).<br/>
@@ -437,7 +421,6 @@ class PDF417 {
 			0x19f9a,0x10f0a,0x11f1a,0x13f3a,0x103ac,0x103a6,0x107a8,0x183d6,0x107a4,0x107a2, // 920
 			0x10396,0x107b6,0x187d4,0x187d2,0x10794,0x10fb4,0x10792,0x10fb2,0x1c7ea)         // 929
 	); // end of $clusters array
-
 	/**
 	 * Array of factors of the Reed-Solomon polynomial equations used for error correction; one sub array for each correction level (0-8).
 	 * @protected
@@ -519,7 +502,6 @@ class PDF417 {
 			0x197,0x0a4,0x14c,0x383,0x0a5,0x2d6,0x258,0x145,0x1f2,0x28f,0x165,0x2f0,0x300,0x0df,0x351,0x287, // 496
 			0x03f,0x136,0x35f,0x0fb,0x16e,0x130,0x11a,0x2e2,0x2a3,0x19a,0x185,0x0f4,0x01f,0x079,0x12f,0x107) // 512
 	);
-
 	/**
 	 * This is the class constructor.
 	 * Creates a PDF417 object
@@ -722,7 +704,6 @@ class PDF417 {
 		}
 		$this->barcode_array = $barcode_array;
 	}
-
 	/**
 	 * Returns a barcode array which is readable by TCPDF
 	 * @return array barcode array readable by TCPDF;
@@ -731,7 +712,6 @@ class PDF417 {
 	public function getBarcodeArray() {
 		return $this->barcode_array;
 	}
-
 	/**
 	 * Returns the error correction level (0-8) to be used
 	 * @param int $ecl error correction level
@@ -769,7 +749,6 @@ class PDF417 {
 		}
 		return $ecl;
 	}
-
 	/**
 	 * Returns the error correction codewords
 	 * @param array $cw array of codewords including Symbol Length Descriptor and pad
@@ -806,7 +785,6 @@ class PDF417 {
 		$ecw = array_reverse($ecw);
 		return $ecw;
 	}
-
 	/**
 	 * Create array of sequences from input
 	 * @param string $code code
@@ -861,7 +839,6 @@ class PDF417 {
 		}
 		return $sequence_array;
 	}
-
 	/**
 	 * Compact data by mode.
 	 * @param int $mode compaction mode number
@@ -988,9 +965,7 @@ class PDF417 {
 		}
 		return $cw;
 	}
-
 } // end PDF417 class
-
 //============================================================+
 // END OF FILE
 //============================================================+

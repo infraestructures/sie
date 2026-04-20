@@ -35,7 +35,6 @@ function getOrderDirection($column, $current_order_by, $current_order_direction)
 $illasQuery = "SELECT id, nom FROM Illa ORDER BY nom"
 ;
 $illasResult = $connexio->query($illasQuery);
-
 $municipisQuery = $illaFiltro
     ? "SELECT id, nom FROM Municipi WHERE illa_id = $illaFiltro ORDER BY nom"
     : "SELECT id, nom FROM Municipi ORDER BY nom";
@@ -87,7 +86,6 @@ $sql = "SELECT
                 s.nom AS nom_subtipus,
                 t.nom AS nom_tipus,
                 tc.nom AS nom_tecnic
-
             FROM actuacions a
                 LEFT JOIN subtipus_actuacio s ON a.subtipus_id = s.id
                 LEFT JOIN tipus_actuacio t ON s.tipus_id = t.id
@@ -168,27 +166,20 @@ if ($order_by == 'codi') {
 }
 
 $result_actuacions = $connexio->query($sql);
-
 if (!$result_actuacions) {
     die("S'ha produit un error al consultar les actuacions" . $connexio->error);
 }
 
 ?>
-
 <html>
-
 <head>
-
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestió d'actuacions</title>
-
-    <link rel="stylesheet" href="../css/estilos.css" type="text/css" />
-    <link rel="stylesheet" href="../css/estilos_ficha_2.css" type="text/css" />
-    <script src="../js/utiles.js" type="" language="JavaScript"></script>
-    <script src="../js/especificas.js" type="" language="JavaScript"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Gestió d'actuacions</title>
+	<link rel="stylesheet" href="../estils/estils.css" type="text/css" />
+	<script src="../js/utils.js" type="" language="JavaScript"></script>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script>
         $(document).ready(function() {
             $('#illa_filtro').change(function() {
                 var illaID = $(this).val();
@@ -248,7 +239,6 @@ if (!$result_actuacions) {
                     $("#subtipus_filtro").prop("disabled", true);
                 }
             }
-
             $("#tipus_filtro").change(function() { cargarSubtipus($(this).val()); });
 
             // Función para cargar estados
@@ -271,8 +261,8 @@ if (!$result_actuacions) {
                     $("#estat_filtro").prop("disabled", true);
                 }
             }
-
             if (superestatId) { cargarEstats(superestatId, estatId); }
+
             // Carga inicial si hay valores seleccionados tras pulsar "Cercar"
             if (superestatId) {
                 cargarEstats(superestatId, estatId);
@@ -282,7 +272,6 @@ if (!$result_actuacions) {
             $("#superestat_filtro").change(function() {
                 cargarEstats($(this).val());
             });
-       
 
             // Autocompletar centre (via ajax_centres.php)
             function initCentreAutocompleteFiltro() {
@@ -290,15 +279,12 @@ if (!$result_actuacions) {
                 const hidden = document.getElementById('id_centre');
                 const box = document.getElementById('centre_suggest');
                 if (!input || !hidden || !box) return;
-
                 let lastFetch = 0;
                 let timer = null;
                 let lastQuery = '';
-
                 function hideBox() { box.style.display = 'none'; box.innerHTML = ''; }
                 function showBox() { box.style.display = 'block'; }
                 function clearSelection() { hidden.value = ''; }
-
                 function render(items) {
                     box.innerHTML = '';
                     if (!items.length) {
@@ -364,13 +350,11 @@ if (!$result_actuacions) {
                     if (e.key === 'Escape') hideBox();
                 });
             }
-
             initCentreAutocompleteFiltro();
         });
 
     </script>  
 </head>
-
 <body class="contenido" onload="ocultarFondoPrincipal();">
     <div class="contenedorFiltro">
     <ul class="botoneraFicha">
@@ -379,8 +363,8 @@ if (!$result_actuacions) {
       </li>
     </ul>
   <div class="espacioMarron">&nbsp;</div>
-  <table cellpadding="0" cellspacing="0" border="0" width="100%" class="formularioFiltro">
   <form id="formularioFiltroBusqueda" name="formularioFiltroBusqueda" action="actuacioListFiltro.php" method="post">
+  <table cellpadding="0" cellspacing="0" border="0" width="100%" class="formularioFiltro">
     <!-- Fila 1 -->
     <tr>
       <td class="contenedorCamposFiltro">
@@ -418,7 +402,6 @@ if (!$result_actuacions) {
         </select>
       </td>
     </tr>
-
     <!-- Fila 2 -->
     <tr>
       <td class="contenedorCamposFiltro">
@@ -456,7 +439,6 @@ if (!$result_actuacions) {
         </select>
       </td>
     </tr>
-
     <!-- Fila 3 -->
     <tr>
       <td class="contenedorCamposFiltro">
@@ -483,7 +465,6 @@ if (!$result_actuacions) {
         <input type="text" name="descripcio_filtro" value="<?= htmlspecialchars($descripcioFiltro) ?>" class="campoFicha_Blanca">
       </td>
     </tr>
-
     <!-- Fila 4 -->
     <tr>
       <td class="contenedorCamposFiltro">
@@ -502,9 +483,8 @@ if (!$result_actuacions) {
           <button type="button" class="boton" onclick="location.href='PDFListFiltro.php'">Informes PDF</button>
       </td>
     </tr>
+ </table>
   </form>
-</table>
-
     </div>
         <ul class="botoneraListado">
         <li class="tituloListado">LLISTAT D'ACTUACIONS</li>
@@ -536,31 +516,26 @@ if (!$result_actuacions) {
                             Prioritat
                         </a>
                     </th>
-
                     <th class="campoCabeceraListado">
                         <a href="?order_by=nom_estat&order_direction=<?= getOrderDirection('nom_estat', $order_by, $order_direction) ?>">
                             Estat
                         </a>
                     </th>
-
                     <th class="campoCabeceraListado">
                         <a href="?order_by=nom_tipus&order_direction=<?= getOrderDirection('nom_tipus', $order_by, $order_direction) ?>">
                             Tipus
                         </a>
                     </th>
-
                     <th class="campoCabeceraListado">
                         <a href="?order_by=nom_subtipus&order_direction=<?= getOrderDirection('nom_subtipus', $order_by, $order_direction) ?>">
                             Subtipus
                         </a>
                     </th>
-
                     <th class="campoCabeceraListado">
                         <a href="?order_by=descripcio&order_direction=<?= getOrderDirection('descripcio', $order_by, $order_direction) ?>">
                             Descripció
                         </a>
                     </th>
-
                     <th class="campoCabeceraListado">
                         <a href="?order_by=nom_tecnic&order_direction=<?= getOrderDirection('nom_tecnic', $order_by, $order_direction) ?>">
                             Tècnic
@@ -598,8 +573,8 @@ if (!$result_actuacions) {
         </table>
     </div>
 </body>
-
 </html>
 <?php
+
 // Tancar la connexió
 $connexio->close(); ?>

@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="ca">
 <head>
-  <meta charset="UTF-8" />
-  <title>Gestió de contractes menors - Infraestructures Educatives</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+	<meta charset="UTF-8" />
+	<title>Gestió de contractes menors - Infraestructures Educatives</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
     :root {
       --bg: #f3f4f6;
@@ -18,18 +18,15 @@
       --radius-xl: 18px;
       --shadow-soft: 0 10px 25px rgba(0,0,0,0.08);
     }
-
     * {
       box-sizing: border-box;
     }
-
     body {
       margin: 0;
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       background: radial-gradient(circle at top left, #e0f2fe, #f9fafb 45%);
       color: var(--text);
     }
-
     header {
       position: sticky;
       top: 0;
@@ -38,7 +35,6 @@
       background: linear-gradient(to right, rgba(249,250,251,0.92), rgba(239,246,255,0.92));
       border-bottom: 1px solid rgba(209,213,219,0.7);
     }
-
     .header-inner {
       max-width: 1200px;
       margin: 0 auto;
@@ -48,13 +44,11 @@
       justify-content: space-between;
       gap: 12px;
     }
-
     .header-title {
       display: flex;
       align-items: center;
       gap: 10px;
     }
-
     .logo-pill {
       width: 40px;
       height: 40px;
@@ -67,25 +61,21 @@
       font-weight: 700;
       box-shadow: 0 10px 20px rgba(37,99,235,0.5);
     }
-
     .header-title h1 {
       font-size: 1.1rem;
       margin: 0;
     }
-
     .header-title p {
       margin: 0;
       font-size: 0.8rem;
       color: var(--text-soft);
     }
-
     .header-actions {
       display: flex;
       gap: 8px;
       align-items: center;
       flex-wrap: wrap;
     }
-
     .header-badge {
       padding: 4px 10px;
       border-radius: 999px;
@@ -97,7 +87,6 @@
       gap: 6px;
       border: 1px solid rgba(37,99,235,0.3);
     }
-
     .btn {
       border-radius: 999px;
       border: none;
@@ -108,37 +97,31 @@
       align-items: center;
       gap: 6px;
     }
-
     .btn-primary {
       background: linear-gradient(to right, #2563eb, #1d4ed8);
       color: #ffffff;
       box-shadow: 0 10px 20px rgba(37,99,235,0.4);
     }
-
     .btn-ghost {
       background: transparent;
       border: 1px solid var(--border);
       color: var(--text-soft);
     }
-
     main {
       max-width: 1200px;
       margin: 14px auto 30px;
       padding: 0 16px 16px;
     }
-
     .layout {
       display: grid;
       grid-template-columns: minmax(0, 2fr) minmax(0, 3fr) minmax(0, 2fr);
       gap: 16px;
     }
-
     @media (max-width: 1024px) {
       .layout {
         grid-template-columns: minmax(0, 1fr);
       }
     }
-
     .card {
       background: var(--bg-card);
       border-radius: var(--radius-xl);
@@ -146,7 +129,6 @@
       border: 1px solid rgba(209,213,219,0.8);
       padding: 16px 16px 14px;
     }
-
     .card h2 {
       margin: 0 0 8px;
       font-size: 0.95rem;
@@ -154,31 +136,26 @@
       align-items: center;
       justify-content: space-between;
     }
-
     .muted {
       color: var(--text-soft);
       font-size: 0.8rem;
     }
-
     .filters-grid {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 8px;
     }
-
     @media (max-width: 600px) {
       .filters-grid {
         grid-template-columns: minmax(0, 1fr);
       }
     }
-
     label {
       font-size: 0.78rem;
       color: var(--text-soft);
       display: block;
       margin-bottom: 2px;
     }
-
     input[type="text"],
     select,
     input[type="date"],
@@ -195,7 +172,6 @@
       font-family: inherit;
       resize: vertical;
     }
-
     input[type="text"]:focus,
     select:focus,
     input[type="date"]:focus,
@@ -205,22 +181,18 @@
       box-shadow: 0 0 0 1px rgba(37,99,235,0.4);
       background: #ffffff;
     }
-
     textarea {
       min-height: 70px;
     }
-
     .pill-input {
       border-radius: 999px !important;
     }
-
     .chip-row {
       display: flex;
       gap: 6px;
       flex-wrap: wrap;
       margin-top: 8px;
     }
-
     .chip {
       padding: 4px 9px;
       border-radius: 999px;
@@ -231,14 +203,12 @@
       cursor: pointer;
       user-select: none;
     }
-
     .chip.active {
       border-color: var(--accent);
       background: var(--accent-soft);
       color: var(--accent);
       font-weight: 500;
     }
-
     .list-header {
       display: flex;
       align-items: center;
@@ -246,14 +216,12 @@
       gap: 8px;
       margin-bottom: 6px;
     }
-
     .summary {
       display: flex;
       flex-wrap: wrap;
       gap: 6px;
       font-size: 0.8rem;
     }
-
     .summary-pill {
       padding: 3px 8px;
       border-radius: 999px;
@@ -263,43 +231,36 @@
       align-items: center;
       gap: 6px;
     }
-
     .summary-dot {
       width: 7px;
       height: 7px;
       border-radius: 999px;
       background: #4b5563;
     }
-
     .summary-dot.obres {
       background: #7c3aed;
     }
-
     .summary-dot.equip {
       background: #15803d;
     }
-
     table {
       width: 100%;
       border-collapse: collapse;
       font-size: 0.78rem;
       margin-top: 4px;
     }
-
     thead {
       position: sticky;
       top: 0;
       background: #f9fafb;
       z-index: 1;
     }
-
     th, td {
       padding: 6px 6px;
       text-align: left;
       border-bottom: 1px solid #f1f5f9;
       vertical-align: top;
     }
-
     th {
       font-weight: 600;
       font-size: 0.73rem;
@@ -307,17 +268,14 @@
       text-transform: uppercase;
       letter-spacing: 0.04em;
     }
-
     tbody tr {
       cursor: pointer;
       transition: background 0.08s, transform 0.06s;
     }
-
     tbody tr:hover {
       background: #f3f4ff;
       transform: translateY(-1px);
     }
-
     .tag {
       display: inline-flex;
       align-items: center;
@@ -327,53 +285,44 @@
       font-size: 0.7rem;
       border: 1px solid transparent;
     }
-
     .tag-obres {
       background: #ede9fe;
       color: #5b21b6;
       border-color: #ddd6fe;
     }
-
     .tag-equipament {
       background: #dcfce7;
       color: #166534;
       border-color: #bbf7d0;
     }
-
     .badge-estat {
       border-radius: 999px;
       padding: 2px 7px;
       font-size: 0.7rem;
       font-weight: 500;
     }
-
     .estat-tramit {
       background: #fef9c3;
       color: #854d0e;
     }
-
     .estat-curs {
       background: #e0f2fe;
       color: #1d4ed8;
     }
-
     .estat-tancat {
       background: #dcfce7;
       color: #166534;
     }
-
     .amount {
       white-space: nowrap;
       font-variant-numeric: tabular-nums;
     }
-
     .empty-state {
       text-align: center;
       padding: 18px 8px 10px;
       color: var(--text-soft);
       font-size: 0.8rem;
     }
-
     .detail-title {
       margin: 0 0 4px;
       font-size: 0.95rem;
@@ -382,13 +331,11 @@
       gap: 6px;
       align-items: center;
     }
-
     .detail-sub {
       margin: 0;
       font-size: 0.78rem;
       color: var(--text-soft);
     }
-
     .detail-grid {
       margin-top: 10px;
       display: grid;
@@ -396,7 +343,6 @@
       gap: 8px;
       font-size: 0.78rem;
     }
-
     .detail-row-label {
       font-size: 0.72rem;
       text-transform: uppercase;
@@ -404,7 +350,6 @@
       color: var(--text-soft);
       margin-bottom: 1px;
     }
-
     .detail-row-value {
       background: #f9fafb;
       border-radius: 10px;
@@ -413,13 +358,11 @@
       min-height: 28px;
       white-space: pre-wrap;
     }
-
     .detail-hint {
       margin-top: 10px;
       font-size: 0.72rem;
       color: var(--text-soft);
     }
-
     .pill-small {
       border-radius: 999px;
       padding: 2px 8px;
@@ -430,16 +373,13 @@
       align-items: center;
       gap: 4px;
     }
-
     .detail-actions {
       margin-top: 10px;
       display: flex;
       flex-wrap: wrap;
       gap: 6px;
     }
-
     /* Overlays / Modals */
-
     .overlay {
       position: fixed;
       inset: 0;
@@ -450,11 +390,9 @@
       z-index: 40;
       padding: 16px;
     }
-
     .overlay.hidden {
       display: none;
     }
-
     .modal {
       background: #ffffff;
       border-radius: 18px;
@@ -466,7 +404,6 @@
       flex-direction: column;
       border: 1px solid rgba(209,213,219,0.9);
     }
-
     .modal-header {
       padding: 14px 18px 10px;
       border-bottom: 1px solid #e5e7eb;
@@ -475,23 +412,19 @@
       align-items: flex-start;
       gap: 10px;
     }
-
     .modal-title {
       font-size: 0.95rem;
       margin: 0 0 2px;
     }
-
     .modal-sub {
       margin: 0;
       font-size: 0.75rem;
       color: var(--text-soft);
     }
-
     .modal-body {
       padding: 12px 18px 4px;
       overflow: auto;
     }
-
     .modal-footer {
       padding: 10px 18px 12px;
       border-top: 1px solid #e5e7eb;
@@ -501,7 +434,6 @@
       gap: 8px;
       flex-wrap: wrap;
     }
-
     .btn-icon {
       border-radius: 999px;
       border: none;
@@ -515,7 +447,6 @@
       color: #6b7280;
       font-size: 0.85rem;
     }
-
     .stepper {
       display: flex;
       gap: 8px;
@@ -523,7 +454,6 @@
       margin-bottom: 10px;
       flex-wrap: wrap;
     }
-
     .step-pill {
       border-radius: 999px;
       padding: 3px 9px;
@@ -534,14 +464,12 @@
       gap: 6px;
       color: #6b7280;
     }
-
     .step-pill.active {
       border-color: #2563eb;
       background: #dbeafe;
       color: #1d4ed8;
       font-weight: 500;
     }
-
     .step-index {
       width: 16px;
       height: 16px;
@@ -552,13 +480,11 @@
       align-items: center;
       justify-content: center;
     }
-
     .row-2col {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 8px;
     }
-
     @media (max-width: 640px) {
       .modal {
         max-width: 100%;
@@ -567,13 +493,11 @@
         grid-template-columns: minmax(0, 1fr);
       }
     }
-
     .helper-text {
       font-size: 0.72rem;
       color: var(--text-soft);
       margin-top: 3px;
     }
-
     .badge-mini {
       font-size: 0.7rem;
       border-radius: 999px;
@@ -581,11 +505,9 @@
       border: 1px dashed #e5e7eb;
       color: #6b7280;
     }
-
     .text-danger {
       color: var(--danger);
     }
-
   </style>
 </head>
 <body>
@@ -608,7 +530,6 @@
       </div>
     </div>
   </header>
-
   <main>
     <div class="layout">
       <!-- FILTRES -->
@@ -620,7 +541,6 @@
           </button>
         </h2>
         <p class="muted">Explora els contractes menors per illa, centre, tipus i estat. Clica una fila per veure el detall.</p>
-
         <div class="filters-grid" style="margin-top:8px;">
           <div>
             <label for="textFilter">Cerca (centre o actuació)</label>
@@ -654,7 +574,6 @@
             </select>
           </div>
         </div>
-
         <div class="chip-row">
           <span class="chip" data-quick="obres">Només obres</span>
           <span class="chip" data-quick="equipament">Només equipament</span>
@@ -662,7 +581,6 @@
           <span class="chip" data-quick="pendent">Només en tràmit</span>
         </div>
       </section>
-
       <!-- LLISTAT -->
       <section class="card" style="overflow:hidden;display:flex;flex-direction:column;">
         <div class="list-header">
@@ -670,7 +588,6 @@
           <div id="resultCount" class="muted"></div>
         </div>
         <div class="summary" id="summaryBar"></div>
-
         <div style="margin-top:6px;overflow:auto;max-height:420px;">
           <table>
             <thead>
@@ -693,19 +610,16 @@
           </div>
         </div>
       </section>
-
       <!-- DETALL -->
       <aside class="card" id="detailPanel">
         <h2>Detall del contracte</h2>
         <p class="muted">Selecciona una fila del llistat per veure’n la informació i actualitzar-ne el seguiment.</p>
-
         <div id="detailContent" style="margin-top:10px;">
           <!-- Contingut de detall generat per JS -->
         </div>
       </aside>
     </div>
   </main>
-
   <!-- MODAL: ASSISTENT NOU CONTRACTE -->
   <div class="overlay hidden" id="wizardOverlay">
     <div class="modal">
@@ -749,12 +663,10 @@
               <input type="date" id="wData" />
             </div>
           </div>
-
           <div style="margin-top:8px;">
             <label for="wCentre">Centre educatiu</label>
             <input type="text" id="wCentre" placeholder="Ex: IES Sa Serra" />
           </div>
-
           <div style="margin-top:8px;" class="row-2col">
             <div>
               <label for="wIlla">Illa</label>
@@ -771,13 +683,11 @@
               <input type="text" id="wEmpresa" placeholder="Opcional a l’inici" />
             </div>
           </div>
-
           <div style="margin-top:8px;">
             <label for="wDescripcio">Descripció de l’actuació</label>
             <textarea id="wDescripcio" placeholder="Ex: Reparació de goteres al gimnàs..."></textarea>
           </div>
         </div>
-
         <!-- PAS 2 -->
         <div data-step="1" style="display:none;">
           <div class="row-2col">
@@ -796,13 +706,11 @@
               </div>
             </div>
           </div>
-
           <div style="margin-top:8px;">
             <label for="wObservacions">Observacions internes</label>
             <textarea id="wObservacions" placeholder="Partida pressupostària, notes internes, etc."></textarea>
           </div>
         </div>
-
         <!-- PAS 3 -->
         <div data-step="2" style="display:none;">
           <label for="wSeguiment">Seguiment inicial</label>
@@ -810,7 +718,6 @@
           <div class="helper-text">
             Pots indicar en quin punt del flux es troba (Annex 2, UGE, pendent de factura, etc.).
           </div>
-
           <div style="margin-top:10px;">
             <span class="badge-mini">Suggeriments ràpids</span>
             <div class="chip-row">
@@ -827,7 +734,6 @@
           </div>
         </div>
       </div>
-
       <div class="modal-footer">
         <div class="helper-text" id="wizardStatus">
           Pas 1 de 3 · Tipus i centre
@@ -839,7 +745,6 @@
       </div>
     </div>
   </div>
-
   <!-- MODAL: ACTUALITZAR SEGUIMENT -->
   <div class="overlay hidden" id="seguimentOverlay">
     <div class="modal">
@@ -859,7 +764,6 @@
           Introdueix l’estat actual: Annex 2/3, si està a UGE, si hi ha factura, si l’actuació està finalitzada, etc.
           El sistema calcularà l’estat (En tràmit / En curs / Tancat) a partir del text.
         </div>
-
         <div style="margin-top:10px;">
           <span class="badge-mini">Plantilles d’estat habitual</span>
           <div class="chip-row">
@@ -884,14 +788,12 @@
       </div>
     </div>
   </div>
-
-  <script>
+	<script>
     // ---------------------------
     // Dades d’exemple (mock)
     // ---------------------------
     let nextId = 7;
     let selectedId = null;
-
     const CONTRACTES = [
       {
         id: 1,
@@ -972,18 +874,15 @@
         observacions: "Exemple simplificat per al prototip."
       }
     ];
-
     const formatter = new Intl.NumberFormat("ca-ES", {
       style: "currency",
       currency: "EUR",
       minimumFractionDigits: 2
     });
-
     function formatEuro(value) {
       if (value === null || value === undefined || value === "" || isNaN(value)) return "-";
       return formatter.format(value);
     }
-
     function getEstat(contracte) {
       const txt = (contracte.seguiment || "").toLowerCase();
       if (txt.includes("finalitzad") || txt.includes("tancat") || txt.includes("annex 3 signat")) {
@@ -994,7 +893,6 @@
       }
       return "En curs";
     }
-
     // ---------------------------
     // Render llistat i resum
     // ---------------------------
@@ -1002,28 +900,22 @@
       const tbody = document.getElementById("contractsTableBody");
       const emptyState = document.getElementById("emptyState");
       const resultCount = document.getElementById("resultCount");
-
       const textFilter = document.getElementById("textFilter").value.trim().toLowerCase();
       const tipusFilter = document.getElementById("tipusFilter").value;
       const illaFilter = document.getElementById("illaFilter").value;
       const estatFilter = document.getElementById("estatFilter").value;
-
       const filtered = CONTRACTES.filter(c => {
         if (tipusFilter && c.tipus !== tipusFilter) return false;
         if (illaFilter && c.illa !== illaFilter) return false;
-
         const estatActual = getEstat(c);
         if (estatFilter && estatFilter !== estatActual) return false;
-
         if (textFilter) {
           const blob = (c.centre + " " + c.descripcio).toLowerCase();
           if (!blob.includes(textFilter)) return false;
         }
         return true;
       });
-
       tbody.innerHTML = "";
-
       if (filtered.length === 0) {
         emptyState.style.display = "block";
         resultCount.textContent = "0 contractes";
@@ -1031,7 +923,6 @@
         emptyState.style.display = "none";
         resultCount.textContent = filtered.length + (filtered.length === 1 ? " contracte" : " contractes");
       }
-
       filtered.forEach(c => {
         const estat = getEstat(c);
         const tr = document.createElement("tr");
@@ -1062,9 +953,7 @@
         });
         tbody.appendChild(tr);
       });
-
       renderSummary(filtered);
-
       // selecciona primer si no hi ha cap seleccionat
       if (filtered.length > 0) {
         const existent = filtered.find(c => c.id === selectedId);
@@ -1074,14 +963,12 @@
         clearDetail();
       }
     }
-
     function renderSummary(list) {
       const el = document.getElementById("summaryBar");
       const total = list.length;
       const numObres = list.filter(c => c.tipus === "Obres").length;
       const numEquip = list.filter(c => c.tipus === "Equipament").length;
       const sumaSenseIVA = list.reduce((acc, c) => acc + (parseFloat(c.importSenseIVA) || 0), 0);
-
       el.innerHTML = `
         <div class="summary-pill">
           <span class="summary-dot"></span>
@@ -1100,7 +987,6 @@
         </div>
       `;
     }
-
     // ---------------------------
     // Detall del contracte
     // ---------------------------
@@ -1111,14 +997,12 @@
         return;
       }
       const estat = getEstat(contracte);
-
       container.innerHTML = `
         <h3 class="detail-title">
           ${contracte.centre}
           <span class="tag ${contracte.tipus === "Obres" ? "tag-obres" : "tag-equipament"}">${contracte.tipus}</span>
         </h3>
         <p class="detail-sub">${contracte.descripcio}</p>
-
         <div class="detail-grid">
           <div>
             <div class="detail-row-label">Data i illa</div>
@@ -1126,7 +1010,6 @@
               ${contracte.data || "-"} · ${contracte.illa || "-"}
             </div>
           </div>
-
           <div>
             <div class="detail-row-label">Imports</div>
             <div class="detail-row-value">
@@ -1134,7 +1017,6 @@
               Import execució / amb IVA: <strong>${formatEuro(contracte.importAmbIVA)}</strong>
             </div>
           </div>
-
           <div>
             <div class="detail-row-label">Estat i seguiment</div>
             <div class="detail-row-value">
@@ -1148,14 +1030,12 @@
               ${contracte.seguiment || "<span class='muted'>Sense informació de seguiment.</span>"}
             </div>
           </div>
-
           <div>
             <div class="detail-row-label">Empresa adjudicada</div>
             <div class="detail-row-value">
               ${contracte.empresa || "-"}
             </div>
           </div>
-
           <div>
             <div class="detail-row-label">Observacions internes</div>
             <div class="detail-row-value">
@@ -1163,7 +1043,6 @@
             </div>
           </div>
         </div>
-
         <div class="detail-actions">
           <button class="btn btn-primary" id="btnActualitzarSeguiment">
             📝 Actualitza seguiment
@@ -1172,25 +1051,21 @@
             ✏️ Edita dades bàsiques (mock)
           </button>
         </div>
-
         <div class="detail-hint">
           <span class="pill-small">
             🔁 Flux de treball: alta de contracte, consulta i actualització de seguiment.
           </span>
         </div>
       `;
-
       const btnSeg = document.getElementById("btnActualitzarSeguiment");
       btnSeg.addEventListener("click", () => openSeguimentModal(contracte));
     }
-
     function clearDetail() {
       const container = document.getElementById("detailContent");
       container.innerHTML = `
         <p class="muted">No hi ha resultats amb aquests filtres. Modifica la cerca per veure contractes.</p>
       `;
     }
-
     // ---------------------------
     // Filtres i xips ràpids
     // ---------------------------
@@ -1199,7 +1074,6 @@
       document.getElementById("tipusFilter").addEventListener("change", renderTable);
       document.getElementById("illaFilter").addEventListener("change", renderTable);
       document.getElementById("estatFilter").addEventListener("change", renderTable);
-
       document.getElementById("resetFiltersBtn").addEventListener("click", () => {
         document.getElementById("textFilter").value = "";
         document.getElementById("tipusFilter").value = "";
@@ -1208,14 +1082,12 @@
         document.querySelectorAll(".chip").forEach(ch => ch.classList.remove("active"));
         renderTable();
       });
-
       document.querySelectorAll(".chip").forEach(chip => {
         const quick = chip.getAttribute("data-quick");
         if (!quick) return;
         chip.addEventListener("click", () => {
           document.querySelectorAll(".chip[data-quick]").forEach(c => c.classList.remove("active"));
           chip.classList.add("active");
-
           if (quick === "obres") {
             document.getElementById("tipusFilter").value = "Obres";
             document.getElementById("estatFilter").value = "";
@@ -1231,7 +1103,6 @@
         });
       });
     }
-
     // ---------------------------
     // Assistent nou contracte
     // ---------------------------
@@ -1240,42 +1111,34 @@
     const wizardBack = document.getElementById("wizardBack");
     const wizardNext = document.getElementById("wizardNext");
     const wizardStatus = document.getElementById("wizardStatus");
-
     let wizardStep = 0;
     const WIZARD_STEPS = [
       "Tipus i centre",
       "Imports",
       "Seguiment inicial"
     ];
-
     function openWizard() {
       wizardOverlay.classList.remove("hidden");
       wizardStep = 0;
       updateWizardUI();
       clearWizardFields();
     }
-
     function closeWizard() {
       wizardOverlay.classList.add("hidden");
     }
-
     function updateWizardUI() {
       document.querySelectorAll('[data-step]').forEach(el => {
         const step = parseInt(el.getAttribute("data-step"), 10);
         el.style.display = step === wizardStep ? "block" : "none";
       });
-
       document.querySelectorAll("[data-step-pill]").forEach(el => {
         const step = parseInt(el.getAttribute("data-step-pill"), 10);
         el.classList.toggle("active", step === wizardStep);
       });
-
       wizardBack.disabled = wizardStep === 0;
       wizardNext.textContent = wizardStep === WIZARD_STEPS.length - 1 ? "Desa contracte" : "Següent";
-
       wizardStatus.textContent = `Pas ${wizardStep + 1} de ${WIZARD_STEPS.length} · ${WIZARD_STEPS[wizardStep]}`;
     }
-
     function clearWizardFields() {
       document.getElementById("wTipus").value = "";
       document.getElementById("wData").value = "";
@@ -1288,7 +1151,6 @@
       document.getElementById("wObservacions").value = "";
       document.getElementById("wSeguiment").value = "";
     }
-
     function validateCurrentStep() {
       // Validació mínima per simulació
       if (wizardStep === 0) {
@@ -1307,7 +1169,6 @@
       }
       return true;
     }
-
     function createContractFromWizard() {
       const tipus = document.getElementById("wTipus").value || "Obres";
       const data = document.getElementById("wData").value || "";
@@ -1319,7 +1180,6 @@
       const importAmbIVA = document.getElementById("wImportAmbIVA").value ? parseFloat(document.getElementById("wImportAmbIVA").value) : null;
       const observacions = document.getElementById("wObservacions").value || "";
       const seguiment = document.getElementById("wSeguiment").value || "En tràmit. Detall pendent d’actualitzar.";
-
       const nou = {
         id: nextId++,
         tipus,
@@ -1333,13 +1193,11 @@
         empresa,
         observacions
       };
-
       CONTRACTES.push(nou);
       selectedId = nou.id;
       renderTable();
       closeWizard();
     }
-
     // Xips per omplir seguiment (pas 3)
     document.addEventListener("click", (ev) => {
       const target = ev.target;
@@ -1349,7 +1207,6 @@
         textarea.value = txt;
       }
     });
-
     // ---------------------------
     // Modal seguiment
     // ---------------------------
@@ -1357,18 +1214,15 @@
     const seguimentTitle = document.getElementById("seguimentTitle");
     const sSeguiment = document.getElementById("sSeguiment");
     const seguimentError = document.getElementById("seguimentError");
-
     function openSeguimentModal(contracte) {
       seguimentTitle.textContent = contracte.centre + " · " + contracte.descripcio;
       sSeguiment.value = contracte.seguiment || "";
       seguimentError.textContent = "";
       seguimentOverlay.classList.remove("hidden");
     }
-
     function closeSeguimentModal() {
       seguimentOverlay.classList.add("hidden");
     }
-
     document.addEventListener("click", (ev) => {
       const t = ev.target;
       if (t.matches(".chip[data-sseguiment]")) {
@@ -1376,7 +1230,6 @@
         sSeguiment.value = txt;
       }
     });
-
     // ---------------------------
     // Events generals
     // ---------------------------
@@ -1398,7 +1251,6 @@
           createContractFromWizard();
         }
       });
-
       // tancar si fem clic fora (només per demo)
       wizardOverlay.addEventListener("click", (ev) => {
         if (ev.target === wizardOverlay) {
@@ -1406,15 +1258,12 @@
         }
       });
     }
-
     function setupSeguimentEvents() {
       const seguimentClose = document.getElementById("seguimentClose");
       const seguimentCancel = document.getElementById("seguimentCancel");
       const seguimentSave = document.getElementById("seguimentSave");
-
       seguimentClose.addEventListener("click", closeSeguimentModal);
       seguimentCancel.addEventListener("click", closeSeguimentModal);
-
       seguimentSave.addEventListener("click", () => {
         const text = sSeguiment.value.trim();
         if (!text) {
@@ -1430,14 +1279,12 @@
         renderTable();
         closeSeguimentModal();
       });
-
       seguimentOverlay.addEventListener("click", (ev) => {
         if (ev.target === seguimentOverlay) {
           closeSeguimentModal();
         }
       });
     }
-
     // Inicialització
     setupFilters();
     setupWizardEvents();

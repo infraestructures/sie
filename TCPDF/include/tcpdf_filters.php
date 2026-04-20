@@ -31,7 +31,6 @@
 // Description : This is a PHP class for decoding common PDF filters (PDF 32000-2008 - 7.4 Filters).
 //
 //============================================================+
-
 /**
  * @file
  * This is a PHP class for decoding common PDF filters (PDF 32000-2008 - 7.4 Filters).<br>
@@ -39,7 +38,6 @@
  * @author Nicola Asuni
  * @version 1.0.001
  */
-
 /**
  * @class TCPDF_FILTERS
  * This is a PHP class for decoding common PDF filters (PDF 32000-2008 - 7.4 Filters).<br>
@@ -49,15 +47,12 @@
  * @author Nicola Asuni - info@tecnick.com
  */
 class TCPDF_FILTERS {
-
 	/**
 	 * Define a list of available filter decoders.
 	 * @private static
 	 */
 	private static $available_filters = array('ASCIIHexDecode', 'ASCII85Decode', 'LZWDecode', 'FlateDecode', 'RunLengthDecode');
-
 // -----------------------------------------------------------------------------
-
 	/**
 	 * Get a list of available decoding filters.
 	 * @return array Array of available filter decoders.
@@ -67,7 +62,6 @@ class TCPDF_FILTERS {
 	public static function getAvailableFilters() {
 		return self::$available_filters;
 	}
-
 	/**
 	 * Decode data using the specified filter type.
 	 * @param string $filter Filter name.
@@ -124,9 +118,7 @@ class TCPDF_FILTERS {
 			}
 		}
 	}
-
 	// --- FILTERS (PDF 32000-2008 - 7.4 Filters) ------------------------------
-
 	/**
 	 * Standard
 	 * Default decoding filter (leaves data unchanged).
@@ -138,7 +130,6 @@ class TCPDF_FILTERS {
 	public static function decodeFilterStandard($data) {
 		return $data;
 	}
-
 	/**
 	 * ASCIIHexDecode
 	 * Decodes data encoded in an ASCII hexadecimal representation, reproducing the original binary data.
@@ -178,7 +169,6 @@ class TCPDF_FILTERS {
 		$decoded = pack('H*', $data);
 		return $decoded;
 	}
-
 	/**
 	 * ASCII85Decode
 	 * Decodes data encoded in an ASCII base-85 representation, reproducing the original binary data.
@@ -262,7 +252,6 @@ class TCPDF_FILTERS {
 		}
 		return $decoded;
 	}
-
 	/**
 	 * LZWDecode
 	 * Decompresses data encoded using the LZW (Lempel-Ziv-Welch) adaptive compression method, reproducing the original text or binary data.
@@ -343,7 +332,6 @@ class TCPDF_FILTERS {
 		}
 		return $decoded;
 	}
-
 	/**
 	 * FlateDecode
 	 * Decompresses data encoded using the zlib/deflate compression method, reproducing the original text or binary data.
@@ -360,7 +348,6 @@ class TCPDF_FILTERS {
 		}
 		return $decoded;
 	}
-
 	/**
 	 * RunLengthDecode
 	 * Decompresses data encoded using a byte-oriented run-length encoding algorithm.
@@ -396,7 +383,6 @@ class TCPDF_FILTERS {
 		}
 		return $decoded;
 	}
-
 	/**
 	 * CCITTFaxDecode (NOT IMPLEMETED - RETURN AN EXCEPTION)
 	 * Decompresses data encoded using the CCITT facsimile standard, reproducing the original data (typically monochrome image data at 1 bit per pixel).
@@ -409,7 +395,6 @@ class TCPDF_FILTERS {
 		self::Error('~decodeFilterCCITTFaxDecode: this method has not been yet implemented');
 		//return $data;
 	}
-
 	/**
 	 * JBIG2Decode (NOT IMPLEMETED - RETURN AN EXCEPTION)
 	 * Decompresses data encoded using the JBIG2 standard, reproducing the original monochrome (1 bit per pixel) image data (or an approximation of that data).
@@ -422,7 +407,6 @@ class TCPDF_FILTERS {
 		self::Error('~decodeFilterJBIG2Decode: this method has not been yet implemented');
 		//return $data;
 	}
-
 	/**
 	 * DCTDecode (NOT IMPLEMETED - RETURN AN EXCEPTION)
 	 * Decompresses data encoded using a DCT (discrete cosine transform) technique based on the JPEG standard, reproducing image sample data that approximates the original data.
@@ -435,7 +419,6 @@ class TCPDF_FILTERS {
 		self::Error('~decodeFilterDCTDecode: this method has not been yet implemented');
 		//return $data;
 	}
-
 	/**
 	 * JPXDecode (NOT IMPLEMETED - RETURN AN EXCEPTION)
 	 * Decompresses data encoded using the wavelet-based JPEG2000 standard, reproducing the original image data.
@@ -448,7 +431,6 @@ class TCPDF_FILTERS {
 		self::Error('~decodeFilterJPXDecode: this method has not been yet implemented');
 		//return $data;
 	}
-
 	/**
 	 * Crypt (NOT IMPLEMETED - RETURN AN EXCEPTION)
 	 * Decrypts data encrypted by a security handler, reproducing the data as it was before encryption.
@@ -461,9 +443,7 @@ class TCPDF_FILTERS {
 		self::Error('~decodeFilterCrypt: this method has not been yet implemented');
 		//return $data;
 	}
-
 	// --- END FILTERS SECTION -------------------------------------------------
-
 	/**
 	 * Throw an exception.
 	 * @param string $msg The error message
@@ -473,9 +453,7 @@ class TCPDF_FILTERS {
 	public static function Error($msg) {
 		throw new Exception('TCPDF_PARSER ERROR: '.$msg);
 	}
-
 } // END OF TCPDF_FILTERS CLASS
-
 //============================================================+
 // END OF FILE
 //============================================================+

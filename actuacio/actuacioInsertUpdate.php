@@ -23,12 +23,12 @@
     if ($tecnic_id == 0) $tecnic_id = null;
     if ($origen_id == 0) $origen_id = null;
     if ($desti_id == 0) $desti_id = null;
-
     if ($origen != null)
         $tornar = "../centre/centreForm.php?id=$centre_id";
     else
         $tornar = "actuacioListFiltro.php";
-if ($id) {
+
+    if ($id) {
         // UPDATE si s'ha rebut un ID
         $sql = "UPDATE actuacions 
                 SET codi_extern=?,
@@ -82,7 +82,7 @@ if ($id) {
     } else {
         echo "Error: " . $stmt->error;
     }
-    
+
     $stmt->close();
     $connexio->close();
 ?>

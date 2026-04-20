@@ -1,17 +1,9 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
 <html dir="ltr" xml:lang="ca" lang="ca">
 <head>
-
-<title>Asignación de mesas a reserva</title>
-
-<link rel="stylesheet" href="css/estilos.css" type="text/css" />
-<link rel="stylesheet" href="css/estilos_ficha_2.css" type="text/css" />
-
-<script src="js/utiles.js" language="javascript"></script>
-<script src="js/especificas.js" language="javascript"></script>
-
-<script>
+	<title>Asignación de mesas a reserva</title>
+	<link rel="stylesheet" href="estils/estils.css" type="text/css" />
+	<script>
 function alturaScrollListado() {
 if(navigator.appName!="Microsoft Internet Explorer") {
 	document.getElementById('scrollListado').className="scrollListadoMesas_firefox";
@@ -21,9 +13,7 @@ if(navigator.appName!="Microsoft Internet Explorer") {
 		}
 }
 </script>
-
 </head>
-
 <body class="contenido" onload="alturaScrollListado();">
 <form name="entidad">
 <div id="fichaEditable">

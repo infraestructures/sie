@@ -30,14 +30,12 @@
 // Description : Array of WEB safe colors
 //
 //============================================================+
-
 /**
  * @file
  * PHP color class for TCPDF
  * @author Nicola Asuni
  * @package com.tecnick.tcpdf
  */
-
 /**
  * @class TCPDF_COLORS
  * PHP color class for TCPDF
@@ -46,7 +44,6 @@
  * @author Nicola Asuni - info@tecnick.com
  */
 class TCPDF_COLORS {
-
 	/**
 	 * Array of WEB safe colors
 	 * @public static
@@ -202,13 +199,11 @@ class TCPDF_COLORS {
 		'yellow' => 'ffff00',
 		'yellowgreen' => '9acd32'
 	); // end of web colors
-
 	/**
 	 * Array of valid JavaScript color names
 	 * @public static
 	 */
 	public static $jscolor = array ('transparent', 'black', 'white', 'red', 'green', 'blue', 'cyan', 'magenta', 'yellow', 'dkGray', 'gray', 'ltGray');
-
 	/**
 	 * Array of Spot colors (C,M,Y,K,name)
 	 * Color keys must be in lowercase and without spaces.
@@ -235,9 +230,7 @@ class TCPDF_COLORS {
 		// Add here standard spot colors or dynamically define them with AddSpotColor()
 		// ...
 	); // end of spot colors
-
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
 	/**
 	 * Return the Spot color array.
 	 * @param string $name Name of the spot color.
@@ -261,7 +254,6 @@ class TCPDF_COLORS {
 		}
 		return false;
 	}
-
 	/**
 	 * Returns an array (RGB or CMYK) from an html color name, or a six-digit (i.e. #3FE5AA), or three-digit (i.e. #7FF) hexadecimal color, or a javascript color array, or javascript color name.
 	 * @param string $hcolor HTML color.
@@ -404,7 +396,6 @@ class TCPDF_COLORS {
 		}
 		return $returncolor;
 	}
-
 	/**
 	 * Convert a color array into a string representation.
 	 * @param array $c Array of colors.
@@ -435,7 +426,6 @@ class TCPDF_COLORS {
 		$color .= ']';
 		return $color;
 	}
-
 	/**
 	 * Convert color to javascript color.
 	 * @param string $color color name or "#RRGGBB"
@@ -453,10 +443,7 @@ class TCPDF_COLORS {
 		}
 		return 'color.'.$color;
 	}
-
-
 } // END OF TCPDF_COLORS CLASS
-
 //============================================================+
 // END OF FILE
 //============================================================+

@@ -1,28 +1,18 @@
 <!DOCTYPE html>
 <?php
 	include '../connectarBD.php';
-
 	// Consulta para obtener los registros de la tabla espai
 	$sql = "SELECT codi, nom, metres_per_unitat FROM espai";
 	$resultat = $connexio->query($sql);
-
 ?>
-
 <html>
-
 <head>
-
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Llistat de Espais</title>
-
-	<link rel="stylesheet" href="css/estilos.css" type="text/css" />
-
-	<script src="js/utiles.js" type="" language="JavaScript"></script>
-	<script src="js/especificas.js" type="" language="JavaScript"></script>
-
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Llistat de Espais</title>
+	<link rel="stylesheet" href="estils/estils.css" type="text/css" />
+	<script src="js/utils.js" type="" language="JavaScript"></script>
 </head>
-
 <body class="contenido" onload="ocultarFondoPrincipal();">
 <form name="entidad">
 <ul class="botoneraListado" style="margin-top: 20px">
@@ -32,9 +22,7 @@
 		<input type="button" class="boton" value="Assignar Espai" onclick="location.href='assignarEspai.php';">
     </li> 
 </ul>
-
 <div class="espacioMarronClaro"></div>
-
 <div id="cuerpo" class="scroll_total">
 <table class="listado" cellpadding="0" cellspacing="0" width="100%">
 	<thead>
@@ -71,4 +59,3 @@
 // Tancar la connexió
 $connexio->close();
 ?>
-

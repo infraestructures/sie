@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="ca">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FITXA DE CONVENI</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>FITXA DE CONVENI</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -68,7 +68,6 @@
 			const input = document.getElementById("pressupost");
 			input.value = input.value.replace(/\./g, '').replace('€', '').trim();
 		}
-
 		function applyFormat() {
 			const input = document.getElementById("pressupost");
 			let value = parseInt(input.value.replace(/\./g, '').trim(), 10);
@@ -78,15 +77,12 @@
 				input.value = '';
 			}
 		}
-
 		// Apply initial format on page load
 		document.addEventListener("DOMContentLoaded", applyFormat);
 	</script>
 </head>
 <body>
     <h1>FITXA DE CONVENI</h1>
-
-    
 <form id="form-conveni">
     <label for="ajuntament_id">Ajuntament</label>
     <select id="ajuntament_id" name="ajuntament_id" required>
@@ -95,16 +91,12 @@
         <option value="2">Palma</option>
         <option value="3">Inca</option>
     </select>
-
     <label for="data_inici">Data d'inici</label>
     <input type="date" id="data_inici" name="data_inici" required>
-
     <label for="data_fi">Data de finalització</label>
     <input type="date" id="data_fi" name="data_fi" required>
-
     <label for="pressupost">Pressupost</label>
     <input type="number" id="pressupost" name="pressupost" step="0.01" required>
-
     <label for="estat">Estat</label>
     <select id="estat" name="estat" required>
         <option value="">-- Selecciona estat --</option>
@@ -112,12 +104,9 @@
         <option value="vigent">Vigent</option>
         <option value="finalitzat">Finalitzat</option>
     </select>
-
     <label for="observacions">Observacions</label>
     <textarea id="observacions" name="observacions" rows="4" style="width:100%;"></textarea>
 </form>
-
-
     <h2>LLISTAT DE CENTRES</h2>
 	<button id="afegir-centre" onclick="window.location.href='centreForm.php'">Afegir centre</button>
     <table>
@@ -150,7 +139,6 @@
             </tr>
         </tbody>
     </table>    
-
     <div class="buttons">
         <button id="desar">Desar</button>
         <button id="eliminar">Eliminar</button>

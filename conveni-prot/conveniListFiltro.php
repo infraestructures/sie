@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="ca">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LLISTA DE CONVENIS</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>LLISTA DE CONVENIS</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -53,7 +53,6 @@
 		<option value="Eivissa">Eivissa</option>
 		<option value="Formentera">Formentera</option>
 	</select>
-	
 	<label for="illa">Ajuntament:</label>
 	<select id="illa" name="illa">
 		<option value="">Totes</option>
@@ -62,7 +61,6 @@
 		<option value="Palma">Eivissa</option>
 		<option value="Porreres">Formentera</option>
 	</select>
-	
 	<label for="any">Any:</label>
 	<select id="any" name="any">
 		<option value="">Tots</option>
@@ -70,7 +68,6 @@
 		<option value="2023">2023</option>
 		<option value="2022">2022</option>
 	</select>
-
 	<button id="cerca">Cerca</button>
 </div>
 	<h2>LLISTA DE CONVENIS</h2>

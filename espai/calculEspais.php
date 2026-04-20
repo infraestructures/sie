@@ -1,11 +1,9 @@
 <!DOCTYPE html>
 <?php
 	include 'connectarBD.php';
-	
 	// Obtenir els valors des del paràmetre GET
 	$idCentre = isset($_GET['id_centre']) ? intval($_GET['id_centre']) : 0;
 	$nomCentre = isset($_GET['nom_centre']) ? htmlspecialchars($_GET['nom_centre']) : ''; // Nom del centre rebut com a paràmetre
-
     $sql = "
 				SELECT 
 					id_centre,
@@ -28,7 +26,6 @@
 				GROUP BY 
 					id_centre;
     ";
-
 	$stmt = $connexio->prepare($sql);
 	if ($stmt === false) {
     die("Prepare failed: " . $connexio->error);
@@ -36,7 +33,6 @@
 	$stmt->bind_param("i", $idCentre);
 	$stmt->execute();
 	$resultat = $stmt->get_result();
-	
 	if ($resultat->num_rows > 0) {
 		$row = $resultat->fetch_assoc();
 		// Asigna los valores de la consulta a las variables
@@ -48,31 +44,20 @@
 		$totalAlumnes = $row['total_alumnes'];
 	}	
 ?>
-
-	<html>
-
-	<head>
-
-		<meta charset="UTF-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<title>Càlcul d'espais</title>
-
-		<link rel="stylesheet" href="css/estilos.css" type="text/css" />
-		<link rel="stylesheet" href="css/estilos_ficha_2.css" type="text/css" />
-
-		<script src="js/utiles.js" type="" language="JavaScript"></script>
-		<script src="js/especificas.js" type="" language="JavaScript"></script>
-
-	</head>
-
-	<body class="contenido" onload="ocultarFondoPrincipal();">
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Càlcul d'espais</title>
+	<link rel="stylesheet" href="estils/estils.css" type="text/css" />
+	<script src="js/utils.js" type="" language="JavaScript"></script>
+</head>
+<body class="contenido" onload="ocultarFondoPrincipal();">
 	<form name="entidad">
 	<ul class="botoneraListado">
 		<li class="tituloListado">Càlcul d'espais del <?php echo $nomCentre ?></li>
 	</ul>
-
 	<div class="espacioMarronClaro"></div>
-
 	<div class="formularioFichaContainer">
 		<div class="formularioFichaRow">
 			<label for="codiInfantil" class="campoFicha_Blanca">Total alumnes infantil:</label>
@@ -134,10 +119,9 @@
 	</table>
 	</div>
 	</form>
-	</body>
-	</html>
+</body>
+</html>
 <?php
 	// Tancar la connexió
 	$connexio->close();
 ?>
-

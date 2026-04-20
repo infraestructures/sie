@@ -1,13 +1,11 @@
 <!DOCTYPE html>
 <?php
 	include '../connectarBD.php';
-
 	// Recupera el id de la solicitud GET
 	$id = $_GET['id'] ?? null;
 	$id_centre = $_GET['id_centre'] ?? '';
 	$nom_centre = $_GET['nom_centre'] ?? '';
 	$id_conveni = $_GET['id_conveni'] ?? '';
-	
 	$fechaActual = date('Y-m-d');
 	$actuacio = [
 		'id' => '',
@@ -22,7 +20,6 @@
 		'previsio_final' => '',
 		'observacions' => ''
 	];
-
 	if ($id) {
 		$sql = "SELECT
 			act.id, 
@@ -40,7 +37,6 @@
 		WHERE cen.id = act.centre_id
 			AND act.id = ?;";
 		$stmt = $connexio->prepare($sql);
-
 		if (!$stmt) {
 			die("Error SQL: " . $connexio->error);
 		}
@@ -49,11 +45,9 @@
 		$result = $stmt->get_result();
 		$actuacio = $result->fetch_assoc();
 	}
-
 	// Obtenir la llista de documents i pagaments relacionats
 	$documents = [];
 	$pagaments = [];
-
 	if ($id) {
 		// Documents
 		$stmt = $connexio->prepare("SELECT id, nom, data, url, tipus_id FROM document_actuacio_conveni WHERE actuacio_id = ?");
@@ -62,19 +56,11 @@
 		$result_documents = $stmt->get_result();
 	}
 ?>
-
 <html>
-
 <head>
-
 	<title>Fitxa de conveni</title>
-
-	<link rel="stylesheet" href="../css/estilos.css" type="text/css" />
-	<link rel="stylesheet" href="../css/estilos_ficha_2.css" type="text/css" />
-
-	<script src="../js/utiles.js" language="javascript"></script>
-	<script src="../js/especificas.js" language="javascript"></script>
-	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<link rel="stylesheet" href="../estils/estils.css" type="text/css" />
+	<script src="../js/utils.js" language="javascript"></script>
 	<script>
 		function obrirCentre() {
 			const codiCentre = document.getElementById('centre_id').value;
@@ -85,7 +71,6 @@
 			const url = `../centre/centreForm.php?id=${encodeURIComponent(codiCentre)}`;
 			window.open(url, 'Centre', 'width=800,height=600,scrollbars=yes,resizable=yes');
 		}		
-
 		function actualitzaCentreId() {
 			const select = document.getElementById('centre');
 			const centreId = select.value;
@@ -95,7 +80,6 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
-
 <body class="contenido" onload="ocultarFondoPrincipal();">
 	<!-- Formulario para insertar o actualizar -->
 	<div class="contenedorFiltro"></div>
@@ -191,9 +175,7 @@
 							<input type="button" class="boton" value="Nou document" onclick="location.href='documentActuacioConveniForm.php?id_actuacio=<?php echo $id ?>&id_centre=<?php echo $id_centre ?>&id_conveni=<?php echo $id_conveni ?>';">
 						</li>
 					</ul>
-
 					<div class="espacioMarronClaro"></div>
-
 					<div id="cuerpo" class="scroll_total">
 						<table class="listado" cellpadding="0" cellspacing="0" width="100%">
 							<thead>
@@ -229,7 +211,6 @@
 					</div>			
 				</div>
 				<?php endif; ?>	
-			
 	</form>
 			</div>
 	<ul class="botoneraFicha">
@@ -258,7 +239,5 @@
 			});
 		});
 </script>
-
 </body>
-
 </html>

@@ -1,16 +1,11 @@
 <!DOCTYPE html>
 <html>
-
 <head>
-    <meta charset="UTF-8">
-    <title>Fitxa de contracte menor</title>
-
-    <link rel="stylesheet" href="../css/estilos.css" type="text/css" />
-    <link rel="stylesheet" href="../css/estilos_ficha_2.css" type="text/css" />
-
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-    <script>
+	<meta charset="UTF-8">
+	<title>Fitxa de contracte menor</title>
+	<link rel="stylesheet" href="../estils/estils.css" type="text/css" />
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script>
         // Només per demo: omple la fitxa amb un contracte de prova
         const DEMO_CONTRACTE = {
             id: 1,
@@ -29,18 +24,15 @@
             seguiment: "Annex 2 favorable. Enviat a delegació i UGE. Conformitat del centre pendent de factura.",
             observacions: "Contracte d'exemple per a maqueta. En real vindria de BD."
         };
-
         const formatter = new Intl.NumberFormat("ca-ES", {
             style: "currency",
             currency: "EUR",
             minimumFractionDigits: 2
         });
-
         function formatEuro(v) {
             if (v == null || v === "" || isNaN(v)) return "";
             return formatter.format(v);
         }
-
         $(function () {
             // Omplim la maqueta amb les dades d’exemple
             $("#codi").val(DEMO_CONTRACTE.codi);
@@ -57,19 +49,16 @@
             $("#estat").val(DEMO_CONTRACTE.estat);
             $("#seguiment").val(DEMO_CONTRACTE.seguiment);
             $("#observacions").val(DEMO_CONTRACTE.observacions);
-
             // Només demo: no enviarem el formulari
             $("form#formContracte").on("submit", function (e) {
                 e.preventDefault();
                 alert("En una versió real, aquí es faria el POST a cmInsertUpdate.php");
             });
-
             $("#btnEliminar").on("click", function () {
                 if (confirm("Estàs segur de borrar aquest contracte menor?")) {
                     alert("En una versió real, faria POST a cmDelete.php");
                 }
             });
-
             $("#btnTornar").on("click", function () {
                 // En real: window.location.href = 'cmListFiltro.php';
 				window.location.href = 'cmListFiltro.php';
@@ -77,28 +66,22 @@
         });
     </script>
 </head>
-
 <body class="contenido">
     <div class="contenedorFiltro"></div>
-
     <!-- Botonera superior de la fitxa -->
     <ul class="botoneraFicha">
         <li class="tituloFicha">
             <p class="posicionTituloFicha">FITXA DE CONTRACTE MENOR</p>
         </li>
     </ul>
-
     <div class="espacioMarron">&nbsp;</div>
-
     <div id="fichaEditable" style="background-color:#ffffff;">
         <div class="cabeceraFicha"></div>
-
         <form id="formContracte" name="formContracte" method="post" action="#">
             <div class="contenedorFicha">
                 <div class="tituloSeccion">
                     <p class="textoTituloSeccion">Dades generals</p>
                 </div>
-
                 <table>
                     <tr>
                         <td>
@@ -126,7 +109,6 @@
                             </select>
                         </td>
                     </tr>
-
                     <tr>
                         <td>
                             <label for="illa" class="campoFicha_Blanca">Illa:</label>
@@ -141,7 +123,6 @@
                             <input type="text" id="centre" name="centre" class="formularioFicha" size="60">
                         </td>
                     </tr>
-
                     <tr>
                         <td>
                             <label for="data_contracte" class="campoFicha_Blanca">Data de contracte:</label>
@@ -156,7 +137,6 @@
                             <input type="text" id="empresa" name="empresa" class="formularioFicha" size="40">
                         </td>
                     </tr>
-
                     <tr>
                         <td>
                             <label for="import_sense_iva" class="campoFicha_Blanca">Import previst (sense IVA):</label>
@@ -169,14 +149,12 @@
                                    class="formularioFicha">
                         </td>
                     </tr>
-
                     <tr>
                         <td colspan="4">
                             <label for="seguiment" class="campoFicha_Blanca">Seguiment:</label>
                             <textarea id="seguiment" name="seguiment" class="contenedorFicha_Blanca" rows="6" cols="100"></textarea>
                         </td>
                     </tr>
-
                     <tr>
                         <td colspan="4">
                             <label for="observacions" class="campoFicha_Blanca">Observacions internes:</label>
@@ -185,12 +163,9 @@
                     </tr>
                 </table>
             </div>
-
             <br><br>
-
             <!-- Aquí podries afegir llistats relacionats, igual que a actuacioForm:
                  documents, seguiment detallat, etc. Per ara ho deixo com a maqueta senzilla. -->
-
             <!-- Botons d’acció, estil actuacions -->
             <ul class="botoneraFicha">
                 <li class="fondoBotoneraFicha">
@@ -206,5 +181,4 @@
         </form>
     </div>
 </body>
-
 </html>

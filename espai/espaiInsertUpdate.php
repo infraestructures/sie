@@ -1,13 +1,11 @@
 <?php
 	include '../connectarBD.php';
-
 	$codi = $_POST['codi'] ?? null;
 	$nom = $_POST['nom'];
 	$tipus = $_POST['tipus'];
 	$ubicacio = $_POST['ubicacio'];
 	$ocupacio = $_POST['ocupacio'];
 	$metres= $_POST['metres'];
-
 	if ($codi != null || $codi != "") {
 		// Actualizar
 		$sql = "UPDATE ESPAI SET 
